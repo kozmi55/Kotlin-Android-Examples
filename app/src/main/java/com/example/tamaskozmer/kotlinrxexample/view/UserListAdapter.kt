@@ -10,13 +10,18 @@ import kotlinx.android.synthetic.main.list_item_user.view.*
 /**
  * Created by Tamas_Kozmer on 7/3/2017.
  */
-class UserListAdapter(val users: List<User>, val listener: (User) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+class UserListAdapter(val users: MutableList<User>, val listener: (User) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     override fun getItemCount() = users.size
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) = holder.bind(users[position], listener)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = UserViewHolder(parent.inflate(R.layout.list_item_user))
+
+    fun addUsers(newUsers: List<User>) {
+        users.addAll(newUsers)
+        notifyDataSetChanged()
+    }
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User, listener: (User) -> Unit) = with(itemView) {
@@ -25,6 +30,7 @@ class UserListAdapter(val users: List<User>, val listener: (User) -> Unit) : Rec
             userAvatar.loadUrl(user.profileImage)
             setOnClickListener { listener(user) }
         }
+
     }
 
 }

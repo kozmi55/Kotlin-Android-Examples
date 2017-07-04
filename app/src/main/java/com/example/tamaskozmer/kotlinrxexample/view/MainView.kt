@@ -8,6 +8,6 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 interface MainView {
     fun showLoading()
     fun hideLoading()
-    fun showUsers(users: List<User>)
+    fun addUsersToList(users: List<User>)
     fun showError()
 }

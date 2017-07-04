@@ -2,6 +2,7 @@ package com.example.tamaskozmer.kotlinrxexample.model
 
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import retrofit.http.GET
+import retrofit.http.Query
 import rx.Single
 
 /**
@@ -9,5 +10,5 @@ import rx.Single
  */
 interface UserService {
     @GET("/users?order=desc&sort=reputation&site=stackoverflow")
-    fun getUsers() : Single<UserListModel>
+    fun getUsers(@Query("page") page: Int = 1) : Single<UserListModel>
 }
