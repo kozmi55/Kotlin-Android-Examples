@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.di.modules.MainActivityModule
@@ -16,7 +15,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     private val presenter: UserListPresenter by lazy { component.presenter() }
     private val component by lazy { customApplication.component.plus(MainActivityModule(this)) }
-    private var loading = false
+
     private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,19 +42,16 @@ class MainActivity : AppCompatActivity(), MainView {
     private fun initViews() {
         swipeRefreshLayout.setOnRefreshListener {
             initAdapter()
-            loading = true
             presenter.resetPaging()
             presenter.getUsers()
         }
     }
 
     override fun showLoading() {
-        loading = true
         swipeRefreshLayout.isRefreshing = true
     }
 
     override fun hideLoading() {
-        loading = false
         swipeRefreshLayout.isRefreshing = false
     }
 
@@ -79,28 +75,12 @@ class MainActivity : AppCompatActivity(), MainView {
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var pastVisibleItems = 0
-            var visibleItemCount = 0
-            var totalItemCount = 0
-            val offset = 5
-
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
 
-                visibleItemCount = layoutManager.childCount;
-                totalItemCount = layoutManager.itemCount;
-                pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+                val lastVisibleItemPosition = layoutManager.findFirstVisibleItemPosition() + layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
 
-                if (!loading) {
-                    if (visibleItemCount + pastVisibleItems >= totalItemCount - offset) {
-                        Log.d("asd", "Paging reached ${visibleItemCount + pastVisibleItems}")
-                        presenter.getUsers()
-                        loading = true
-                    }
-                }
-
-                if (loading && visibleItemCount + pastVisibleItems >= totalItemCount) {
-                    showLoading()
-                }
+                presenter.onScrollChanged(lastVisibleItemPosition, totalItemCount)
             }
         })
     }

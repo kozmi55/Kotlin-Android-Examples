@@ -11,20 +11,26 @@ import java.util.concurrent.TimeUnit
  */
 class UserListPresenter(private val userRepository: UserRepository) : BasePresenter<MainView>() {
 
+    val offset = 5
+
     var page = 1
+    var loading = false
 
     fun getUsers() {
+        loading = true
         userRepository.getUsers(page)
                 .delay(2, TimeUnit.SECONDS) // TODO Delay just for testing
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     userListModel ->
+                    loading = false
                     view?.addUsersToList(userListModel.items)
                     view?.hideLoading()
                     page++
                 },
                 {
+                    loading = false
                     view?.showError()
                     view?.hideLoading()
                 })
@@ -32,5 +38,17 @@ class UserListPresenter(private val userRepository: UserRepository) : BasePresen
 
     fun resetPaging() {
         page = 1
+    }
+
+    fun onScrollChanged(lastVisibleItemPosition: Int, totalItemCount: Int) {
+        if (!loading) {
+            if (lastVisibleItemPosition >= totalItemCount - offset) {
+                getUsers()
+            }
+        }
+
+        if (loading && lastVisibleItemPosition >= totalItemCount) {
+            view?.showLoading()
+        }
     }
 }
