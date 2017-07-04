@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.model.User
+import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import kotlinx.android.synthetic.main.list_item_user.view.*
 
 /**
@@ -20,9 +20,9 @@ class UserListAdapter(val users: List<User>, val listener: (User) -> Unit) : Rec
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User, listener: (User) -> Unit) = with(itemView) {
-            name.text = user.display_name
+            name.text = user.displayName
             reputation.text = user.reputation.toString()
-            userAvatar.loadUrl(user.profile_image)
+            userAvatar.loadUrl(user.profileImage)
             setOnClickListener { listener(user) }
         }
     }
