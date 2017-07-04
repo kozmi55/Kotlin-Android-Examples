@@ -8,9 +8,7 @@ import rx.schedulers.Schedulers
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
  */
-class UserListPresenter : BasePresenter<MainView>() {
-
-    val userRepository = UserRepository()
+class UserListPresenter(private val userRepository: UserRepository) : BasePresenter<MainView>() {
 
     fun getUsers() {
         userRepository.getUsers()

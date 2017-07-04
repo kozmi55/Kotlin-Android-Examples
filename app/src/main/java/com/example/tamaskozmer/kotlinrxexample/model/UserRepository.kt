@@ -8,16 +8,9 @@ import retrofit.RxJavaCallAdapterFactory
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
  */
-class UserRepository {
-    private val BASE_URL = "https://api.stackexchange.com/2.2/"
+class UserRepository(private val retrofit: Retrofit) {
 
-    private val retrofit: Retrofit = Retrofit.Builder()
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .baseUrl(BASE_URL)
-            .build()
-
-    private val userService = retrofit.create(UserService::class.java)
+    private val userService by lazy { retrofit.create(UserService::class.java) }
 
     fun getUsers() = userService.getUsers()
 }

@@ -5,17 +5,22 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
+import com.example.tamaskozmer.kotlinrxexample.di.modules.MainActivityModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.presentation.UserListPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    private val presenter: UserListPresenter = UserListPresenter()
+    private val presenter: UserListPresenter by lazy { component.presenter() }
+
+    private val component by lazy { customApplication.component.plus(MainActivityModule(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        component.inject(this)
 
         initViews()
         presenter.attachView(this)
