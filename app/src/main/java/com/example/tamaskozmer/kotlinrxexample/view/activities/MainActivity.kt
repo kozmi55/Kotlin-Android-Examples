@@ -1,5 +1,6 @@
-package com.example.tamaskozmer.kotlinrxexample.view
+package com.example.tamaskozmer.kotlinrxexample.view.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -9,6 +10,9 @@ import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.di.modules.MainActivityModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.presentation.UserListPresenter
+import com.example.tamaskozmer.kotlinrxexample.view.MainView
+import com.example.tamaskozmer.kotlinrxexample.view.UserListAdapter
+import com.example.tamaskozmer.kotlinrxexample.view.customApplication
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
         val userList = mutableListOf<User>()
         recyclerView.adapter = UserListAdapter(userList) {
-            Toast.makeText(this, it.displayName, Toast.LENGTH_SHORT).show()
+            openDetailActivity(it)
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -83,5 +87,11 @@ class MainActivity : AppCompatActivity(), MainView {
                 presenter.onScrollChanged(lastVisibleItemPosition, totalItemCount)
             }
         })
+    }
+
+    private fun openDetailActivity(user: User) {
+        val detailIntent = Intent(this, DetailActivity::class.java)
+        detailIntent.putExtra("user", user)
+        startActivity(detailIntent)
     }
 }

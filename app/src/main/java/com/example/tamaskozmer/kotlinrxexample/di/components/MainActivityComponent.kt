@@ -2,7 +2,7 @@ package com.example.tamaskozmer.kotlinrxexample.di.components
 
 import com.example.tamaskozmer.kotlinrxexample.di.modules.MainActivityModule
 import com.example.tamaskozmer.kotlinrxexample.presentation.UserListPresenter
-import com.example.tamaskozmer.kotlinrxexample.view.MainActivity
+import com.example.tamaskozmer.kotlinrxexample.view.activities.MainActivity
 import dagger.Subcomponent
 import javax.inject.Singleton
 
