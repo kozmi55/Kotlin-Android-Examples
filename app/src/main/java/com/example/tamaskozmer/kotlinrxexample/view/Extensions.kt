@@ -1,6 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.view
 
 import android.app.Activity
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,3 +22,6 @@ fun ImageView.loadUrl(url: String) {
 
 val Activity.customApplication: CustomApplication
     get() = application as CustomApplication
+
+val Fragment.customApplication: CustomApplication
+    get() = activity.application as CustomApplication

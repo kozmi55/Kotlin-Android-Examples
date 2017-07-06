@@ -1,46 +1,71 @@
-package com.example.tamaskozmer.kotlinrxexample.view.activities
+package com.example.tamaskozmer.kotlinrxexample.view.fragments
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailActivityModule
+import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailFragmentModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.DetailsModel
 import com.example.tamaskozmer.kotlinrxexample.model.entities.Heading
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
 import com.example.tamaskozmer.kotlinrxexample.view.customApplication
-import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.fragment_details.*
 
 /**
- * Created by Tamas_Kozmer on 7/5/2017.
+ * Created by Tamas_Kozmer on 7/6/2017.
  */
-class DetailActivity : AppCompatActivity(), DetailView {
+class DetailsFragment : Fragment(), DetailView {
 
-    private val component by lazy { customApplication.component.plus(DetailActivityModule(this)) }
+    private val component by lazy { customApplication.component.plus(DetailFragmentModule(this)) }
     private val presenter by lazy { component.presenter() }
     private val detailsAdapter by lazy { DetailsAdapter() }
 
+    companion object {
+        fun newInstance(user: User): DetailsFragment {
+            val fragment = DetailsFragment()
+            val args = Bundle()
+            args.putParcelable("user", user)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
-
         component.inject(this)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater?.inflate(R.layout.fragment_details, container, false)
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         presenter.attachView(this)
 
         initAdapter()
-        processIntent()
+        processArguments()
+    }
+
+    override fun onDestroyView() {
+        presenter.detachView()
+        super.onDestroyView()
     }
 
     private fun initAdapter() {
-        detailsRecyclerView.layoutManager = LinearLayoutManager(this)
+        detailsRecyclerView.layoutManager = LinearLayoutManager(customApplication)
         detailsRecyclerView.adapter = detailsAdapter
     }
 
-    private fun processIntent() {
-        val user = intent.getParcelableExtra<User>("user")
+    private fun processArguments() {
+        val user = arguments.getParcelable<User>("user")
         detailsAdapter.addItem(user)
         detailsAdapter.notifyDataSetChanged()
         presenter.getDetails(user.userId)

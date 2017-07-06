@@ -1,8 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.di.modules
 
-import android.content.Context
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
-import com.example.tamaskozmer.kotlinrxexample.di.components.MainActivityComponent
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.google.gson.Gson
 import dagger.Module

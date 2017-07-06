@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.list_item_user.view.*
 /**
  * Created by Tamas_Kozmer on 7/3/2017.
  */
-class UserListAdapter(val users: MutableList<User>, val listener: (User) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+class UserListAdapter(
+        private val users: MutableList<User>,
+        private val listener: (User) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     override fun getItemCount() = users.size
 
@@ -25,6 +27,10 @@ class UserListAdapter(val users: MutableList<User>, val listener: (User) -> Unit
         notifyDataSetChanged()
     }
 
+    fun clearUsers() {
+        users.clear()
+    }
+
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User, listener: (User) -> Unit) = with(itemView) {
             name.text = user.displayName
@@ -32,7 +38,6 @@ class UserListAdapter(val users: MutableList<User>, val listener: (User) -> Unit
             userAvatar.loadUrl(user.profileImage)
             setOnClickListener { listener(user) }
         }
-
     }
 
 }
