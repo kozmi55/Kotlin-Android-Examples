@@ -11,7 +11,7 @@ import com.example.tamaskozmer.kotlinrxexample.di.modules.MainActivityModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.presentation.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.view.MainView
-import com.example.tamaskozmer.kotlinrxexample.view.UserListAdapter
+import com.example.tamaskozmer.kotlinrxexample.view.adapters.UserListAdapter
 import com.example.tamaskozmer.kotlinrxexample.view.customApplication
 import kotlinx.android.synthetic.main.activity_main.*
 

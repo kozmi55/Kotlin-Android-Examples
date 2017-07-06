@@ -2,6 +2,8 @@ package com.example.tamaskozmer.kotlinrxexample.model.entities
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.tamaskozmer.kotlinrxexample.view.adapters.AdapterConstants
+import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -11,7 +13,7 @@ data class User(
         @SerializedName("user_id") val userId: Long,
         @SerializedName("display_name") val displayName: String,
         @SerializedName("reputation") val reputation: Long,
-        @SerializedName("profile_image") val profileImage: String) : Parcelable {
+        @SerializedName("profile_image") val profileImage: String) : Parcelable, ViewType {
 
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<User> = object : Parcelable.Creator<User> {
@@ -35,4 +37,6 @@ data class User(
         dest.writeLong(reputation)
         dest.writeString(profileImage)
     }
+
+    override fun getViewType(): Int = AdapterConstants.USER_DETAILS
 }
