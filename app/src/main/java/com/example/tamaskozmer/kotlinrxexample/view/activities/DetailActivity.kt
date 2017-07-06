@@ -48,17 +48,31 @@ class DetailActivity : AppCompatActivity(), DetailView {
 
     override fun showDetails(detailsModel: DetailsModel) {
         with(detailsAdapter) {
-            addItem(Heading("Top questions by user"))
-            addItems(detailsModel.questions)
-            addItem(Heading("Top answers by user"))
-            addItems(detailsModel.answers)
-            addItem(Heading("Favorited by user"))
-            addItems(detailsModel.favorites)
+            if (!detailsModel.questions.isEmpty()) {
+                addItem(Heading("Top questions by user"))
+                addItems(detailsModel.questions)
+            }
+            if (!detailsModel.answers.isEmpty()) {
+                addItem(Heading("Top answers by user"))
+                addItems(detailsModel.answers)
+            }
+            if (!detailsModel.favorites.isEmpty()) {
+                addItem(Heading("Favorited by user"))
+                addItems(detailsModel.favorites)
+            }
             notifyDataSetChanged()
         }
     }
 
     override fun showError() {
         Log.d("details", "error")
+    }
+
+    override fun showLoading() {
+        detailsAdapter.addLoadingItem()
+    }
+
+    override fun hideLoading() {
+        detailsAdapter.removeLoadingItem()
     }
 }

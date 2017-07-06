@@ -12,6 +12,9 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: MutableList<ViewType>
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
+    private val loadingItem = object : ViewType {
+        override fun getViewType() = AdapterConstants.LOADING
+    }
 
     init {
         items = ArrayList()
@@ -19,6 +22,7 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         delegateAdapters.put(AdapterConstants.HEADING, HeadingDelegateAdapter())
         delegateAdapters.put(AdapterConstants.QUESTION, QuestionDelegateAdapter())
         delegateAdapters.put(AdapterConstants.ANSWER, AnswerDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
@@ -39,5 +43,13 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun addItem(item: ViewType) {
         items.add(item)
+    }
+
+    fun addLoadingItem() {
+        items.add(loadingItem)
+    }
+
+    fun removeLoadingItem() {
+        items.remove(loadingItem)
     }
 }

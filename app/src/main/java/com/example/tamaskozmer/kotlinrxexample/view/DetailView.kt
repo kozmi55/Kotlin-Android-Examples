@@ -8,4 +8,6 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.DetailsModel
 interface DetailView {
     fun showDetails(detailsModel: DetailsModel)
     fun showError()
+    fun showLoading()
+    fun hideLoading()
 }

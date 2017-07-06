@@ -11,15 +11,19 @@ import rx.schedulers.Schedulers
 class DetailPresenter(private val userRepository: UserRepository) : BasePresenter<DetailView>() {
 
     fun getDetails(id: Long) {
+        view?.showLoading()
         userRepository.getDetails(id)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     detailsModel ->
+                    view?.hideLoading()
                     view?.showDetails(detailsModel)
                 },
                 {
-                    error -> view?.showError()
+                    error ->
+                    view?.hideLoading()
+                    view?.showError()
                 })
     }
 }
