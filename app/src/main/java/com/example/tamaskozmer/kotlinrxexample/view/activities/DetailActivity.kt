@@ -1,5 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.view.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -23,9 +24,16 @@ class DetailActivity : AppCompatActivity(), DetailView {
     private val presenter by lazy { component.presenter() }
     private val detailsAdapter by lazy { DetailsAdapter() }
 
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        supportPostponeEnterTransition()
+        detailsRecyclerView.viewTreeObserver.addOnPreDrawListener {
+            supportStartPostponedEnterTransition()
+            return@addOnPreDrawListener true
+        }
 
         component.inject(this)
         presenter.attachView(this)

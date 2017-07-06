@@ -2,9 +2,11 @@ package com.example.tamaskozmer.kotlinrxexample.view.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.di.modules.MainActivityModule
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
         val userList = mutableListOf<User>()
         recyclerView.adapter = UserListAdapter(userList) {
-            openDetailActivity(it)
+            user, view -> openDetailActivity(user, view)
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -89,9 +91,12 @@ class MainActivity : AppCompatActivity(), MainView {
         })
     }
 
-    private fun openDetailActivity(user: User) {
+    private fun openDetailActivity(user: User, transitioningView: View) {
         val detailIntent = Intent(this, DetailActivity::class.java)
         detailIntent.putExtra("user", user)
-        startActivity(detailIntent)
+
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, transitioningView, "transition ${user.userId}")
+
+        startActivity(detailIntent, options.toBundle())
     }
 }

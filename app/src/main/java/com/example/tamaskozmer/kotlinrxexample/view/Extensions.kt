@@ -1,6 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.view
 
 import android.app.Activity
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,3 +22,9 @@ fun ImageView.loadUrl(url: String) {
 
 val Activity.customApplication: CustomApplication
     get() = application as CustomApplication
+
+fun isLollipopOrAbove(func: () -> Unit) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        func()
+    }
+}
