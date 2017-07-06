@@ -3,7 +3,6 @@ package com.example.tamaskozmer.kotlinrxexample.view.adapters
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 
 /**
@@ -17,6 +16,9 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     init {
         items = ArrayList()
         delegateAdapters.put(AdapterConstants.USER_DETAILS, UserDetailsDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.HEADING, HeadingDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.QUESTION, QuestionDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.ANSWER, AnswerDelegateAdapter())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
@@ -33,11 +35,9 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun addItems(newItems: List<ViewType>) {
         items.addAll(newItems)
-        notifyDataSetChanged()
     }
 
     fun addItem(item: ViewType) {
         items.add(item)
-        notifyDataSetChanged()
     }
 }

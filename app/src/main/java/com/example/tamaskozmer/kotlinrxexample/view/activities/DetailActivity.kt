@@ -7,11 +7,11 @@ import android.util.Log
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailActivityModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.DetailsModel
+import com.example.tamaskozmer.kotlinrxexample.model.entities.Heading
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
 import com.example.tamaskozmer.kotlinrxexample.view.customApplication
-import com.example.tamaskozmer.kotlinrxexample.view.loadUrl
 import kotlinx.android.synthetic.main.activity_detail.*
 
 /**
@@ -42,11 +42,20 @@ class DetailActivity : AppCompatActivity(), DetailView {
     private fun processIntent() {
         val user = intent.getParcelableExtra<User>("user")
         detailsAdapter.addItem(user)
+        detailsAdapter.notifyDataSetChanged()
         presenter.getDetails(user.userId)
     }
 
     override fun showDetails(detailsModel: DetailsModel) {
-        Log.d("details", detailsModel.toString())
+        with(detailsAdapter) {
+            addItem(Heading("Top questions by user"))
+            addItems(detailsModel.questions)
+            addItem(Heading("Top answers by user"))
+            addItems(detailsModel.answers)
+            addItem(Heading("Favorited by user"))
+            addItems(detailsModel.favorites)
+            notifyDataSetChanged()
+        }
     }
 
     override fun showError() {
