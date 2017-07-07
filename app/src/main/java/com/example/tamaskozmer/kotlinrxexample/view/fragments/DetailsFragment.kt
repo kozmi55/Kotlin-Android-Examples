@@ -3,10 +3,10 @@ package com.example.tamaskozmer.kotlinrxexample.view.fragments
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailFragmentModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.DetailsModel
@@ -25,6 +25,8 @@ class DetailsFragment : Fragment(), DetailView {
     private val component by lazy { customApplication.component.plus(DetailFragmentModule(this)) }
     private val presenter by lazy { component.presenter() }
     private val detailsAdapter by lazy { DetailsAdapter() }
+
+    var transitionEnded = false
 
     companion object {
         fun newInstance(user: User): DetailsFragment {
@@ -85,12 +87,14 @@ class DetailsFragment : Fragment(), DetailView {
                 addItem(Heading("Favorited by user"))
                 addItems(detailsModel.favorites)
             }
-            notifyDataSetChanged()
+            if (transitionEnded) {
+                notifyDataSetChanged()
+            }
         }
     }
 
     override fun showError() {
-        Log.d("details", "error")
+        Toast.makeText(customApplication, "Couldn't load data", Toast.LENGTH_SHORT).show()
     }
 
     override fun showLoading() {
@@ -99,5 +103,13 @@ class DetailsFragment : Fragment(), DetailView {
 
     override fun hideLoading() {
         detailsAdapter.removeLoadingItem()
+    }
+
+    // This logic is needed to show the content only after the shared transition has finished
+    fun transitionEnded() {
+        transitionEnded = true
+        if (isAdded) {
+            detailsRecyclerView.adapter.notifyDataSetChanged()
+        }
     }
 }

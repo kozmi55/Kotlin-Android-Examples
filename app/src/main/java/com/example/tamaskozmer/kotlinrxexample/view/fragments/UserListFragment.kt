@@ -28,7 +28,7 @@ class UserListFragment : Fragment(), UserListView {
     private val adapter by lazy {
         val userList = mutableListOf<User>()
         return@lazy UserListAdapter(userList) {
-            openDetailActivity(it)
+            user, view -> openDetailFragment(user, view)
         }
     }
 
@@ -108,8 +108,8 @@ class UserListFragment : Fragment(), UserListView {
         })
     }
 
-    private fun openDetailActivity(user: User) {
+    private fun openDetailFragment(user: User, transitioningView: View) {
         val detailsFragment = DetailsFragment.newInstance(user)
-        (activity as MainActivity).addFragment(detailsFragment, true)
+        (activity as MainActivity).addDetailsFragmentWithTransition(detailsFragment, transitioningView)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.view.adapters
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 import com.example.tamaskozmer.kotlinrxexample.view.inflate
+import com.example.tamaskozmer.kotlinrxexample.view.isLollipopOrAbove
 import com.example.tamaskozmer.kotlinrxexample.view.loadUrl
 import kotlinx.android.synthetic.main.list_item_user_details.view.*
 
@@ -24,10 +26,13 @@ class UserDetailsDelegateAdapter : ViewTypeDelegateAdapter {
     }
 
     class UserDetailsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        @SuppressLint("NewApi")
         fun bind(user: User) = with(itemView) {
             profileImage.loadUrl(user.profileImage)
             name.text = user.displayName
             reputation.text = user.reputation.toString()
+
+            isLollipopOrAbove { profileImage.transitionName = "transition${user.userId}" }
         }
     }
 }

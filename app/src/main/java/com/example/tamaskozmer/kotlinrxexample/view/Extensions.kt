@@ -1,6 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.view
 
 import android.app.Activity
+import android.os.Build
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,12 @@ fun ViewGroup.inflate(layoutRes: Int): View {
 
 fun ImageView.loadUrl(url: String) {
     Glide.with(context).load(url).into(this)
+}
+
+fun isLollipopOrAbove(func: () -> Unit) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        func()
+    }
 }
 
 val Activity.customApplication: CustomApplication

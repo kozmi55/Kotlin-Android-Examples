@@ -4,7 +4,6 @@ import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.view.UserListView
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
@@ -19,7 +18,6 @@ class UserListPresenter(private val userRepository: UserRepository) : BasePresen
     fun getUsers() {
         loading = true
         userRepository.getUsers(page)
-                .delay(2, TimeUnit.SECONDS) // TODO Delay just for testing
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
