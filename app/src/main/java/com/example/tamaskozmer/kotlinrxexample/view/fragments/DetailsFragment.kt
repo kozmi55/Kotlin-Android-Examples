@@ -1,5 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.view.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -15,6 +16,8 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
 import com.example.tamaskozmer.kotlinrxexample.view.customApplication
+import com.example.tamaskozmer.kotlinrxexample.view.isLollipopOrAbove
+import com.example.tamaskozmer.kotlinrxexample.view.loadUrl
 import kotlinx.android.synthetic.main.fragment_details.*
 
 /**
@@ -66,10 +69,17 @@ class DetailsFragment : Fragment(), DetailView {
         detailsRecyclerView.adapter = detailsAdapter
     }
 
+    @SuppressLint("NewApi")
     private fun processArguments() {
         val user = arguments.getParcelable<User>("user")
+
         detailsAdapter.addItem(user)
         detailsAdapter.notifyDataSetChanged()
+
+        collapsingToolbar.title = user.displayName
+        profileImage.loadUrl(user.profileImage)
+        isLollipopOrAbove { profileImage.transitionName = "transition${user.userId}" }
+
         presenter.getDetails(user.userId)
     }
 
