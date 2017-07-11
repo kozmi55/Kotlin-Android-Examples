@@ -2,8 +2,8 @@ package com.example.tamaskozmer.kotlinrxexample.presentation
 
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.view.UserListView
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by Tamas_Kozmer on 7/4/2017.

@@ -5,9 +5,9 @@ import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import retrofit.GsonConverterFactory
-import retrofit.Retrofit
-import retrofit.RxJavaCallAdapterFactory
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 /**
@@ -20,7 +20,7 @@ class ApplicationModule(val application: CustomApplication) {
     @Provides
     @Singleton
     fun provideRetrofit() = Retrofit.Builder()
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(Gson()))
             .baseUrl(BASE_URL)
             .build()

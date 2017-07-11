@@ -3,10 +3,10 @@ package com.example.tamaskozmer.kotlinrxexample.model
 import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerListModel
 import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionListModel
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
-import retrofit.http.GET
-import retrofit.http.Path
-import retrofit.http.Query
-import rx.Single
+import io.reactivex.Single
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Created by Tamas_Kozmer on 7/3/2017.

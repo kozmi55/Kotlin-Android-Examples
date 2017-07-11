@@ -3,8 +3,9 @@ package com.example.tamaskozmer.kotlinrxexample.model
 import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerListModel
 import com.example.tamaskozmer.kotlinrxexample.model.entities.DetailsModel
 import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionListModel
-import retrofit.Retrofit
-import rx.Single
+import io.reactivex.Single
+import io.reactivex.functions.Function3
+import retrofit2.Retrofit
 
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
@@ -20,8 +21,9 @@ class UserRepository(private val retrofit: Retrofit) {
                 userService.getQuestionsByUser(userId),
                 userService.getAnswersByUser(userId),
                 userService.getFavoritesByUser(userId),
-                { questions, answers, favorites
-                    -> createDetailsModel(questions, answers, favorites) })
+                Function3<QuestionListModel, AnswerListModel, QuestionListModel, DetailsModel>
+                { questions, answers, favorites ->
+                    createDetailsModel(questions, answers, favorites) })
     }
 
     private fun createDetailsModel(questionsModel: QuestionListModel?, answersModel: AnswerListModel?,
