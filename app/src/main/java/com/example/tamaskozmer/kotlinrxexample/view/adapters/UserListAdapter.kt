@@ -37,7 +37,7 @@ class UserListAdapter(
         @SuppressLint("NewApi")
         fun bind(user: User, listener: (User, View) -> Unit) = with(itemView) {
             name.text = user.displayName
-            reputation.text = user.reputation.toString()
+            reputation.text = "${user.reputation} points"
             userAvatar.loadUrl(user.profileImage)
             setOnClickListener { listener(user, userAvatar) }
 

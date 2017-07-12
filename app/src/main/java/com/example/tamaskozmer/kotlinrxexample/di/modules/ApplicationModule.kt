@@ -2,6 +2,8 @@ package com.example.tamaskozmer.kotlinrxexample.di.modules
 
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
+import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
+import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -19,7 +21,7 @@ class ApplicationModule(val application: CustomApplication) {
 
     @Provides
     @Singleton
-    fun provideRetrofit() = Retrofit.Builder()
+    fun provideRetrofit(): Retrofit = Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(Gson()))
             .baseUrl(BASE_URL)
@@ -27,5 +29,8 @@ class ApplicationModule(val application: CustomApplication) {
 
     @Provides
     @Singleton
-    fun provideUserRepository(retrofit: Retrofit) = UserRepository(retrofit)
+    fun provideUserRepository(retrofit: Retrofit) =
+            UserRepository(
+                    retrofit.create(UserService::class.java),
+                    retrofit.create(QuestionService::class.java))
 }

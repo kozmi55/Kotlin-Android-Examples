@@ -5,15 +5,13 @@ import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
 import io.reactivex.Single
 import io.reactivex.functions.Function3
-import retrofit2.Retrofit
 
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
  */
-class UserRepository(private val retrofit: Retrofit) {
-
-    private val userService by lazy { retrofit.create(UserService::class.java) } // TODO Eliminate hard dependency
-    private val questionService by lazy { retrofit.create(QuestionService::class.java) } // TODO Eliminate hard dependency
+class UserRepository(
+        private val userService: UserService,
+        private val questionService: QuestionService) {
 
     fun getUsers(page: Int) = userService.getUsers(page)
 

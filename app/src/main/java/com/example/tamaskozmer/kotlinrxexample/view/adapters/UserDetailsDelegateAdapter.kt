@@ -30,7 +30,7 @@ class UserDetailsDelegateAdapter : ViewTypeDelegateAdapter {
         fun bind(user: User) = with(itemView) {
             profileImage.loadUrl(user.profileImage)
             name.text = user.displayName
-            reputation.text = user.reputation.toString()
+            reputation.text = "${user.reputation} points"
 
             isLollipopOrAbove { profileImage.transitionName = "transition${user.userId}" }
         }
