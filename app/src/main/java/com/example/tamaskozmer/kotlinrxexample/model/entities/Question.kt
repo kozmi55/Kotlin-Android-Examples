@@ -12,6 +12,7 @@ data class Question(
         @SerializedName("score") val score: Long,
         @SerializedName("title") val title: String,
         @SerializedName("link") val link: String,
+        @SerializedName("question_id") val questionId: Long,
         @SerializedName("creation_date") val creationDate: Long) : ViewType {
 
     override fun getViewType(): Int = AdapterConstants.QUESTION

@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.model
+package com.example.tamaskozmer.kotlinrxexample.model.services
 
 import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerListModel
 import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionListModel

@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.model.entities.Answer
+import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerViewModel
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 import com.example.tamaskozmer.kotlinrxexample.view.inflate
 import kotlinx.android.synthetic.main.list_item_answer.view.*
@@ -18,13 +18,14 @@ class AnswerDelegateAdapter : ViewTypeDelegateAdapter {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         holder as AnswerViewHolder
-        holder.bind(item as Answer)
+        holder.bind(item as AnswerViewModel)
     }
 
     class AnswerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(answer: Answer) = with(itemView) {
+        fun bind(answer: AnswerViewModel) = with(itemView) {
             link.text = "https://stackoverflow.com/a/${answer.answerId}"
             score.text = "${answer.score} points"
+            questionTitle.text = answer.questionTitle
         }
     }
 }
