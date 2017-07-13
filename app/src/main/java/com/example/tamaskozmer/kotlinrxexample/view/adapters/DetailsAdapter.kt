@@ -3,6 +3,7 @@ package com.example.tamaskozmer.kotlinrxexample.view.adapters
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.example.tamaskozmer.kotlinrxexample.model.entities.Heading
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 
 /**
@@ -37,7 +38,7 @@ class DetailsAdapter(private val listener: (String) -> Unit) : RecyclerView.Adap
         return items[position].getViewType()
     }
 
-    fun addItems(newItems: List<ViewType>) {
+    private fun addItems(newItems: List<ViewType>) {
         items.addAll(newItems)
     }
 
@@ -51,5 +52,12 @@ class DetailsAdapter(private val listener: (String) -> Unit) : RecyclerView.Adap
 
     fun removeLoadingItem() {
         items.remove(loadingItem)
+    }
+
+    fun addItemsWithHeading(items: List<ViewType>, headingTitle: String) {
+        if (!items.isEmpty()) {
+            addItem(Heading(headingTitle))
+            addItems(items)
+        }
     }
 }

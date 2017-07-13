@@ -12,7 +12,6 @@ import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailFragmentModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.DetailsModel
-import com.example.tamaskozmer.kotlinrxexample.model.entities.Heading
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
@@ -81,18 +80,9 @@ class DetailsFragment : Fragment(), DetailView {
 
     override fun showDetails(detailsModel: DetailsModel) {
         with(detailsAdapter) {
-            if (!detailsModel.questions.isEmpty()) {
-                addItem(Heading("Top questions by user"))
-                addItems(detailsModel.questions)
-            }
-            if (!detailsModel.answers.isEmpty()) {
-                addItem(Heading("Top answers by user"))
-                addItems(detailsModel.answers)
-            }
-            if (!detailsModel.favorites.isEmpty()) {
-                addItem(Heading("Favorited by user"))
-                addItems(detailsModel.favorites)
-            }
+            addItemsWithHeading(detailsModel.questions, "Top questions by user")
+            addItemsWithHeading(detailsModel.answers, "Top answers by user")
+            addItemsWithHeading(detailsModel.favorites, "Favorited by user")
             if (transitionEnded) {
                 notifyDataSetChanged()
             }
