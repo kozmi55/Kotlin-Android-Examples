@@ -40,10 +40,10 @@ class UserRepository(
 
         return questionsListModel
                 .flatMap { questionListModel: QuestionListModel? -> Single.just(questionListModel?.items) }
-                .map { questions: List<Question>? -> mergeAnswersAndQuestions(answers, questions?: emptyList()) }
+                .map { questions: List<Question>? -> addTitlesToAnswers(answers, questions?: emptyList()) }
     }
 
-    private fun mergeAnswersAndQuestions(answers: List<Answer>, questions: List<Question>) : List<AnswerViewModel> {
+    private fun addTitlesToAnswers(answers: List<Answer>, questions: List<Question>) : List<AnswerViewModel> {
         return answers.map { (answerId, questionId, score, accepted) ->
             val question = questions.find { it.questionId == questionId }
             AnswerViewModel(answerId, score, accepted, question?.title ?: "Unknown")
