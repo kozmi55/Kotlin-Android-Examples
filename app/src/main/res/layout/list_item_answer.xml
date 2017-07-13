@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/questionTitle"
@@ -11,21 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
-        android:autoLink="web"
+        android:layout_marginTop="8dp"
         tools:text="Title"/>
-
-    <TextView
-        android:id="@+id/link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
-        android:autoLink="web"
-        tools:text="https://stackoverflow.com/a/156528"/>
 
     <TextView
         android:id="@+id/score"
@@ -34,8 +22,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
-        android:autoLink="web"
+        android:layout_marginBottom="16dp"
         tools:text="1000 points"/>
 
 </LinearLayout>

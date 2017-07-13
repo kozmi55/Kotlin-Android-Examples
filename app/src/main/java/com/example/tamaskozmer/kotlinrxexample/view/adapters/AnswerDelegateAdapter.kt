@@ -12,20 +12,21 @@ import kotlinx.android.synthetic.main.list_item_answer.view.*
 /**
  * Created by Tamas_Kozmer on 7/6/2017.
  */
-class AnswerDelegateAdapter : ViewTypeDelegateAdapter {
+class AnswerDelegateAdapter(private val listener: (String) -> Unit) : ViewTypeDelegateAdapter {
     override fun onCreateViewHolder(parent: ViewGroup)
             = AnswerViewHolder(parent.inflate(R.layout.list_item_answer))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         holder as AnswerViewHolder
-        holder.bind(item as AnswerViewModel)
+        holder.bind(item as AnswerViewModel, listener)
     }
 
     class AnswerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(answer: AnswerViewModel) = with(itemView) {
-            link.text = "https://stackoverflow.com/a/${answer.answerId}"
+        fun bind(answer: AnswerViewModel, listener: (String) -> Unit) = with(itemView) {
             score.text = "${answer.score} points"
             questionTitle.text = answer.questionTitle
+
+            setOnClickListener { listener("https://stackoverflow.com/a/${answer.answerId}") }
         }
     }
 }

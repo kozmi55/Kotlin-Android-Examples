@@ -27,7 +27,7 @@ class UserListFragment : Fragment(), UserListView {
     private val component by lazy { customApplication.component.plus(UserListFragmentModule(this)) }
     private val adapter by lazy {
         val userList = mutableListOf<User>()
-        return@lazy UserListAdapter(userList) {
+        UserListAdapter(userList) {
             user, view -> openDetailFragment(user, view)
         }
     }

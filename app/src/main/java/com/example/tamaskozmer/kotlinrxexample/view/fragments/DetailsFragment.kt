@@ -1,5 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.view.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -17,6 +19,7 @@ import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
 import com.example.tamaskozmer.kotlinrxexample.view.customApplication
 import kotlinx.android.synthetic.main.fragment_details.*
 
+
 /**
  * Created by Tamas_Kozmer on 7/6/2017.
  */
@@ -24,7 +27,10 @@ class DetailsFragment : Fragment(), DetailView {
 
     private val component by lazy { customApplication.component.plus(DetailFragmentModule(this)) }
     private val presenter by lazy { component.presenter() }
-    private val detailsAdapter by lazy { DetailsAdapter() }
+    private val detailsAdapter by lazy { DetailsAdapter({ link ->
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        startActivity(browserIntent)
+    }) }
 
     var transitionEnded = false
 

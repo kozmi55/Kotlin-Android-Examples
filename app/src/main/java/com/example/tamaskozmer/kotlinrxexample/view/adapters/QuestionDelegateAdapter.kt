@@ -12,20 +12,22 @@ import kotlinx.android.synthetic.main.list_item_question.view.*
 /**
  * Created by Tamas_Kozmer on 7/6/2017.
  */
-class QuestionDelegateAdapter : ViewTypeDelegateAdapter {
+class QuestionDelegateAdapter(private val listener: (String) -> Unit) : ViewTypeDelegateAdapter {
     override fun onCreateViewHolder(parent: ViewGroup)
             = QuestionViewHolder(parent.inflate(R.layout.list_item_question))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         holder as QuestionViewHolder
-        holder.bind(item as Question)
+        holder.bind(item as Question, listener)
     }
 
     class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(question: Question) = with(itemView) {
+        fun bind(question: Question, listener: (String) -> Unit) = with(itemView) {
             title.text = question.title
             score.text = "${question.score} points"
             viewCount.text = "Viewed: ${question.viewCount}"
+
+            setOnClickListener { listener(question.link) }
         }
     }
 }

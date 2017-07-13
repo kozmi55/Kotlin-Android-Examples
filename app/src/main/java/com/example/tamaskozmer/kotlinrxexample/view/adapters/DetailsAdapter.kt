@@ -8,7 +8,7 @@ import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 /**
  * Created by Tamas_Kozmer on 7/6/2017.
  */
-class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DetailsAdapter(private val listener: (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: MutableList<ViewType>
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
@@ -20,8 +20,8 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         items = ArrayList()
         delegateAdapters.put(AdapterConstants.USER_DETAILS, UserDetailsDelegateAdapter())
         delegateAdapters.put(AdapterConstants.HEADING, HeadingDelegateAdapter())
-        delegateAdapters.put(AdapterConstants.QUESTION, QuestionDelegateAdapter())
-        delegateAdapters.put(AdapterConstants.ANSWER, AnswerDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.QUESTION, QuestionDelegateAdapter(listener))
+        delegateAdapters.put(AdapterConstants.ANSWER, AnswerDelegateAdapter(listener))
         delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
     }
 
