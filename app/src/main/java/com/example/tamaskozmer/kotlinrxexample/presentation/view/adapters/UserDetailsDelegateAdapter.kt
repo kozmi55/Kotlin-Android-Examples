@@ -5,11 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.model.entities.User
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.util.inflate
+import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
+import com.example.tamaskozmer.kotlinrxexample.util.loadUrl
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
-import com.example.tamaskozmer.kotlinrxexample.view.inflate
-import com.example.tamaskozmer.kotlinrxexample.view.isLollipopOrAbove
-import com.example.tamaskozmer.kotlinrxexample.view.loadUrl
 import kotlinx.android.synthetic.main.list_item_user_details.view.*
 
 /**
@@ -22,12 +22,12 @@ class UserDetailsDelegateAdapter : ViewTypeDelegateAdapter {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         holder as UserDetailsViewHolder
-        holder.bind(item as User)
+        holder.bind(item as UserViewModel)
     }
 
     class UserDetailsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("NewApi")
-        fun bind(user: User) = with(itemView) {
+        fun bind(user: UserViewModel) = with(itemView) {
             profileImage.loadUrl(user.profileImage)
             name.text = user.displayName
             reputation.text = "${user.reputation} points"

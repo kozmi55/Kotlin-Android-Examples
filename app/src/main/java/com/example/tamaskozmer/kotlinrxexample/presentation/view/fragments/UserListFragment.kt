@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.di.modules.UserListFragmentModule
-import com.example.tamaskozmer.kotlinrxexample.model.entities.User
-import com.example.tamaskozmer.kotlinrxexample.presentation.UserListPresenter
-import com.example.tamaskozmer.kotlinrxexample.view.UserListView
+import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.util.customApplication
 import com.example.tamaskozmer.kotlinrxexample.view.activities.MainActivity
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.UserListAdapter
-import com.example.tamaskozmer.kotlinrxexample.view.customApplication
 import kotlinx.android.synthetic.main.fragment_user_list.*
 
 /**
@@ -26,7 +26,7 @@ class UserListFragment : Fragment(), UserListView {
     private val presenter: UserListPresenter by lazy { component.presenter() }
     private val component by lazy { customApplication.component.plus(UserListFragmentModule(this)) }
     private val adapter by lazy {
-        val userList = mutableListOf<User>()
+        val userList = mutableListOf<UserViewModel>()
         UserListAdapter(userList) {
             user, view -> openDetailFragment(user, view)
         }
@@ -81,7 +81,7 @@ class UserListFragment : Fragment(), UserListView {
         swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun addUsersToList(users: List<User>) {
+    override fun addUsersToList(users: List<UserViewModel>) {
         val adapter = recyclerView.adapter as UserListAdapter
         adapter.addUsers(users)
     }
@@ -108,7 +108,7 @@ class UserListFragment : Fragment(), UserListView {
         })
     }
 
-    private fun openDetailFragment(user: User, transitioningView: View) {
+    private fun openDetailFragment(user: UserViewModel, transitioningView: View) {
         val detailsFragment = DetailsFragment.newInstance(user)
         (activity as MainActivity).addDetailsFragmentWithTransition(detailsFragment, transitioningView)
     }

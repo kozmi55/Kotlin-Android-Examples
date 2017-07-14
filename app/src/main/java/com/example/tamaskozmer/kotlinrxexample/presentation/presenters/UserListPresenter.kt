@@ -1,7 +1,8 @@
-package com.example.tamaskozmer.kotlinrxexample.presentation
+package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
+import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
-import com.example.tamaskozmer.kotlinrxexample.view.UserListView
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -17,13 +18,13 @@ class UserListPresenter(private val userRepository: UserRepository) : BasePresen
 
     fun getUsers() {
         loading = true
-        userRepository.getUsers(page)
+        GetUsers(userRepository).execute(page)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    userListModel ->
+                    users ->
                     loading = false
-                    view?.addUsersToList(userListModel.items)
+                    view?.addUsersToList(users)
                     view?.hideLoading()
                     page++
                 },

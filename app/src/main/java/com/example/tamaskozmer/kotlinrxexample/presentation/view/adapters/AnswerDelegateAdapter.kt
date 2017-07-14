@@ -4,9 +4,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.AnswerViewModel
+import com.example.tamaskozmer.kotlinrxexample.util.inflate
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
-import com.example.tamaskozmer.kotlinrxexample.view.inflate
 import kotlinx.android.synthetic.main.list_item_answer.view.*
 
 /**

@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.model.entities
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels
 
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.AdapterConstants
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType

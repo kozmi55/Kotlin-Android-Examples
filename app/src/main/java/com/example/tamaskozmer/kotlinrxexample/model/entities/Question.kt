@@ -1,7 +1,5 @@
 package com.example.tamaskozmer.kotlinrxexample.model.entities
 
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.AdapterConstants
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -12,8 +10,4 @@ data class Question(
         @SerializedName("score") val score: Long,
         @SerializedName("title") val title: String,
         @SerializedName("link") val link: String,
-        @SerializedName("question_id") val questionId: Long,
-        @SerializedName("creation_date") val creationDate: Long) : ViewType {
-
-    override fun getViewType(): Int = AdapterConstants.QUESTION
-}
+        @SerializedName("question_id") val questionId: Long)

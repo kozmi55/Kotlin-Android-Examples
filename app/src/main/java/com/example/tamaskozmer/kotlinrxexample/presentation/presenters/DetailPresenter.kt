@@ -1,7 +1,8 @@
-package com.example.tamaskozmer.kotlinrxexample.presentation
+package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
+import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetDetails
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
-import com.example.tamaskozmer.kotlinrxexample.view.DetailView
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -12,7 +13,7 @@ class DetailPresenter(private val userRepository: UserRepository) : BasePresente
 
     fun getDetails(id: Long) {
         view?.showLoading()
-        userRepository.getDetails(id)
+        GetDetails(userRepository).execute(id)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({

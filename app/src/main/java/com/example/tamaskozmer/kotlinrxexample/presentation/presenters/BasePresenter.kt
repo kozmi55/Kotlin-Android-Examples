@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.presentation
+package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
 /**
  * Created by tamaskozmer on 3/23/17.

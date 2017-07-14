@@ -1,6 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.model.services
 
-import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionListModel
+import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionList
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,5 +10,5 @@ import retrofit2.http.Path
  */
 interface QuestionService {
     @GET("/questions/{questionIds}?order=desc&sort=activity&site=stackoverflow")
-    fun getQuestionById(@Path("questionIds") questionId: String) : Single<QuestionListModel>
+    fun getQuestionById(@Path("questionIds") questionId: String) : Single<QuestionList>
 }

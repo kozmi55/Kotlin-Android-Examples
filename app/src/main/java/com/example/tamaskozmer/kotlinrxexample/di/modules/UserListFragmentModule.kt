@@ -1,7 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.di.modules
 
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
-import com.example.tamaskozmer.kotlinrxexample.presentation.UserListPresenter
+import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.view.fragments.UserListFragment
 import dagger.Module
 import dagger.Provides

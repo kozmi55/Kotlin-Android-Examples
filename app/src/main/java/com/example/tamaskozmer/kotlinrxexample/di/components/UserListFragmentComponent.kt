@@ -1,7 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.di.components
 
 import com.example.tamaskozmer.kotlinrxexample.di.modules.UserListFragmentModule
-import com.example.tamaskozmer.kotlinrxexample.presentation.UserListPresenter
+import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.view.fragments.UserListFragment
 import dagger.Subcomponent
 import javax.inject.Singleton

@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.view
+package com.example.tamaskozmer.kotlinrxexample.util
 
 import android.app.Activity
 import android.os.Build

@@ -3,7 +3,7 @@ package com.example.tamaskozmer.kotlinrxexample.view.adapters
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.example.tamaskozmer.kotlinrxexample.model.entities.Heading
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.Heading
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 
 /**

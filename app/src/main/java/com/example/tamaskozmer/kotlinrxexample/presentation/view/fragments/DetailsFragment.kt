@@ -11,11 +11,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailFragmentModule
-import com.example.tamaskozmer.kotlinrxexample.model.entities.DetailsModel
-import com.example.tamaskozmer.kotlinrxexample.model.entities.User
-import com.example.tamaskozmer.kotlinrxexample.view.DetailView
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.util.customApplication
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
-import com.example.tamaskozmer.kotlinrxexample.view.customApplication
 import kotlinx.android.synthetic.main.fragment_details.*
 
 
@@ -34,7 +34,7 @@ class DetailsFragment : Fragment(), DetailView {
     var transitionEnded = false
 
     companion object {
-        fun newInstance(user: User): DetailsFragment {
+        fun newInstance(user: UserViewModel): DetailsFragment {
             val fragment = DetailsFragment()
             val args = Bundle()
             args.putParcelable("user", user)
@@ -72,17 +72,17 @@ class DetailsFragment : Fragment(), DetailView {
     }
 
     private fun processArguments() {
-        val user = arguments.getParcelable<User>("user")
+        val user = arguments.getParcelable<UserViewModel>("user")
         detailsAdapter.addItem(user)
         detailsAdapter.notifyDataSetChanged()
         presenter.getDetails(user.userId)
     }
 
-    override fun showDetails(detailsModel: DetailsModel) {
+    override fun showDetails(details: DetailsViewModel) {
         with(detailsAdapter) {
-            addItemsWithHeading(detailsModel.questions, "Top questions by user")
-            addItemsWithHeading(detailsModel.answers, "Top answers by user")
-            addItemsWithHeading(detailsModel.favorites, "Favorited by user")
+            addItemsWithHeading(details.questions, "Top questions by user")
+            addItemsWithHeading(details.answers, "Top answers by user")
+            addItemsWithHeading(details.favorites, "Favorited by user")
             if (transitionEnded) {
                 notifyDataSetChanged()
             }

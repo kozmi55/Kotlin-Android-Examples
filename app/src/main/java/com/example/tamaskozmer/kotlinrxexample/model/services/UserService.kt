@@ -1,7 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.model.services
 
-import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerListModel
-import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionListModel
+import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerList
+import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionList
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -16,11 +16,11 @@ interface UserService {
     fun getUsers(@Query("page") page: Int = 1) : Single<UserListModel>
 
     @GET("/users/{userId}/questions?order=desc&sort=votes&site=stackoverflow")
-    fun getQuestionsByUser(@Path("userId") userId: Long) : Single<QuestionListModel>
+    fun getQuestionsByUser(@Path("userId") userId: Long) : Single<QuestionList>
 
     @GET("/users/{userId}/favorites?order=desc&sort=votes&site=stackoverflow")
-    fun getFavoritesByUser(@Path("userId") userId: Long) : Single<QuestionListModel>
+    fun getFavoritesByUser(@Path("userId") userId: Long) : Single<QuestionList>
 
     @GET("/users/{userId}/answers?order=desc&sort=votes&site=stackoverflow")
-    fun getAnswersByUser(@Path("userId") userId: Long) : Single<AnswerListModel>
+    fun getAnswersByUser(@Path("userId") userId: Long) : Single<AnswerList>
 }
