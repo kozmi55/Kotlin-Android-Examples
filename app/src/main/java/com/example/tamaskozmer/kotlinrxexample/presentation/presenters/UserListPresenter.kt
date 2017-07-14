@@ -1,7 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
-import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -9,7 +8,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
  */
-class UserListPresenter(private val userRepository: UserRepository) : BasePresenter<UserListView>() {
+class UserListPresenter(private val getUsers: GetUsers) : BasePresenter<UserListView>() {
 
     val offset = 5
 
@@ -18,7 +17,7 @@ class UserListPresenter(private val userRepository: UserRepository) : BasePresen
 
     fun getUsers() {
         loading = true
-        GetUsers(userRepository).execute(page)
+        getUsers.execute(page)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

@@ -1,5 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.di.modules
 
+import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.view.fragments.UserListFragment
@@ -13,6 +14,9 @@ import javax.inject.Singleton
 @Module
 class UserListFragmentModule(val fragment: UserListFragment) {
     @Provides
+    fun provideGetUsers(userRepository: UserRepository) = GetUsers(userRepository)
+
+    @Provides
     @Singleton
-    fun providePresenter(userRepository: UserRepository) = UserListPresenter(userRepository)
+    fun providePresenter(getUsers: GetUsers) = UserListPresenter(getUsers)
 }

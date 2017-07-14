@@ -1,5 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.di.modules
 
+import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetDetails
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.DetailPresenter
 import com.example.tamaskozmer.kotlinrxexample.view.fragments.DetailsFragment
@@ -13,6 +14,9 @@ import javax.inject.Singleton
 @Module
 class DetailFragmentModule(val fragment: DetailsFragment) {
     @Provides
+    fun provideGetDetails(userRepository: UserRepository) = GetDetails(userRepository)
+
+    @Provides
     @Singleton
-    fun providePresenter(userRepository: UserRepository) = DetailPresenter(userRepository)
+    fun providePresenter(getDetails: GetDetails) = DetailPresenter(getDetails)
 }
