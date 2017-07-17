@@ -15,14 +15,17 @@ class UserListPresenter(private val getUsers: GetUsers) : BasePresenter<UserList
     var page = 1
     var loading = false
 
-    fun getUsers() {
+    fun getUsers(forced: Boolean = false) {
         loading = true
-        getUsers.execute(page)
+        getUsers.execute(page, forced)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     users ->
                     loading = false
+                    if (page == 1) {
+                        view?.clearList()
+                    }
                     view?.addUsersToList(users)
                     view?.hideLoading()
                     page++

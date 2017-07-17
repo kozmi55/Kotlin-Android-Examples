@@ -40,6 +40,10 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
+    compile "android.arch.persistence.room:runtime:1.0.0-alpha4"
+    compile "android.arch.persistence.room:rxjava2:1.0.0-alpha4"
+
+    kapt "android.arch.persistence.room:compiler:1.0.0-alpha4"
 
     kapt 'com.google.dagger:dagger-compiler:2.5'
     compile 'com.google.dagger:dagger:2.8'

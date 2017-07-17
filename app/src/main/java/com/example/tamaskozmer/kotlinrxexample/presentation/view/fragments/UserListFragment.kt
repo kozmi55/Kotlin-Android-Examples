@@ -66,9 +66,8 @@ class UserListFragment : Fragment(), UserListView {
 
     private fun initViews() {
         swipeRefreshLayout.setOnRefreshListener {
-            adapter.clearUsers()
             presenter.resetPaging()
-            presenter.getUsers()
+            presenter.getUsers(forced = true)
         }
     }
 
@@ -81,13 +80,17 @@ class UserListFragment : Fragment(), UserListView {
         swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun addUsersToList(users: List<UserViewModel>) {
+    override fun addUsersToList(users: List<UserViewModel>, clearList: Boolean) {
         val adapter = recyclerView.adapter as UserListAdapter
         adapter.addUsers(users)
     }
 
     override fun showError() {
         Toast.makeText(customApplication, "Couldn't load data", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun clearList() {
+        adapter.clearUsers()
     }
     // endregion
 

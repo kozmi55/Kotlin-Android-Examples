@@ -11,8 +11,8 @@ import io.reactivex.Single
 class GetUsers(private val userRepository: UserRepository) {
 
     // TODO Not the best practice probably
-    fun execute(page: Int) : Single<List<UserViewModel>> {
-        val usersList = userRepository.getUsers(page)
+    fun execute(page: Int, forced: Boolean) : Single<List<UserViewModel>> {
+        val usersList = userRepository.getUsers(page, forced)
         return usersList.flatMap { userListModel: UserListModel? ->
             val items = userListModel?.items ?: emptyList()
             val viewModels = items.map { UserViewModel(it.userId, it.displayName, it.reputation, it.profileImage) }
