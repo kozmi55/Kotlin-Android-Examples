@@ -24,85 +24,93 @@ class DetailsRepository(
         private val connectionHelper: ConnectionHelper) {
 
     fun getQuestionsByUser(userId: Long): Single<QuestionList> {
-        return Single.create<QuestionList> { emitter: SingleEmitter<QuestionList>? ->
-            if (connectionHelper.isOnline()) {
-                try {
-                    val questions = userService.getQuestionsByUser(userId).execute().body()
-                    questions?.let {
-                        val questionsWithOwnerId = questions.items.map { it.copy(ownerId = userId) }
-                        questionDao.insertAll(questionsWithOwnerId)
-                    }
-                    emitter?.onSuccess(questions)
-                } catch (exception: Exception) {
-                    emitter?.onError(exception)
-                }
-            } else {
-                val questionsFromDb = questionDao.getQuestionsByUser(userId)
-                emitter?.onSuccess(QuestionList(questionsFromDb))
+        val onlineStrategy = {
+            val questions = userService.getQuestionsByUser(userId).execute().body()
+            questions?.let {
+                val questionsWithOwnerId = questions.items.map { it.copy(ownerId = userId) }
+                questionDao.insertAll(questionsWithOwnerId)
             }
+            questions ?: QuestionList(emptyList())
         }
+
+        val offlineStrategy = {
+            val questionsFromDb = questionDao.getQuestionsByUser(userId)
+            QuestionList(questionsFromDb)
+        }
+
+        return createSingle<QuestionList>(onlineStrategy, offlineStrategy)
     }
 
     fun getAnswersByUser(userId: Long): Single<AnswerList> {
-        return Single.create<AnswerList> { emitter: SingleEmitter<AnswerList>? ->
-            if (connectionHelper.isOnline()) {
-                try {
-                    val answers = userService.getAnswersByUser(userId).execute().body()
-                    answers?.let {
-                        val answersWithOwnerId = answers.items.map { it.copy(ownerId = userId) }
-                        answerDao.insertAll(answersWithOwnerId)
-                    }
-                    emitter?.onSuccess(answers)
-                } catch (exception: Exception) {
-                    emitter?.onError(exception)
-                }
-            } else {
-                val answersFromDb = answerDao.getAnswersByUser(userId)
-                emitter?.onSuccess(AnswerList(answersFromDb))
+        val onlineStrategy = {
+            val answers = userService.getAnswersByUser(userId).execute().body()
+            answers?.let {
+                val answersWithOwnerId = answers.items.map { it.copy(ownerId = userId) }
+                answerDao.insertAll(answersWithOwnerId)
             }
+            answers ?: AnswerList(emptyList())
         }
+
+        val offlineStrategy = {
+            val answersFromDb = answerDao.getAnswersByUser(userId)
+            AnswerList(answersFromDb)
+        }
+
+        return createSingle<AnswerList>(onlineStrategy, offlineStrategy)
     }
 
     fun getFavoritesByUser(userId: Long): Single<QuestionList> {
-        return Single.create<QuestionList> { emitter: SingleEmitter<QuestionList>? ->
-            if (connectionHelper.isOnline()) {
-                try {
-                    val questions = userService.getFavoritesByUser(userId).execute().body()
-                    questions?.let {
-                        // TODO Owner ids will be missed, if we get a question what is already stored for a user
-                        questionDao.insertAll(questions.items)
-                        val favoritedByUser =
-                                FavoritedByUser(userId, questions.items.map { it.questionId })
-                        favoritedByUserDao.insert(favoritedByUser)
-                    }
-                    emitter?.onSuccess(questions)
-                } catch (exception: Exception) {
-                    emitter?.onError(exception)
-                }
-            } else {
-                val questionIds = favoritedByUserDao.getFavoritesForUser(userId).questionIds
-                val questionsFromDb = questionDao.getQuestionsById(questionIds)
-                emitter?.onSuccess(QuestionList(questionsFromDb))
+        val onlineStrategy = {
+            val questions = userService.getFavoritesByUser(userId).execute().body()
+            questions?.let {
+                // TODO Owner ids will be missed, if we get a question what is already stored for a user
+                questionDao.insertAll(questions.items)
+                val favoritedByUser =
+                        FavoritedByUser(userId, questions.items.map { it.questionId })
+                favoritedByUserDao.insert(favoritedByUser)
             }
+            questions ?: QuestionList(emptyList())
         }
+
+        val offlineStrategy = {
+            val questionIds = favoritedByUserDao.getFavoritesForUser(userId).questionIds
+            val questionsFromDb = questionDao.getQuestionsById(questionIds)
+            QuestionList(questionsFromDb)
+        }
+
+        return createSingle<QuestionList>(onlineStrategy, offlineStrategy)
     }
 
     fun getQuestionsById(ids: List<Long>): Single<QuestionList> {
-        return Single.create<QuestionList> { emitter: SingleEmitter<QuestionList>? ->
+        val onlineStrategy = {
+            val questions = questionService.getQuestionsById(ids.joinToString(separator = ";")).execute().body()
+            questions?.let {
+                // TODO Owner ids will be missed, if we get a question what is already stored for a user
+                questionDao.insertAll(questions.items)
+            }
+            questions ?: QuestionList(emptyList())
+        }
+
+        val offlineStrategy = {
+            val questionsFromDb = questionDao.getQuestionsById(ids)
+            QuestionList(questionsFromDb)
+        }
+
+        return createSingle<QuestionList>(onlineStrategy, offlineStrategy)
+    }
+
+    fun <T> createSingle(onlineStrategy: () -> T, offlineStrategy: () -> T) : Single<T> {
+        return Single.create<T> { emitter: SingleEmitter<T>? ->
             if (connectionHelper.isOnline()) {
                 try {
-                    val questions = questionService.getQuestionsById(ids.joinToString(separator = ";")).execute().body()
-                    questions?.let {
-                        // TODO Owner ids will be missed, if we get a question what is already stored for a user
-                        questionDao.insertAll(questions.items)
-                    }
-                    emitter?.onSuccess(questions)
+                    val onlineResults = onlineStrategy()
+                    emitter?.onSuccess(onlineResults)
                 } catch (exception: Exception) {
                     emitter?.onError(exception)
                 }
             } else {
-                val questionsFromDb = questionDao.getQuestionsById(ids)
-                emitter?.onSuccess(QuestionList(questionsFromDb))
+                val offlineResults = offlineStrategy()
+                emitter?.onSuccess(offlineResults)
             }
         }
     }
