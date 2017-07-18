@@ -17,11 +17,11 @@ interface UserService {
     fun getUsers(@Query("page") page: Int = 1) : Call<UserListModel>
 
     @GET("/users/{userId}/questions?order=desc&sort=votes&site=stackoverflow")
-    fun getQuestionsByUser(@Path("userId") userId: Long) : Single<QuestionList>
+    fun getQuestionsByUser(@Path("userId") userId: Long) : Call<QuestionList>
 
     @GET("/users/{userId}/favorites?order=desc&sort=votes&site=stackoverflow")
     fun getFavoritesByUser(@Path("userId") userId: Long) : Single<QuestionList>
 
     @GET("/users/{userId}/answers?order=desc&sort=votes&site=stackoverflow")
-    fun getAnswersByUser(@Path("userId") userId: Long) : Single<AnswerList>
+    fun getAnswersByUser(@Path("userId") userId: Long) : Call<AnswerList>
 }

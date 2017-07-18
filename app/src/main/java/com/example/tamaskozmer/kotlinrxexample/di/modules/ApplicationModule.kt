@@ -42,6 +42,8 @@ class ApplicationModule(val application: CustomApplication) {
                 retrofit.create(UserService::class.java),
                 retrofit.create(QuestionService::class.java),
                 database.userDao(),
+                database.questionDao(),
+                database.answerDao(),
                 connectionHelper)
     }
 

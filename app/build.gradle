@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -42,6 +40,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
     compile "android.arch.persistence.room:runtime:1.0.0-alpha4"
     compile "android.arch.persistence.room:rxjava2:1.0.0-alpha4"
+
+    compile 'com.facebook.stetho:stetho:1.5.0'
 
     kapt "android.arch.persistence.room:compiler:1.0.0-alpha4"
 

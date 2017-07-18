@@ -9,7 +9,7 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.Answ
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.QuestionViewModel
 import io.reactivex.Single
-import io.reactivex.functions.Function3
+import io.reactivex.functions.BiFunction
 
 /**
  * Created by Tamas_Kozmer on 7/14/2017.
@@ -17,13 +17,21 @@ import io.reactivex.functions.Function3
 class GetDetails(private val userRepository: UserRepository) {
 
     fun execute(userId: Long) : Single<DetailsViewModel> {
+        // TODO The original, use this when favorites will be offline capable
+//        return Single.zip(
+//                userRepository.getQuestionsByUser(userId),
+//                getTitlesForAnswers(userId),
+//                userRepository.getFavoritesByUser(userId),
+//                Function3<QuestionList, List<AnswerViewModel>, QuestionList, DetailsViewModel>
+//                { questions, answers, favorites ->
+//                    createDetailsModel(questions, answers, favorites) })
+
         return Single.zip(
                 userRepository.getQuestionsByUser(userId),
                 getTitlesForAnswers(userId),
-                userRepository.getFavoritesByUser(userId),
-                Function3<QuestionList, List<AnswerViewModel>, QuestionList, DetailsViewModel>
-                { questions, answers, favorites ->
-                    createDetailsModel(questions, answers, favorites) })
+                BiFunction<QuestionList, List<AnswerViewModel>, DetailsViewModel>
+                { questions, answers ->
+                    createDetailsModel(questions, answers, QuestionList(emptyList())) })
     }
 
     private fun getTitlesForAnswers(userId: Long) : Single<List<AnswerViewModel>> {
@@ -38,8 +46,7 @@ class GetDetails(private val userRepository: UserRepository) {
                 .take(3)
 
         val ids = processedAnswers
-                .map { it.questionId.toString() }
-                .joinToString(separator = ";")
+                .map { it.questionId }
 
         val questionsListModel = userRepository.getQuestionsById(ids)
 

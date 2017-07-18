@@ -1,12 +1,19 @@
 package com.example.tamaskozmer.kotlinrxexample.model.entities
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 /**
  * Created by Tamas_Kozmer on 7/5/2017.
  */
+@Entity
 data class Answer(
-    @SerializedName("answer_id") val answerId: Long,
-    @SerializedName("question_id") val questionId: Long,
-    @SerializedName("score") val score: Long,
-    @SerializedName("is_accepted") val accepted: Boolean)
+        @SerializedName("answer_id") @PrimaryKey var answerId: Long,
+        @SerializedName("question_id") var questionId: Long,
+        @SerializedName("score") var score: Long,
+        @SerializedName("is_accepted") var accepted: Boolean,
+        var ownerId: Long) {
+
+    constructor() : this(-1, -1, 0, false, -1)
+}
