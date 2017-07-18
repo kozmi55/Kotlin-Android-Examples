@@ -3,8 +3,9 @@ package com.example.tamaskozmer.kotlinrxexample.di.modules
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
-import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.AppDatabase
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsRepository
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
 import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
@@ -40,8 +41,16 @@ class ApplicationModule(val application: CustomApplication) {
     fun provideUserRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper): UserRepository {
         return UserRepository(
                 retrofit.create(UserService::class.java),
-                retrofit.create(QuestionService::class.java),
                 database.userDao(),
+                connectionHelper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDetailsRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper) : DetailsRepository {
+        return DetailsRepository(
+                retrofit.create(UserService::class.java),
+                retrofit.create(QuestionService::class.java),
                 database.questionDao(),
                 database.answerDao(),
                 database.favoritedByUserDao(),

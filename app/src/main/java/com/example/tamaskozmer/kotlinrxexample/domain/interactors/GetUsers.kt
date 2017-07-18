@@ -1,7 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.domain.interactors
 
-import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
 import io.reactivex.Single
 

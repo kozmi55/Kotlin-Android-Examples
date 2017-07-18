@@ -1,10 +1,10 @@
 package com.example.tamaskozmer.kotlinrxexample.domain.interactors
 
-import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.entities.Answer
 import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerList
 import com.example.tamaskozmer.kotlinrxexample.model.entities.Question
 import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionList
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.AnswerViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.QuestionViewModel
@@ -15,20 +15,20 @@ import io.reactivex.functions.Function3
  * Created by Tamas_Kozmer on 7/14/2017.
  */
 // TODO If all the lists are empty we should emit an error
-class GetDetails(private val userRepository: UserRepository) {
+class GetDetails(private val detailsRepository: DetailsRepository) {
 
     fun execute(userId: Long) : Single<DetailsViewModel> {
         return Single.zip(
-                userRepository.getQuestionsByUser(userId),
+                detailsRepository.getQuestionsByUser(userId),
                 getTitlesForAnswers(userId),
-                userRepository.getFavoritesByUser(userId),
+                detailsRepository.getFavoritesByUser(userId),
                 Function3<QuestionList, List<AnswerViewModel>, QuestionList, DetailsViewModel>
                 { questions, answers, favorites ->
                     createDetailsModel(questions, answers, favorites) })
     }
 
     private fun getTitlesForAnswers(userId: Long) : Single<List<AnswerViewModel>> {
-        return userRepository.getAnswersByUser(userId)
+        return detailsRepository.getAnswersByUser(userId)
                 .flatMap { answerList: AnswerList? ->
                     mapAnswersToAnswersWithTitle(answerList?.items ?: emptyList()) }
     }
@@ -41,7 +41,7 @@ class GetDetails(private val userRepository: UserRepository) {
         val ids = processedAnswers
                 .map { it.questionId }
 
-        val questionsListModel = userRepository.getQuestionsById(ids)
+        val questionsListModel = detailsRepository.getQuestionsById(ids)
 
         return questionsListModel
                 .flatMap { questionListModel: QuestionList? -> Single.just(questionListModel?.items) }
