@@ -7,7 +7,7 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.Deta
  */
 interface DetailView {
     fun showDetails(details: DetailsViewModel)
-    fun showError()
+    fun showError(error: String)
     fun showLoading()
     fun hideLoading()
 }

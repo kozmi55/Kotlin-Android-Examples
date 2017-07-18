@@ -1,9 +1,11 @@
 package com.example.tamaskozmer.kotlinrxexample.model
 
 import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerList
+import com.example.tamaskozmer.kotlinrxexample.model.entities.FavoritedByUser
 import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionList
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.AnswerDao
+import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.FavoritedByUserDao
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.QuestionDao
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.UserDao
 import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
@@ -21,6 +23,7 @@ class UserRepository(
         private val userDao: UserDao,
         private val questionDao: QuestionDao,
         private val answerDao: AnswerDao,
+        private val favoritedByUserDao: FavoritedByUserDao,
         private val connectionHelper: ConnectionHelper) {
 
     fun getUsers(page: Int = 1, forced: Boolean = false): Single<UserListModel> {
@@ -69,11 +72,7 @@ class UserRepository(
                 }
             } else {
                 val questionsFromDb = questionDao.getQuestionsByUser(userId)
-                if (!questionsFromDb.isEmpty()) {
-                    emitter?.onSuccess(QuestionList(questionsFromDb))
-                } else {
-                    emitter?.onError(Exception("Device is offline"))
-                }
+                emitter?.onSuccess(QuestionList(questionsFromDb))
             }
         }
     }
@@ -93,16 +92,34 @@ class UserRepository(
                 }
             } else {
                 val answersFromDb = answerDao.getAnswersByUser(userId)
-                if (!answersFromDb.isEmpty()) {
-                    emitter?.onSuccess(AnswerList(answersFromDb))
-                } else {
-                    emitter?.onError(Exception("Device is offline"))
-                }
+                emitter?.onSuccess(AnswerList(answersFromDb))
             }
         }
     }
 
-    fun getFavoritesByUser(userId: Long) = userService.getFavoritesByUser(userId)
+    fun getFavoritesByUser(userId: Long): Single<QuestionList> {
+        return Single.create<QuestionList> { emitter: SingleEmitter<QuestionList>? ->
+            if (connectionHelper.isOnline()) {
+                try {
+                    val questions = userService.getFavoritesByUser(userId).execute().body()
+                    questions?.let {
+                        // TODO Owner ids will be missed, if we get a question what is already stored for a user
+                        questionDao.insertAll(questions.items)
+                        val favoritedByUser =
+                                FavoritedByUser(userId, questions.items.map { it.questionId })
+                        favoritedByUserDao.insert(favoritedByUser)
+                    }
+                    emitter?.onSuccess(questions)
+                } catch (exception: Exception) {
+                    emitter?.onError(exception)
+                }
+            } else {
+                val questionIds = favoritedByUserDao.getFavoritesForUser(userId).questionIds
+                val questionsFromDb = questionDao.getQuestionsById(questionIds)
+                emitter?.onSuccess(QuestionList(questionsFromDb))
+            }
+        }
+    }
 
     fun getQuestionsById(ids: List<Long>): Single<QuestionList> {
         return Single.create<QuestionList> { emitter: SingleEmitter<QuestionList>? ->
@@ -119,11 +136,7 @@ class UserRepository(
                 }
             } else {
                 val questionsFromDb = questionDao.getQuestionsById(ids)
-                if (!questionsFromDb.isEmpty()) {
-                    emitter?.onSuccess(QuestionList(questionsFromDb))
-                } else {
-                    emitter?.onError(Exception("Device is offline"))
-                }
+                emitter?.onSuccess(QuestionList(questionsFromDb))
             }
         }
     }

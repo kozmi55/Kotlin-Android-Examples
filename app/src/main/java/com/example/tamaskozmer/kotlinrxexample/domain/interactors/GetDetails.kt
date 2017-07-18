@@ -9,29 +9,22 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.Answ
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.QuestionViewModel
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 
 /**
  * Created by Tamas_Kozmer on 7/14/2017.
  */
+// TODO If all the lists are empty we should emit an error
 class GetDetails(private val userRepository: UserRepository) {
 
     fun execute(userId: Long) : Single<DetailsViewModel> {
-        // TODO The original, use this when favorites will be offline capable
-//        return Single.zip(
-//                userRepository.getQuestionsByUser(userId),
-//                getTitlesForAnswers(userId),
-//                userRepository.getFavoritesByUser(userId),
-//                Function3<QuestionList, List<AnswerViewModel>, QuestionList, DetailsViewModel>
-//                { questions, answers, favorites ->
-//                    createDetailsModel(questions, answers, favorites) })
-
         return Single.zip(
                 userRepository.getQuestionsByUser(userId),
                 getTitlesForAnswers(userId),
-                BiFunction<QuestionList, List<AnswerViewModel>, DetailsViewModel>
-                { questions, answers ->
-                    createDetailsModel(questions, answers, QuestionList(emptyList())) })
+                userRepository.getFavoritesByUser(userId),
+                Function3<QuestionList, List<AnswerViewModel>, QuestionList, DetailsViewModel>
+                { questions, answers, favorites ->
+                    createDetailsModel(questions, answers, favorites) })
     }
 
     private fun getTitlesForAnswers(userId: Long) : Single<List<AnswerViewModel>> {

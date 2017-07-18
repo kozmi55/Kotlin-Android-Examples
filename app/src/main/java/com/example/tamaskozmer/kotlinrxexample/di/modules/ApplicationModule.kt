@@ -44,6 +44,7 @@ class ApplicationModule(val application: CustomApplication) {
                 database.userDao(),
                 database.questionDao(),
                 database.answerDao(),
+                database.favoritedByUserDao(),
                 connectionHelper)
     }
 

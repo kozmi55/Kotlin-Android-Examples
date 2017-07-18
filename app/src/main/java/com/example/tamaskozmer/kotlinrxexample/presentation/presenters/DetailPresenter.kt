@@ -23,7 +23,7 @@ class DetailPresenter(private val getDetails: GetDetails) : BasePresenter<Detail
                 {
                     error ->
                     view?.hideLoading()
-                    view?.showError()
+                    view?.showError(error.localizedMessage)
                 })
     }
 }

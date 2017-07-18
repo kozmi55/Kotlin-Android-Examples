@@ -89,8 +89,8 @@ class DetailsFragment : Fragment(), DetailView {
         }
     }
 
-    override fun showError() {
-        Toast.makeText(customApplication, "Couldn't load data", Toast.LENGTH_SHORT).show()
+    override fun showError(error: String) {
+        Toast.makeText(customApplication, error, Toast.LENGTH_SHORT).show()
     }
 
     override fun showLoading() {

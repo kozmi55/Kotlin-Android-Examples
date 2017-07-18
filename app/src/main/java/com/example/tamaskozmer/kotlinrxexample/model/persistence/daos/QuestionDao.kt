@@ -16,7 +16,7 @@ interface QuestionDao {
     @Query("SELECT * FROM question WHERE ownerId = :arg0 ORDER BY score DESC")
     fun getQuestionsByUser(userId: Long) : List<Question>
 
-    @Query("SELECT * FROM question WHERE questionId IN (:arg0)")
+    @Query("SELECT * FROM question WHERE questionId IN (:arg0) ORDER BY score DESC")
     fun getQuestionsById(questionIds: List<Long>) : List<Question>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
