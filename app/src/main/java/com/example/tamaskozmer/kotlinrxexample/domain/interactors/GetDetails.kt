@@ -14,7 +14,6 @@ import io.reactivex.functions.Function3
 /**
  * Created by Tamas_Kozmer on 7/14/2017.
  */
-// TODO If all the lists are empty we should emit an error
 class GetDetails(private val detailsRepository: DetailsRepository) {
 
     fun execute(userId: Long) : Single<DetailsViewModel> {
