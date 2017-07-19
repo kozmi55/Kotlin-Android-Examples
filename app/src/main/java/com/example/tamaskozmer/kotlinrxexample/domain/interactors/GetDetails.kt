@@ -34,18 +34,14 @@ class GetDetails(private val detailsRepository: DetailsRepository) {
     }
 
     private fun mapAnswersToAnswersWithTitle(answers: List<Answer>): Single<List<AnswerViewModel>> {
-        val processedAnswers = answers
-                .filter { it.accepted }
-                .take(3)
-
-        val ids = processedAnswers
+        val ids = answers
                 .map { it.questionId }
 
         val questionsListModel = detailsRepository.getQuestionsById(ids)
 
         return questionsListModel
                 .flatMap { questionListModel: QuestionList? -> Single.just(questionListModel?.items) }
-                .map { questions: List<Question>? -> addTitlesToAnswers(processedAnswers, questions?: emptyList()) }
+                .map { questions: List<Question>? -> addTitlesToAnswers(answers, questions?: emptyList()) }
     }
 
     private fun addTitlesToAnswers(answers: List<Answer>, questions: List<Question>) : List<AnswerViewModel> {
@@ -58,11 +54,9 @@ class GetDetails(private val detailsRepository: DetailsRepository) {
     private fun createDetailsModel(questionsModel: QuestionList?, answers: List<AnswerViewModel>,
                                    favoritesModel: QuestionList?): DetailsViewModel {
         val questions = (questionsModel?.items ?: emptyList())
-                .take(3)
                 .map { QuestionViewModel(it.viewCount, it.score, it.title, it.link, it.questionId) }
 
         val favorites = (favoritesModel?.items ?: emptyList())
-                .take(3)
                 .map { QuestionViewModel(it.viewCount, it.score, it.title, it.link, it.questionId) }
 
         return DetailsViewModel(questions, answers, favorites)

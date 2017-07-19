@@ -9,6 +9,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.QuestionDa
 import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
 import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
+import com.example.tamaskozmer.kotlinrxexample.util.Constants
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
@@ -25,12 +26,15 @@ class DetailsRepository(
 
     fun getQuestionsByUser(userId: Long): Single<QuestionList> {
         val onlineStrategy = {
-            val questions = userService.getQuestionsByUser(userId).execute().body()
+            val questions = userService.getQuestionsByUser(userId).execute().body()?.items
+                    ?.take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
             questions?.let {
-                val questionsWithOwnerId = questions.items.map { it.copy(ownerId = userId) }
+                val questionsWithOwnerId = questions
+                        .map { it.copy(ownerId = userId) }
+                        .take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
                 questionDao.insertAll(questionsWithOwnerId)
             }
-            questions ?: QuestionList(emptyList())
+            QuestionList(questions ?: emptyList())
         }
 
         val offlineStrategy = {
@@ -43,12 +47,15 @@ class DetailsRepository(
 
     fun getAnswersByUser(userId: Long): Single<AnswerList> {
         val onlineStrategy = {
-            val answers = userService.getAnswersByUser(userId).execute().body()
+            val answers = userService.getAnswersByUser(userId).execute().body()?.items
+                    ?.filter { it.accepted }
+                    ?.take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
             answers?.let {
-                val answersWithOwnerId = answers.items.map { it.copy(ownerId = userId) }
+                val answersWithOwnerId = answers
+                        .map { it.copy(ownerId = userId) }
                 answerDao.insertAll(answersWithOwnerId)
             }
-            answers ?: AnswerList(emptyList())
+            AnswerList(answers ?: emptyList())
         }
 
         val offlineStrategy = {
@@ -61,15 +68,17 @@ class DetailsRepository(
 
     fun getFavoritesByUser(userId: Long): Single<QuestionList> {
         val onlineStrategy = {
-            val questions = userService.getFavoritesByUser(userId).execute().body()
+            val questions = userService.getFavoritesByUser(userId).execute().body()?.items
+                    ?.take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
             questions?.let {
                 // TODO Owner ids will be missed, if we get a question what is already stored for a user
-                questionDao.insertAll(questions.items)
+                questionDao.insertAll(questions)
                 val favoritedByUser =
-                        FavoritedByUser(userId, questions.items.map { it.questionId })
+                        FavoritedByUser(userId, questions
+                                .map { it.questionId })
                 favoritedByUserDao.insert(favoritedByUser)
             }
-            questions ?: QuestionList(emptyList())
+            QuestionList(questions ?: emptyList())
         }
 
         val offlineStrategy = {

@@ -10,7 +10,6 @@ import io.reactivex.Single
  */
 class GetUsers(private val userRepository: UserRepository) {
 
-    // TODO Not the best practice probably
     fun execute(page: Int, forced: Boolean) : Single<List<UserViewModel>> {
         val usersList = userRepository.getUsers(page, forced)
         return usersList.flatMap { userListModel: UserListModel? ->
