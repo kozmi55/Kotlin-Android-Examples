@@ -77,7 +77,7 @@ class DetailsRepository(
         }
 
         val offlineStrategy = {
-            val questionIds = favoritedByUserDao.getFavoritesForUser(userId).questionIds
+            val questionIds = favoritedByUserDao.getFavoritesForUser(userId)?.questionIds ?: emptyList()
             val questionsFromDb = questionDao.getQuestionsById(questionIds)
             QuestionList(questionsFromDb)
         }
