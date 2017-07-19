@@ -1,5 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.model.entities
 
+import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -14,7 +15,7 @@ data class Question(
         @SerializedName("title") var title: String,
         @SerializedName("link") var link: String,
         @SerializedName("question_id") @PrimaryKey var questionId: Long,
-        var ownerId: Long) {
+        @SerializedName("owner") @Embedded var owner: Owner) {
 
-    constructor() : this(0, 0, "", "", -1, -1)
+    constructor() : this(0, 0, "", "", -1, Owner())
 }

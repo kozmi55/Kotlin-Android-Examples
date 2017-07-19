@@ -1,5 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.model.entities
 
+import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -13,7 +14,7 @@ data class Answer(
         @SerializedName("question_id") var questionId: Long,
         @SerializedName("score") var score: Long,
         @SerializedName("is_accepted") var accepted: Boolean,
-        var ownerId: Long) {
+        @SerializedName("owner") @Embedded var owner: Owner) {
 
-    constructor() : this(-1, -1, 0, false, -1)
+    constructor() : this(-1, -1, 0, false, Owner())
 }

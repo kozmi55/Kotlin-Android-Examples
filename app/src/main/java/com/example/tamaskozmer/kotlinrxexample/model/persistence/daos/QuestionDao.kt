@@ -13,7 +13,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.Question
 interface QuestionDao {
     // TODO Change these when the bug is fixed
     // This is a bug in Kotlin, we need to use arg0 here, instead of the actual name of the parameter
-    @Query("SELECT * FROM question WHERE ownerId = :arg0 ORDER BY score DESC")
+    @Query("SELECT * FROM question WHERE userId = :arg0 ORDER BY score DESC")
     fun getQuestionsByUser(userId: Long) : List<Question>
 
     @Query("SELECT * FROM question WHERE questionId IN (:arg0) ORDER BY score DESC")

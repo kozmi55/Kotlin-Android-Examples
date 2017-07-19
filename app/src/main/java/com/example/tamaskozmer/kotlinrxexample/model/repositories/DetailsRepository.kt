@@ -26,13 +26,11 @@ class DetailsRepository(
 
     fun getQuestionsByUser(userId: Long): Single<QuestionList> {
         val onlineStrategy = {
-            val questions = userService.getQuestionsByUser(userId).execute().body()?.items
+            val questions = userService.getQuestionsByUser(userId).execute().body()
+                    ?.items
                     ?.take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
             questions?.let {
-                val questionsWithOwnerId = questions
-                        .map { it.copy(ownerId = userId) }
-                        .take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
-                questionDao.insertAll(questionsWithOwnerId)
+                questionDao.insertAll(questions)
             }
             QuestionList(questions ?: emptyList())
         }
@@ -51,9 +49,7 @@ class DetailsRepository(
                     ?.filter { it.accepted }
                     ?.take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
             answers?.let {
-                val answersWithOwnerId = answers
-                        .map { it.copy(ownerId = userId) }
-                answerDao.insertAll(answersWithOwnerId)
+                answerDao.insertAll(answers)
             }
             AnswerList(answers ?: emptyList())
         }
@@ -71,7 +67,6 @@ class DetailsRepository(
             val questions = userService.getFavoritesByUser(userId).execute().body()?.items
                     ?.take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
             questions?.let {
-                // TODO Owner ids will be missed, if we get a question what is already stored for a user
                 questionDao.insertAll(questions)
                 val favoritedByUser =
                         FavoritedByUser(userId, questions
@@ -94,7 +89,6 @@ class DetailsRepository(
         val onlineStrategy = {
             val questions = questionService.getQuestionsById(ids.joinToString(separator = ";")).execute().body()
             questions?.let {
-                // TODO Owner ids will be missed, if we get a question what is already stored for a user
                 questionDao.insertAll(questions.items)
             }
             questions ?: QuestionList(emptyList())
