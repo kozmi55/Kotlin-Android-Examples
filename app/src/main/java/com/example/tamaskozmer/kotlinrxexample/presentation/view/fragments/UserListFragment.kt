@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_user_list.*
 class UserListFragment : Fragment(), UserListView {
 
     private val presenter: UserListPresenter by lazy { component.presenter() }
-    private val component by lazy { customApplication.component.plus(UserListFragmentModule(this)) }
+    private val component by lazy { customApplication.component.plus(UserListFragmentModule()) }
     private val adapter by lazy {
         val userList = mutableListOf<UserViewModel>()
         UserListAdapter(userList) {
@@ -36,7 +36,6 @@ class UserListFragment : Fragment(), UserListView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        component.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_details.*
  */
 class DetailsFragment : Fragment(), DetailView {
 
-    private val component by lazy { customApplication.component.plus(DetailFragmentModule(this)) }
+    private val component by lazy { customApplication.component.plus(DetailFragmentModule()) }
     private val presenter by lazy { component.presenter() }
     private val detailsAdapter by lazy { DetailsAdapter({ link ->
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
@@ -45,7 +45,6 @@ class DetailsFragment : Fragment(), DetailView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        component.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
