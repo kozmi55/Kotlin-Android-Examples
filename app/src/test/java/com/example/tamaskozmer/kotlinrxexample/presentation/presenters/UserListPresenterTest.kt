@@ -1,9 +1,9 @@
-package com.example.tamaskozmer.kotlinrxexample
+package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
-import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.testutil.ImmediateSchedulerRule
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
@@ -41,7 +41,8 @@ class UserListPresenterTest {
         // Given
         val error = "Test error"
         val single: Single<List<UserViewModel>> = Single.create {
-            emitter -> emitter?.onError(Exception(error))
+            emitter ->
+            emitter?.onError(Exception(error))
         }
 
         // When
@@ -60,7 +61,8 @@ class UserListPresenterTest {
         // Given
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
         val single: Single<List<UserViewModel>> = Single.create {
-            emitter -> emitter?.onSuccess(users)
+            emitter ->
+            emitter?.onSuccess(users)
         }
 
         // When
@@ -78,7 +80,8 @@ class UserListPresenterTest {
         // Given
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
         val single: Single<List<UserViewModel>> = Single.create {
-            emitter -> emitter?.onSuccess(users)
+            emitter ->
+            emitter?.onSuccess(users)
         }
 
         // When
@@ -99,7 +102,8 @@ class UserListPresenterTest {
         // Given
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
         val single: Single<List<UserViewModel>> = Single.create {
-            emitter -> emitter?.onSuccess(users)
+            emitter ->
+            emitter?.onSuccess(users)
         }
 
         // When

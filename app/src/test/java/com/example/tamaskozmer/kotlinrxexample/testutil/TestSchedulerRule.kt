@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample
+package com.example.tamaskozmer.kotlinrxexample.testutil
 
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins

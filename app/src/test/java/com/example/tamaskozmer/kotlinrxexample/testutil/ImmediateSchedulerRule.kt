@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample
+package com.example.tamaskozmer.kotlinrxexample.testutil
 
 import io.reactivex.Scheduler
 import io.reactivex.android.plugins.RxAndroidPlugins

@@ -1,9 +1,9 @@
-package com.example.tamaskozmer.kotlinrxexample
+package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetDetails
-import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.DetailPresenter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
+import com.example.tamaskozmer.kotlinrxexample.testutil.ImmediateSchedulerRule
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule

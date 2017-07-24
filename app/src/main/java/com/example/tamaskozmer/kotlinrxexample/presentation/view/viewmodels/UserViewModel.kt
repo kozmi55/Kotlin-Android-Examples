@@ -8,7 +8,7 @@ import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 /**
  * Created by Tamas_Kozmer on 7/14/2017.
  */
-class UserViewModel(
+data class UserViewModel(
         val userId: Long,
         val displayName: String,
         val reputation: Long,
