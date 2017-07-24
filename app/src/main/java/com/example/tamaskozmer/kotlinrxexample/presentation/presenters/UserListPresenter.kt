@@ -10,13 +10,16 @@ import io.reactivex.schedulers.Schedulers
  */
 class UserListPresenter(private val getUsers: GetUsers) : BasePresenter<UserListView>() {
 
-    val offset = 5
+    private val offset = 5
 
-    var page = 1
-    var loading = false
+    private var page = 1
+    private var loading = false
 
     fun getUsers(forced: Boolean = false) {
         loading = true
+        if (forced) {
+            resetPaging()
+        }
         getUsers.execute(page, forced)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -37,7 +40,7 @@ class UserListPresenter(private val getUsers: GetUsers) : BasePresenter<UserList
                 })
     }
 
-    fun resetPaging() {
+    private fun resetPaging() {
         page = 1
     }
 

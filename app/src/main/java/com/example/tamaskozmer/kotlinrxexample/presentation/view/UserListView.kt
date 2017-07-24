@@ -8,7 +8,7 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.User
 interface UserListView {
     fun showLoading()
     fun hideLoading()
-    fun addUsersToList(users: List<UserViewModel>, clearList: Boolean = false)
+    fun addUsersToList(users: List<UserViewModel>)
     fun showError()
     fun clearList()
 }

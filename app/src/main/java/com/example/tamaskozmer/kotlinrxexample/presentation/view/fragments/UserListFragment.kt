@@ -65,7 +65,6 @@ class UserListFragment : Fragment(), UserListView {
 
     private fun initViews() {
         swipeRefreshLayout.setOnRefreshListener {
-            presenter.resetPaging()
             presenter.getUsers(forced = true)
         }
     }
@@ -79,7 +78,7 @@ class UserListFragment : Fragment(), UserListView {
         swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun addUsersToList(users: List<UserViewModel>, clearList: Boolean) {
+    override fun addUsersToList(users: List<UserViewModel>) {
         val adapter = recyclerView.adapter as UserListAdapter
         adapter.addUsers(users)
     }

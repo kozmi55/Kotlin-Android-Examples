@@ -50,5 +50,7 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:26.0.0-beta1'
     implementation 'com.android.support:recyclerview-v7:26.0.0-beta1'
+
+    testImplementation 'org.mockito:mockito-core:2.8.47'
     testImplementation 'junit:junit:4.12'
 }
