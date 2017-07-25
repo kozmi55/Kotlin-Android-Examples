@@ -35,21 +35,21 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
-    compile "android.arch.persistence.room:runtime:1.0.0-alpha4"
-    compile "android.arch.persistence.room:rxjava2:1.0.0-alpha4"
+    compile "android.arch.persistence.room:runtime:1.0.0-alpha5"
+    compile "android.arch.persistence.room:rxjava2:1.0.0-alpha5"
 
     compile 'com.facebook.stetho:stetho:1.5.0'
 
-    kapt "android.arch.persistence.room:compiler:1.0.0-alpha4"
+    kapt "android.arch.persistence.room:compiler:1.0.0-alpha5"
 
-    kapt 'com.google.dagger:dagger-compiler:2.5'
-    compile 'com.google.dagger:dagger:2.8'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
+    compile 'com.google.dagger:dagger:2.11'
 
-    implementation 'com.android.support:appcompat-v7:26.0.0-beta1'
-    implementation 'com.android.support:recyclerview-v7:26.0.0-beta1'
+    implementation 'com.android.support:appcompat-v7:26.0.0'
+    implementation 'com.android.support:recyclerview-v7:26.0.0'
 
     testImplementation 'org.mockito:mockito-core:2.8.47'
     testImplementation 'junit:junit:4.12'

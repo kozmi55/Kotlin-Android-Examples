@@ -20,10 +20,12 @@ class UserRepository(
             if (connectionHelper.isOnline() || forced) {
                 try {
                     val users = userService.getUsers(page).execute().body()
-                    users?.let {
+                    if (users != null) {
                         userDao.insertAll(users.items)
+                        emitter?.onSuccess(users)
+                    } else {
+                        emitter?.onError(Exception("No data received"))
                     }
-                    emitter?.onSuccess(users)
                 } catch (exception: Exception) {
                     emitter?.onError(exception)
                 }
