@@ -12,7 +12,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.Answer
 @Dao
 interface AnswerDao {
 
-    @Query("SELECT * FROM answer WHERE userId = :arg0 ORDER BY score DESC")
+    @Query("SELECT * FROM answer WHERE userId = :arg0 ORDER BY score DESC LIMIT 3")
     fun getAnswersByUser(userId: Long) : List<Answer>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -52,14 +52,17 @@ class ApplicationModule(val application: CustomApplication) {
 
     @Provides
     @Singleton
-    fun provideDetailsRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper) : DetailsRepository {
+    fun provideDetailsRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper,
+                                 preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper) : DetailsRepository {
         return DetailsRepository(
                 retrofit.create(UserService::class.java),
                 retrofit.create(QuestionService::class.java),
                 database.questionDao(),
                 database.answerDao(),
                 database.favoritedByUserDao(),
-                connectionHelper)
+                connectionHelper,
+                preferencesHelper,
+                calendarWrapper)
     }
 
     @Provides

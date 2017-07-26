@@ -8,8 +8,10 @@ import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.FavoritedB
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.QuestionDao
 import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
+import com.example.tamaskozmer.kotlinrxexample.util.CalendarWrapper
 import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
 import com.example.tamaskozmer.kotlinrxexample.util.Constants
+import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
@@ -22,7 +24,11 @@ class DetailsRepository(
         private val questionDao: QuestionDao,
         private val answerDao: AnswerDao,
         private val favoritedByUserDao: FavoritedByUserDao,
-        private val connectionHelper: ConnectionHelper) {
+        private val connectionHelper: ConnectionHelper,
+        private val preferencesHelper: PreferencesHelper,
+        private val calendarWrapper: CalendarWrapper) {
+
+    private val REFRESH_LIMIT = 1000 * 60 * 60 * 12 // 12 Hours in milliseconds
 
     fun getQuestionsByUser(userId: Long): Single<QuestionList> {
         val onlineStrategy = {
@@ -40,7 +46,7 @@ class DetailsRepository(
             QuestionList(questionsFromDb)
         }
 
-        return createSingle<QuestionList>(onlineStrategy, offlineStrategy)
+        return createSingle<QuestionList>("last_update_questions_by_user_$userId", onlineStrategy, offlineStrategy)
     }
 
     fun getAnswersByUser(userId: Long): Single<AnswerList> {
@@ -59,7 +65,7 @@ class DetailsRepository(
             AnswerList(answersFromDb)
         }
 
-        return createSingle<AnswerList>(onlineStrategy, offlineStrategy)
+        return createSingle<AnswerList>("last_update_answers_by_user_$userId", onlineStrategy, offlineStrategy)
     }
 
     fun getFavoritesByUser(userId: Long): Single<QuestionList> {
@@ -79,13 +85,14 @@ class DetailsRepository(
         val offlineStrategy = {
             val questionIds = favoritedByUserDao.getFavoritesForUser(userId)?.questionIds ?: emptyList()
             val questionsFromDb = questionDao.getQuestionsById(questionIds)
+                    .take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
             QuestionList(questionsFromDb)
         }
 
-        return createSingle<QuestionList>(onlineStrategy, offlineStrategy)
+        return createSingle<QuestionList>("last_update_favorites_by_user_$userId", onlineStrategy, offlineStrategy)
     }
 
-    fun getQuestionsById(ids: List<Long>): Single<QuestionList> {
+    fun getQuestionsById(ids: List<Long>, userId: Long): Single<QuestionList> {
         val onlineStrategy = {
             val questions = questionService.getQuestionsById(ids.joinToString(separator = ";")).execute().body()
             questions?.let {
@@ -99,14 +106,16 @@ class DetailsRepository(
             QuestionList(questionsFromDb)
         }
 
-        return createSingle<QuestionList>(onlineStrategy, offlineStrategy)
+        return createSingle<QuestionList>("last_update_questions_by_ids_for_user_$userId", onlineStrategy, offlineStrategy)
     }
 
-    fun <T> createSingle(onlineStrategy: () -> T, offlineStrategy: () -> T) : Single<T> {
+    private fun <T> createSingle(lastUpdateKey: String, onlineStrategy: () -> T, offlineStrategy: () -> T) : Single<T> {
         return Single.create<T> { emitter: SingleEmitter<T>? ->
-            if (connectionHelper.isOnline()) {
+            if (shouldUpdate(lastUpdateKey)) {
                 try {
                     val onlineResults = onlineStrategy()
+                    val currentTime = calendarWrapper.getCurrentTimeInMillis()
+                    preferencesHelper.save(lastUpdateKey, currentTime)
                     emitter?.onSuccess(onlineResults)
                 } catch (exception: Exception) {
                     emitter?.onError(exception)
@@ -115,6 +124,15 @@ class DetailsRepository(
                 val offlineResults = offlineStrategy()
                 emitter?.onSuccess(offlineResults)
             }
+        }
+    }
+
+    private fun shouldUpdate(lastUpdateKey: String) = when {
+        !connectionHelper.isOnline() -> false
+        else -> {
+            val lastUpdate = preferencesHelper.loadLong(lastUpdateKey)
+            val currentTime = calendarWrapper.getCurrentTimeInMillis()
+            lastUpdate + REFRESH_LIMIT < currentTime
         }
     }
 }

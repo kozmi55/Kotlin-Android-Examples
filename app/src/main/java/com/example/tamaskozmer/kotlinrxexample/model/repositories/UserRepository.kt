@@ -8,7 +8,6 @@ import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
 import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
-import java.util.*
 
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
@@ -48,8 +47,8 @@ class UserRepository(
             val users = userService.getUsers(page).execute().body()
             if (users != null) {
                 userDao.insertAll(users.items)
-                val lastUpdate = Calendar.getInstance().timeInMillis
-                preferencesHelper.save(LAST_UPDATE_KEY + page, lastUpdate)
+                val currentTime = calendarWrapper.getCurrentTimeInMillis()
+                preferencesHelper.save(LAST_UPDATE_KEY + page, currentTime)
                 emitter?.onSuccess(users)
             } else {
                 emitter?.onError(Exception("No data received"))

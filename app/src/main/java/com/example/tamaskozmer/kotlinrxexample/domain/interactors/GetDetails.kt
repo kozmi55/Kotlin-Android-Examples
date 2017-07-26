@@ -29,14 +29,14 @@ class GetDetails(private val detailsRepository: DetailsRepository) {
     private fun getTitlesForAnswers(userId: Long) : Single<List<AnswerViewModel>> {
         return detailsRepository.getAnswersByUser(userId)
                 .flatMap { answerList: AnswerList? ->
-                    mapAnswersToAnswersWithTitle(answerList?.items ?: emptyList()) }
+                    mapAnswersToAnswersWithTitle(answerList?.items ?: emptyList(), userId) }
     }
 
-    private fun mapAnswersToAnswersWithTitle(answers: List<Answer>): Single<List<AnswerViewModel>> {
+    private fun mapAnswersToAnswersWithTitle(answers: List<Answer>, userId: Long): Single<List<AnswerViewModel>> {
         val ids = answers
                 .map { it.questionId }
 
-        val questionsListModel = detailsRepository.getQuestionsById(ids)
+        val questionsListModel = detailsRepository.getQuestionsById(ids, userId)
 
         return questionsListModel
                 .flatMap { questionListModel: QuestionList? -> Single.just(questionListModel?.items) }
