@@ -38,7 +38,7 @@ class UserDaoTest {
         val users = listOf(User(1, "Name", 100, "url"), User())
         userDao.insertAll(users)
 
-        val allUsers = userDao.getAllUsers()
+        val allUsers = userDao.getUsers(1)
         Assert.assertEquals(users, allUsers)
     }
 
@@ -50,7 +50,7 @@ class UserDaoTest {
                 User(3, "Name3", 300, "url"))
         userDao.insertAll(users)
 
-        val allUsers = userDao.getAllUsers()
+        val allUsers = userDao.getUsers(1)
         val expectedUsers = users.sortedByDescending { it.reputation }
         Assert.assertEquals(expectedUsers, allUsers)
     }
@@ -69,7 +69,7 @@ class UserDaoTest {
         userDao.insertAll(users)
         userDao.insertAll(users2)
 
-        val allUsers = userDao.getAllUsers()
+        val allUsers = userDao.getUsers(1)
         val expectedUsers = listOf(
                 User(4, "Name3", 5500, "url"),
                 User(1, "Name", 1000, "url"),

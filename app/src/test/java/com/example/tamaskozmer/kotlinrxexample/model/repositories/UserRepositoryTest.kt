@@ -4,7 +4,9 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.UserDao
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
+import com.example.tamaskozmer.kotlinrxexample.util.CalendarWrapper
 import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
+import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -30,6 +32,12 @@ class UserRepositoryTest {
     lateinit var connectionHelper: ConnectionHelper
 
     @Mock
+    lateinit var mockPreferencesHelper: PreferencesHelper
+
+    @Mock
+    lateinit var mockCalendarWrapper: CalendarWrapper
+
+    @Mock
     lateinit var mockUserCall: Call<UserListModel>
 
     @Mock
@@ -40,7 +48,7 @@ class UserRepositoryTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        userRepository = UserRepository(userService, userDao, connectionHelper)
+        userRepository = UserRepository(userService, userDao, connectionHelper, mockPreferencesHelper, mockCalendarWrapper)
     }
 
     @Test
@@ -60,9 +68,12 @@ class UserRepositoryTest {
 
     private fun setUpMocks(modelFromUserService: UserListModel, isOnline: Boolean, userListFromDb: List<User> = emptyList()) {
         `when`(connectionHelper.isOnline()).thenReturn(isOnline)
+        `when`(mockCalendarWrapper.getCurrentTimeInMillis()).thenReturn(1000 * 60 * 60 * 12 + 1)
+        `when`(mockPreferencesHelper.loadLong("last_update_page_1")).thenReturn(0)
+
         `when`(userService.getUsers()).thenReturn(mockUserCall)
         `when`(mockUserCall.execute()).thenReturn(userResponse)
         `when`(userResponse.body()).thenReturn(modelFromUserService)
-        `when`(userDao.getAllUsers()).thenReturn(userListFromDb)
+        `when`(userDao.getUsers(1)).thenReturn(userListFromDb)
     }
 }

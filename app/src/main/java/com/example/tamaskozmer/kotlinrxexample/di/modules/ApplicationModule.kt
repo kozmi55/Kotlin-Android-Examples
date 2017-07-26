@@ -8,7 +8,9 @@ import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsReposit
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
+import com.example.tamaskozmer.kotlinrxexample.util.CalendarWrapper
 import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
+import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -38,11 +40,14 @@ class ApplicationModule(val application: CustomApplication) {
 
     @Provides
     @Singleton
-    fun provideUserRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper): UserRepository {
+    fun provideUserRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper,
+                              preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper): UserRepository {
         return UserRepository(
                 retrofit.create(UserService::class.java),
                 database.userDao(),
-                connectionHelper)
+                connectionHelper,
+                preferencesHelper,
+                calendarWrapper)
     }
 
     @Provides
@@ -65,4 +70,12 @@ class ApplicationModule(val application: CustomApplication) {
     @Provides
     @Singleton
     fun provideConnectionHelper(context: Context) = ConnectionHelper(context)
+
+    @Provides
+    @Singleton
+    fun providePreferencesHelper(context: Context) = PreferencesHelper(context)
+
+    @Provides
+    @Singleton
+    fun provideCalendarWrapper() = CalendarWrapper()
 }
