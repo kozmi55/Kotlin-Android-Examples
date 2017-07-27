@@ -54,6 +54,10 @@ class DetailsAdapter(private val listener: (String) -> Unit) : RecyclerView.Adap
         items.remove(loadingItem)
     }
 
+    fun removeNonUserItems() {
+        items.removeAll { it.getViewType() != AdapterConstants.USER_DETAILS }
+    }
+
     fun addItemsWithHeading(items: List<ViewType>, headingTitle: String) {
         if (!items.isEmpty()) {
             addItem(Heading(headingTitle))

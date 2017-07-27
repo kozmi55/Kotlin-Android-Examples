@@ -30,7 +30,7 @@ class DetailsRepository(
 
     private val REFRESH_LIMIT = 1000 * 60 * 60 * 12 // 12 Hours in milliseconds
 
-    fun getQuestionsByUser(userId: Long): Single<QuestionList> {
+    fun getQuestionsByUser(userId: Long, forced: Boolean): Single<QuestionList> {
         val onlineStrategy = {
             val questions = userService.getQuestionsByUser(userId).execute().body()
                     ?.items
@@ -46,10 +46,10 @@ class DetailsRepository(
             QuestionList(questionsFromDb)
         }
 
-        return createSingle<QuestionList>("last_update_questions_by_user_$userId", onlineStrategy, offlineStrategy)
+        return createSingle<QuestionList>("last_update_questions_by_user_$userId", onlineStrategy, offlineStrategy, forced)
     }
 
-    fun getAnswersByUser(userId: Long): Single<AnswerList> {
+    fun getAnswersByUser(userId: Long, forced: Boolean): Single<AnswerList> {
         val onlineStrategy = {
             val answers = userService.getAnswersByUser(userId).execute().body()?.items
                     ?.filter { it.accepted }
@@ -65,10 +65,10 @@ class DetailsRepository(
             AnswerList(answersFromDb)
         }
 
-        return createSingle<AnswerList>("last_update_answers_by_user_$userId", onlineStrategy, offlineStrategy)
+        return createSingle<AnswerList>("last_update_answers_by_user_$userId", onlineStrategy, offlineStrategy, forced)
     }
 
-    fun getFavoritesByUser(userId: Long): Single<QuestionList> {
+    fun getFavoritesByUser(userId: Long, forced: Boolean): Single<QuestionList> {
         val onlineStrategy = {
             val questions = userService.getFavoritesByUser(userId).execute().body()?.items
                     ?.take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
@@ -89,10 +89,10 @@ class DetailsRepository(
             QuestionList(questionsFromDb)
         }
 
-        return createSingle<QuestionList>("last_update_favorites_by_user_$userId", onlineStrategy, offlineStrategy)
+        return createSingle<QuestionList>("last_update_favorites_by_user_$userId", onlineStrategy, offlineStrategy, forced)
     }
 
-    fun getQuestionsById(ids: List<Long>, userId: Long): Single<QuestionList> {
+    fun getQuestionsById(ids: List<Long>, userId: Long, forced: Boolean): Single<QuestionList> {
         val onlineStrategy = {
             val questions = questionService.getQuestionsById(ids.joinToString(separator = ";")).execute().body()
             questions?.let {
@@ -106,12 +106,12 @@ class DetailsRepository(
             QuestionList(questionsFromDb)
         }
 
-        return createSingle<QuestionList>("last_update_questions_by_ids_for_user_$userId", onlineStrategy, offlineStrategy)
+        return createSingle<QuestionList>("last_update_questions_by_ids_for_user_$userId", onlineStrategy, offlineStrategy, forced)
     }
 
-    private fun <T> createSingle(lastUpdateKey: String, onlineStrategy: () -> T, offlineStrategy: () -> T) : Single<T> {
+    private fun <T> createSingle(lastUpdateKey: String, onlineStrategy: () -> T, offlineStrategy: () -> T, forced: Boolean) : Single<T> {
         return Single.create<T> { emitter: SingleEmitter<T>? ->
-            if (shouldUpdate(lastUpdateKey)) {
+            if (shouldUpdate(lastUpdateKey, forced)) {
                 try {
                     val onlineResults = onlineStrategy()
                     val currentTime = calendarWrapper.getCurrentTimeInMillis()
@@ -127,7 +127,8 @@ class DetailsRepository(
         }
     }
 
-    private fun shouldUpdate(lastUpdateKey: String) = when {
+    private fun shouldUpdate(lastUpdateKey: String, forced: Boolean) = when {
+        forced -> true
         !connectionHelper.isOnline() -> false
         else -> {
             val lastUpdate = preferencesHelper.loadLong(lastUpdateKey)

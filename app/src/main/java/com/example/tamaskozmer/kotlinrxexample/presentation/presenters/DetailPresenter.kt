@@ -10,9 +10,9 @@ import io.reactivex.schedulers.Schedulers
  */
 class DetailPresenter(private val getDetails: GetDetails) : BasePresenter<DetailView>() {
 
-    fun getDetails(id: Long) {
+    fun getDetails(id: Long, forced: Boolean = false) {
         view?.showLoading()
-        getDetails.execute(id)
+        getDetails.execute(id, forced)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({

@@ -75,10 +75,15 @@ class DetailsFragment : Fragment(), DetailView {
         detailsAdapter.addItem(user)
         detailsAdapter.notifyDataSetChanged()
         presenter.getDetails(user.userId)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            presenter.getDetails(user.userId, true)
+        }
     }
 
     override fun showDetails(details: DetailsViewModel) {
         with(detailsAdapter) {
+            removeNonUserItems()
             addItemsWithHeading(details.questions, "Top questions by user")
             addItemsWithHeading(details.answers, "Top answers by user")
             addItemsWithHeading(details.favorites, "Favorited by user")
@@ -98,6 +103,7 @@ class DetailsFragment : Fragment(), DetailView {
 
     override fun hideLoading() {
         detailsAdapter.removeLoadingItem()
+        swipeRefreshLayout.isRefreshing = false
     }
 
     // This logic is needed to show the content only after the shared transition has finished

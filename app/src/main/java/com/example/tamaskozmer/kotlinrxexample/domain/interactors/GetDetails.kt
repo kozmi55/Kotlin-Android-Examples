@@ -16,27 +16,27 @@ import io.reactivex.functions.Function3
  */
 class GetDetails(private val detailsRepository: DetailsRepository) {
 
-    fun execute(userId: Long) : Single<DetailsViewModel> {
+    fun execute(userId: Long, forced: Boolean) : Single<DetailsViewModel> {
         return Single.zip(
-                detailsRepository.getQuestionsByUser(userId),
-                getTitlesForAnswers(userId),
-                detailsRepository.getFavoritesByUser(userId),
+                detailsRepository.getQuestionsByUser(userId, forced),
+                getTitlesForAnswers(userId, forced),
+                detailsRepository.getFavoritesByUser(userId, forced),
                 Function3<QuestionList, List<AnswerViewModel>, QuestionList, DetailsViewModel>
                 { questions, answers, favorites ->
                     createDetailsModel(questions, answers, favorites) })
     }
 
-    private fun getTitlesForAnswers(userId: Long) : Single<List<AnswerViewModel>> {
-        return detailsRepository.getAnswersByUser(userId)
+    private fun getTitlesForAnswers(userId: Long, forced: Boolean) : Single<List<AnswerViewModel>> {
+        return detailsRepository.getAnswersByUser(userId, forced)
                 .flatMap { answerList: AnswerList? ->
-                    mapAnswersToAnswersWithTitle(answerList?.items ?: emptyList(), userId) }
+                    mapAnswersToAnswersWithTitle(answerList?.items ?: emptyList(), userId, forced) }
     }
 
-    private fun mapAnswersToAnswersWithTitle(answers: List<Answer>, userId: Long): Single<List<AnswerViewModel>> {
+    private fun mapAnswersToAnswersWithTitle(answers: List<Answer>, userId: Long, forced: Boolean): Single<List<AnswerViewModel>> {
         val ids = answers
                 .map { it.questionId }
 
-        val questionsListModel = detailsRepository.getQuestionsById(ids, userId)
+        val questionsListModel = detailsRepository.getQuestionsById(ids, userId, forced)
 
         return questionsListModel
                 .flatMap { questionListModel: QuestionList? -> Single.just(questionListModel?.items) }
