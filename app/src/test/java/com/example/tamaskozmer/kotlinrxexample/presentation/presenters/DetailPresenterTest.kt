@@ -30,7 +30,7 @@ class DetailPresenterTest {
     lateinit var detailPresenter: DetailPresenter
 
     @Before
-    fun setup() {
+    fun setUp() {
         MockitoAnnotations.initMocks(this)
         detailPresenter = DetailPresenter(mockGetDetails)
     }
@@ -41,11 +41,11 @@ class DetailPresenterTest {
         val error = "Test error"
         val userId = 1L
         val single: Single<DetailsViewModel> = Single.create {
-            emitter -> emitter?.onError(Exception(error))
+            emitter -> emitter.onError(Exception(error))
         }
 
         // When
-        `when`(mockGetDetails.execute(userId)).thenReturn(single)
+        `when`(mockGetDetails.execute(userId, false)).thenReturn(single)
 
         detailPresenter.attachView(mockView)
         detailPresenter.getDetails(userId)
@@ -62,11 +62,11 @@ class DetailPresenterTest {
         val details = DetailsViewModel(emptyList(), emptyList(), emptyList())
         val userId = 1L
         val single: Single<DetailsViewModel> = Single.create {
-            emitter -> emitter?.onSuccess(details)
+            emitter -> emitter.onSuccess(details)
         }
 
         // When
-        `when`(mockGetDetails.execute(userId)).thenReturn(single)
+        `when`(mockGetDetails.execute(userId, false)).thenReturn(single)
 
         detailPresenter.attachView(mockView)
         detailPresenter.getDetails(userId)

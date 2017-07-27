@@ -31,7 +31,7 @@ class UserListPresenterTest {
     lateinit var userListPresenter: UserListPresenter
 
     @Before
-    fun setup() {
+    fun setUp() {
         MockitoAnnotations.initMocks(this)
         userListPresenter = UserListPresenter(mockGetUsers)
     }
@@ -42,7 +42,7 @@ class UserListPresenterTest {
         val error = "Test error"
         val single: Single<List<UserViewModel>> = Single.create {
             emitter ->
-            emitter?.onError(Exception(error))
+            emitter.onError(Exception(error))
         }
 
         // When
@@ -62,7 +62,7 @@ class UserListPresenterTest {
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
         val single: Single<List<UserViewModel>> = Single.create {
             emitter ->
-            emitter?.onSuccess(users)
+            emitter.onSuccess(users)
         }
 
         // When
@@ -81,7 +81,7 @@ class UserListPresenterTest {
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
         val single: Single<List<UserViewModel>> = Single.create {
             emitter ->
-            emitter?.onSuccess(users)
+            emitter.onSuccess(users)
         }
 
         // When
@@ -103,7 +103,7 @@ class UserListPresenterTest {
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
         val single: Single<List<UserViewModel>> = Single.create {
             emitter ->
-            emitter?.onSuccess(users)
+            emitter.onSuccess(users)
         }
 
         // When

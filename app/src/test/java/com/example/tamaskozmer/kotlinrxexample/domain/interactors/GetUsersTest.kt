@@ -23,7 +23,7 @@ class GetUsersTest {
     lateinit var getUsers: GetUsers
 
     @Before
-    fun setup() {
+    fun setUp() {
         MockitoAnnotations.initMocks(this)
         getUsers = GetUsers(mockUserRepository)
     }

@@ -1,6 +1,5 @@
 package com.example.tamaskozmer.kotlinrxexample.model.repositories
 
-import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.UserDao
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
@@ -19,17 +18,16 @@ import retrofit2.Response
 /**
  * Created by Tamas_Kozmer on 7/24/2017.
  */
-// TODO More tests
 class UserRepositoryTest {
 
     @Mock
-    lateinit var userService: UserService
+    lateinit var mockUserService: UserService
 
     @Mock
-    lateinit var userDao: UserDao
+    lateinit var mockUserDao: UserDao
 
     @Mock
-    lateinit var connectionHelper: ConnectionHelper
+    lateinit var mockConnectionHelper: ConnectionHelper
 
     @Mock
     lateinit var mockPreferencesHelper: PreferencesHelper
@@ -41,14 +39,14 @@ class UserRepositoryTest {
     lateinit var mockUserCall: Call<UserListModel>
 
     @Mock
-    lateinit var userResponse: Response<UserListModel>
+    lateinit var mockUserResponse: Response<UserListModel>
 
     lateinit var userRepository: UserRepository
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        userRepository = UserRepository(userService, userDao, connectionHelper, mockPreferencesHelper, mockCalendarWrapper)
+        userRepository = UserRepository(mockUserService, mockUserDao, mockConnectionHelper, mockPreferencesHelper, mockCalendarWrapper)
     }
 
     @Test
@@ -63,17 +61,17 @@ class UserRepositoryTest {
         // Then
         testObserver.assertNoErrors()
         testObserver.assertValue { userListModelResult: UserListModel -> userListModelResult.items.isEmpty() }
-        verify(userDao).insertAll(userListModel.items)
+        verify(mockUserDao).insertAll(userListModel.items)
     }
 
-    private fun setUpMocks(modelFromUserService: UserListModel, isOnline: Boolean, userListFromDb: List<User> = emptyList()) {
-        `when`(connectionHelper.isOnline()).thenReturn(isOnline)
+    private fun setUpMocks(modelFromUserService: UserListModel, isOnline: Boolean) {
+        `when`(mockConnectionHelper.isOnline()).thenReturn(isOnline)
         `when`(mockCalendarWrapper.getCurrentTimeInMillis()).thenReturn(1000 * 60 * 60 * 12 + 1)
         `when`(mockPreferencesHelper.loadLong("last_update_page_1")).thenReturn(0)
 
-        `when`(userService.getUsers()).thenReturn(mockUserCall)
-        `when`(mockUserCall.execute()).thenReturn(userResponse)
-        `when`(userResponse.body()).thenReturn(modelFromUserService)
-        `when`(userDao.getUsers(1)).thenReturn(userListFromDb)
+        `when`(mockUserService.getUsers()).thenReturn(mockUserCall)
+        `when`(mockUserCall.execute()).thenReturn(mockUserResponse)
+        `when`(mockUserResponse.body()).thenReturn(modelFromUserService)
+        `when`(mockUserDao.getUsers(1)).thenReturn(emptyList())
     }
 }

@@ -78,4 +78,24 @@ class UserDaoTest {
 
         Assert.assertEquals(expectedUsers, allUsers)
     }
+
+    @Test
+    fun testLimitUsersPerPage_FirstPageOnly30Items() {
+        val users = (1..40L).map { User(it, "Name $it", it *100, "url") }
+
+        userDao.insertAll(users)
+
+        val retrievedUsers = userDao.getUsers(1)
+        Assert.assertEquals(30, retrievedUsers.size)
+    }
+
+    @Test
+    fun testRequestSecondPage_LimitUsersPerPage_showOnlyRemainingItems() {
+        val users = (1..40L).map { User(it, "Name $it", it *100, "url") }
+
+        userDao.insertAll(users)
+
+        val retrievedUsers = userDao.getUsers(2)
+        Assert.assertEquals(10, retrievedUsers.size)
+    }
 }
