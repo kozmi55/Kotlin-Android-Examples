@@ -8,7 +8,7 @@ import android.preference.PreferenceManager
  */
 class PreferencesHelper(private val context: Context) {
 
-    fun save(key: String, value: Long) {
+    fun saveLong(key: String, value: Long) {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = preferences.edit()
         editor.putLong(key, value)

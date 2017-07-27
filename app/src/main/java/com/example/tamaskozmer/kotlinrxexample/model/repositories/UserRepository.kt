@@ -5,6 +5,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.UserDao
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
 import com.example.tamaskozmer.kotlinrxexample.util.CalendarWrapper
 import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
+import com.example.tamaskozmer.kotlinrxexample.util.Constants
 import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
@@ -19,11 +20,10 @@ class UserRepository(
         private val preferencesHelper: PreferencesHelper,
         private val calendarWrapper: CalendarWrapper) {
 
-    private val REFRESH_LIMIT = 1000 * 60 * 60 * 12 // 12 Hours in milliseconds
     private val LAST_UPDATE_KEY = "last_update_page_"
 
     fun getUsers(page: Int = 1, forced: Boolean = false): Single<UserListModel> {
-        return Single.create<UserListModel> { emitter: SingleEmitter<UserListModel>? ->
+        return Single.create<UserListModel> { emitter: SingleEmitter<UserListModel> ->
             if (shouldUpdate(page, forced)) {
                 loadUsersFromNetwork(page, emitter)
             } else {
@@ -38,32 +38,32 @@ class UserRepository(
         else -> {
             val lastUpdate = preferencesHelper.loadLong(LAST_UPDATE_KEY + page)
             val currentTime = calendarWrapper.getCurrentTimeInMillis()
-            lastUpdate + REFRESH_LIMIT < currentTime
+            lastUpdate + Constants.REFRESH_LIMIT < currentTime
         }
     }
 
-    private fun loadUsersFromNetwork(page: Int, emitter: SingleEmitter<UserListModel>?) {
+    private fun loadUsersFromNetwork(page: Int, emitter: SingleEmitter<UserListModel>) {
         try {
             val users = userService.getUsers(page).execute().body()
             if (users != null) {
                 userDao.insertAll(users.items)
                 val currentTime = calendarWrapper.getCurrentTimeInMillis()
-                preferencesHelper.save(LAST_UPDATE_KEY + page, currentTime)
-                emitter?.onSuccess(users)
+                preferencesHelper.saveLong(LAST_UPDATE_KEY + page, currentTime)
+                emitter.onSuccess(users)
             } else {
-                emitter?.onError(Exception("No data received"))
+                emitter.onError(Exception("No data received"))
             }
         } catch (exception: Exception) {
-            emitter?.onError(exception)
+            emitter.onError(exception)
         }
     }
 
-    private fun loadOfflineUsers(page: Int, emitter: SingleEmitter<UserListModel>?) {
+    private fun loadOfflineUsers(page: Int, emitter: SingleEmitter<UserListModel>) {
         val users = userDao.getUsers(page)
         if (!users.isEmpty()) {
-            emitter?.onSuccess(UserListModel(users))
+            emitter.onSuccess(UserListModel(users))
         } else {
-            emitter?.onError(Exception("Device is offline"))
+            emitter.onError(Exception("Device is offline"))
         }
     }
 }

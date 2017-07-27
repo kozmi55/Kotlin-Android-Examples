@@ -25,6 +25,7 @@ import javax.inject.Singleton
 @Module
 class ApplicationModule(val application: CustomApplication) {
     private val BASE_URL = "https://api.stackexchange.com/2.2/"
+    private val DATABASE_NAME = "db-name"
 
     @Provides
     @Singleton
@@ -68,7 +69,7 @@ class ApplicationModule(val application: CustomApplication) {
     @Provides
     @Singleton
     fun provideDatabase(context: Context)
-            = Room.databaseBuilder(context, AppDatabase::class.java, "db-name").build()
+            = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
 
     @Provides
     @Singleton

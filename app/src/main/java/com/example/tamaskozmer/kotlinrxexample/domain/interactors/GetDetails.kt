@@ -1,9 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.domain.interactors
 
 import com.example.tamaskozmer.kotlinrxexample.model.entities.Answer
-import com.example.tamaskozmer.kotlinrxexample.model.entities.AnswerList
 import com.example.tamaskozmer.kotlinrxexample.model.entities.Question
-import com.example.tamaskozmer.kotlinrxexample.model.entities.QuestionList
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.AnswerViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
@@ -21,43 +19,42 @@ class GetDetails(private val detailsRepository: DetailsRepository) {
                 detailsRepository.getQuestionsByUser(userId, forced),
                 getTitlesForAnswers(userId, forced),
                 detailsRepository.getFavoritesByUser(userId, forced),
-                Function3<QuestionList, List<AnswerViewModel>, QuestionList, DetailsViewModel>
+                Function3<List<Question>, List<AnswerViewModel>, List<Question>, DetailsViewModel>
                 { questions, answers, favorites ->
                     createDetailsModel(questions, answers, favorites) })
     }
 
     private fun getTitlesForAnswers(userId: Long, forced: Boolean) : Single<List<AnswerViewModel>> {
         return detailsRepository.getAnswersByUser(userId, forced)
-                .flatMap { answerList: AnswerList? ->
-                    mapAnswersToAnswersWithTitle(answerList?.items ?: emptyList(), userId, forced) }
+                .flatMap { answers: List<Answer> ->
+                    mapAnswersToAnswerViewModels(answers, userId, forced) }
     }
 
-    private fun mapAnswersToAnswersWithTitle(answers: List<Answer>, userId: Long, forced: Boolean): Single<List<AnswerViewModel>> {
+    private fun mapAnswersToAnswerViewModels(answers: List<Answer>, userId: Long, forced: Boolean): Single<List<AnswerViewModel>> {
         val ids = answers
                 .map { it.questionId }
 
-        val questionsListModel = detailsRepository.getQuestionsById(ids, userId, forced)
+        val questionsById = detailsRepository.getQuestionsById(ids, userId, forced)
 
-        return questionsListModel
-                .flatMap { questionListModel: QuestionList? -> Single.just(questionListModel?.items) }
-                .map { questions: List<Question>? -> addTitlesToAnswers(answers, questions?: emptyList()) }
+        return questionsById
+                .map { questions: List<Question> ->
+                    createAnswerViewModels(answers, questions) }
     }
 
-    private fun addTitlesToAnswers(answers: List<Answer>, questions: List<Question>) : List<AnswerViewModel> {
+    private fun createAnswerViewModels(answers: List<Answer>, questions: List<Question>) : List<AnswerViewModel> {
         return answers.map { (answerId, questionId, score, accepted) ->
             val question = questions.find { it.questionId == questionId }
             AnswerViewModel(answerId, score, accepted, question?.title ?: "Unknown")
         }
     }
 
-    private fun createDetailsModel(questionsModel: QuestionList?, answers: List<AnswerViewModel>,
-                                   favoritesModel: QuestionList?): DetailsViewModel {
-        val questions = (questionsModel?.items ?: emptyList())
-                .map { QuestionViewModel(it.viewCount, it.score, it.title, it.link, it.questionId) }
+    private fun createDetailsModel(questions: List<Question>, answers: List<AnswerViewModel>,
+                                   favorites: List<Question>): DetailsViewModel {
+        val questionViewModels =
+                questions.map { QuestionViewModel(it.viewCount, it.score, it.title, it.link, it.questionId) }
+        val favoriteViewModels =
+                favorites.map { QuestionViewModel(it.viewCount, it.score, it.title, it.link, it.questionId) }
 
-        val favorites = (favoritesModel?.items ?: emptyList())
-                .map { QuestionViewModel(it.viewCount, it.score, it.title, it.link, it.questionId) }
-
-        return DetailsViewModel(questions, answers, favorites)
+        return DetailsViewModel(questionViewModels, answers, favoriteViewModels)
     }
 }

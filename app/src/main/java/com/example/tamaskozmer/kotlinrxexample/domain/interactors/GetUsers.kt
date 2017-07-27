@@ -12,10 +12,9 @@ class GetUsers(private val userRepository: UserRepository) {
 
     fun execute(page: Int, forced: Boolean) : Single<List<UserViewModel>> {
         val usersList = userRepository.getUsers(page, forced)
-        return usersList.flatMap { userListModel: UserListModel? ->
+        return usersList.map { userListModel: UserListModel? ->
             val items = userListModel?.items ?: emptyList()
-            val viewModels = items.map { UserViewModel(it.userId, it.displayName, it.reputation, it.profileImage) }
-            Single.just(viewModels)
+            items.map { UserViewModel(it.userId, it.displayName, it.reputation, it.profileImage) }
         }
     }
 }
