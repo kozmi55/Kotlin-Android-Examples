@@ -32,7 +32,11 @@ class UserRepository(
     }
 
     private fun mapAnswersToAnswerViewModels(answers: List<Answer>): Single<List<AnswerViewModel>> {
-        val ids = answers
+        val processedAnswers = answers
+                .filter { it.accepted }
+                .take(3)
+
+        val ids = processedAnswers
                 .map { it.questionId.toString() }
                 .joinToString(separator = ";")
 
@@ -40,7 +44,7 @@ class UserRepository(
 
         return questionsListModel
                 .map { questionListModel: QuestionListModel? ->
-                    addTitlesToAnswers(answers, questionListModel?.items ?: emptyList()) }
+                    addTitlesToAnswers(processedAnswers, questionListModel?.items ?: emptyList()) }
     }
 
     private fun addTitlesToAnswers(answers: List<Answer>, questions: List<Question>) : List<AnswerViewModel> {
@@ -58,10 +62,6 @@ class UserRepository(
         val favorites = favoritesModel.items
                 .take(3)
 
-        val answers = answersModel
-                .filter { it.accepted }
-                .take(3)
-
-        return DetailsModel(questions, answers, favorites)
+        return DetailsModel(questions, answersModel, favorites)
     }
 }
