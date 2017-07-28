@@ -2,7 +2,6 @@ package com.example.tamaskozmer.kotlinrxexample.di.modules
 
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
 import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
-import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
 import com.google.gson.Gson
 import dagger.Module
@@ -31,6 +30,5 @@ class ApplicationModule(val application: CustomApplication) {
     @Singleton
     fun provideUserRepository(retrofit: Retrofit) =
             UserRepository(
-                    retrofit.create(UserService::class.java),
-                    retrofit.create(QuestionService::class.java))
+                    retrofit.create(UserService::class.java))
 }
