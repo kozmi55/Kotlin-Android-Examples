@@ -1,9 +1,16 @@
 package com.example.tamaskozmer.kotlinrxexample.di.modules
 
+import android.arch.persistence.room.Room
+import android.content.Context
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
-import com.example.tamaskozmer.kotlinrxexample.model.UserRepository
+import com.example.tamaskozmer.kotlinrxexample.model.persistence.AppDatabase
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsRepository
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
+import com.example.tamaskozmer.kotlinrxexample.util.CalendarWrapper
+import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
+import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -18,6 +25,11 @@ import javax.inject.Singleton
 @Module
 class ApplicationModule(val application: CustomApplication) {
     private val BASE_URL = "https://api.stackexchange.com/2.2/"
+    private val DATABASE_NAME = "db-name"
+
+    @Provides
+    @Singleton
+    fun provideAppContext() : Context = application
 
     @Provides
     @Singleton
@@ -29,8 +41,45 @@ class ApplicationModule(val application: CustomApplication) {
 
     @Provides
     @Singleton
-    fun provideUserRepository(retrofit: Retrofit) =
-            UserRepository(
-                    retrofit.create(UserService::class.java),
-                    retrofit.create(QuestionService::class.java))
+    fun provideUserRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper,
+                              preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper): UserRepository {
+        return UserRepository(
+                retrofit.create(UserService::class.java),
+                database.userDao(),
+                connectionHelper,
+                preferencesHelper,
+                calendarWrapper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDetailsRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper,
+                                 preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper) : DetailsRepository {
+        return DetailsRepository(
+                retrofit.create(UserService::class.java),
+                retrofit.create(QuestionService::class.java),
+                database.questionDao(),
+                database.answerDao(),
+                database.favoritedByUserDao(),
+                connectionHelper,
+                preferencesHelper,
+                calendarWrapper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(context: Context)
+            = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
+
+    @Provides
+    @Singleton
+    fun provideConnectionHelper(context: Context) = ConnectionHelper(context)
+
+    @Provides
+    @Singleton
+    fun providePreferencesHelper(context: Context) = PreferencesHelper(context)
+
+    @Provides
+    @Singleton
+    fun provideCalendarWrapper() = CalendarWrapper()
 }
