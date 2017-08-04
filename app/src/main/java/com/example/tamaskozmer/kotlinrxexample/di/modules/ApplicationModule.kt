@@ -8,9 +8,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsReposit
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
-import com.example.tamaskozmer.kotlinrxexample.util.CalendarWrapper
-import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
-import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
+import com.example.tamaskozmer.kotlinrxexample.util.*
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -82,4 +80,8 @@ class ApplicationModule(val application: CustomApplication) {
     @Provides
     @Singleton
     fun provideCalendarWrapper() = CalendarWrapper()
+
+    @Provides
+    @Singleton
+    fun provideSchedulerProvider() : SchedulerProvider = AppSchedulerProvider()
 }

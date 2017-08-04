@@ -3,10 +3,10 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
-import com.example.tamaskozmer.kotlinrxexample.testutil.ImmediateSchedulerRule
+import com.example.tamaskozmer.kotlinrxexample.testutil.TestSchedulerProvider
 import io.reactivex.Single
+import io.reactivex.schedulers.TestScheduler
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
@@ -18,10 +18,6 @@ import org.mockito.MockitoAnnotations
  */
 class UserListPresenterTest {
 
-    // TODO Fix the problem with TestScheduler and then change this to TestScheduler and write more tests
-    @Rule @JvmField
-    val immediateSchedulerRule = ImmediateSchedulerRule()
-
     @Mock
     lateinit var mockGetUsers: GetUsers
 
@@ -30,10 +26,14 @@ class UserListPresenterTest {
 
     lateinit var userListPresenter: UserListPresenter
 
+    lateinit var testScheduler: TestScheduler
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        userListPresenter = UserListPresenter(mockGetUsers)
+        testScheduler = TestScheduler()
+        val testSchedulerProvider = TestSchedulerProvider(testScheduler)
+        userListPresenter = UserListPresenter(mockGetUsers, testSchedulerProvider)
     }
 
     @Test
@@ -50,6 +50,8 @@ class UserListPresenterTest {
 
         userListPresenter.attachView(mockView)
         userListPresenter.getUsers()
+
+        testScheduler.triggerActions()
 
         // Then
         verify(mockView).hideLoading()
@@ -71,6 +73,8 @@ class UserListPresenterTest {
         userListPresenter.attachView(mockView)
         userListPresenter.getUsers()
 
+        testScheduler.triggerActions()
+
         // Then
         verify(mockView).clearList()
     }
@@ -90,6 +94,8 @@ class UserListPresenterTest {
         userListPresenter.attachView(mockView)
         userListPresenter.getUsers()
         userListPresenter.getUsers()
+
+        testScheduler.triggerActions()
 
         // Then
         verify(mockView).clearList()
@@ -112,6 +118,8 @@ class UserListPresenterTest {
         userListPresenter.attachView(mockView)
         userListPresenter.getUsers(forced = true)
         userListPresenter.getUsers(forced = true)
+
+        testScheduler.triggerActions()
 
         // Then
         verify(mockView, times(2)).clearList()

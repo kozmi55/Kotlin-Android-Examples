@@ -3,6 +3,7 @@ package com.example.tamaskozmer.kotlinrxexample.di.modules
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetDetails
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.DetailPresenter
+import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 
@@ -15,5 +16,6 @@ class DetailFragmentModule() {
     fun provideGetDetails(detailsRepository: DetailsRepository) = GetDetails(detailsRepository)
 
     @Provides
-    fun providePresenter(getDetails: GetDetails) = DetailPresenter(getDetails)
+    fun providePresenter(getDetails: GetDetails, schedulerProvider: SchedulerProvider)
+            = DetailPresenter(getDetails, schedulerProvider)
 }

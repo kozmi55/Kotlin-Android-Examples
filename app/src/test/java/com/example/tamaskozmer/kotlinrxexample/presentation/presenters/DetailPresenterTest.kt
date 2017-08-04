@@ -4,7 +4,9 @@ import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetDetails
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
 import com.example.tamaskozmer.kotlinrxexample.testutil.ImmediateSchedulerRule
+import com.example.tamaskozmer.kotlinrxexample.testutil.TestSchedulerProvider
 import io.reactivex.Single
+import io.reactivex.schedulers.TestScheduler
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,10 +31,14 @@ class DetailPresenterTest {
 
     lateinit var detailPresenter: DetailPresenter
 
+    lateinit var testScheduler: TestScheduler
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        detailPresenter = DetailPresenter(mockGetDetails)
+        testScheduler = TestScheduler()
+        val testSchedulerProvider = TestSchedulerProvider(testScheduler)
+        detailPresenter = DetailPresenter(mockGetDetails, testSchedulerProvider)
     }
 
     @Test
@@ -49,6 +55,8 @@ class DetailPresenterTest {
 
         detailPresenter.attachView(mockView)
         detailPresenter.getDetails(userId)
+
+        testScheduler.triggerActions()
 
         // Then
         verify(mockView).showLoading()
@@ -70,6 +78,8 @@ class DetailPresenterTest {
 
         detailPresenter.attachView(mockView)
         detailPresenter.getDetails(userId)
+
+        testScheduler.triggerActions()
 
         // Then
         verify(mockView).showLoading()
