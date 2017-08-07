@@ -3,12 +3,10 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetDetails
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
-import com.example.tamaskozmer.kotlinrxexample.testutil.ImmediateSchedulerRule
 import com.example.tamaskozmer.kotlinrxexample.testutil.TestSchedulerProvider
 import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -19,9 +17,6 @@ import org.mockito.MockitoAnnotations
  * Created by Tamas_Kozmer on 7/21/2017.
  */
 class DetailPresenterTest {
-
-    @Rule @JvmField
-    val immediateSchedulerRule = ImmediateSchedulerRule()
 
     @Mock
     lateinit var mockGetDetails: GetDetails
