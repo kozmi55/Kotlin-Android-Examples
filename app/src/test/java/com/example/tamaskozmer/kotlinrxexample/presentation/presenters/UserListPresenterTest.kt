@@ -8,10 +8,12 @@ import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Tamas_Kozmer on 7/21/2017.
@@ -125,5 +127,55 @@ class UserListPresenterTest {
         verify(mockView, times(2)).clearList()
         verify(mockView, times(2)).hideLoading()
         verify(mockView, times(2)).addUsersToList(users)
+    }
+
+    @Test
+    fun testOnScrollChanged_offsetReachedAndLoading_dontRequestNextPage() {
+        callOnScrollChanged(5, 1)
+
+        // Then
+        verify(mockGetUsers, times(1))
+                .execute(ArgumentMatchers.anyInt(), ArgumentMatchers.anyBoolean())
+    }
+
+    @Test
+    fun testOnScrollChanged_offsetReachedAndNotLoading_requestNextPage() {
+        callOnScrollChanged(5, 3)
+
+        // Then
+        verify(mockGetUsers, times(2))
+                .execute(ArgumentMatchers.anyInt(), ArgumentMatchers.anyBoolean())
+    }
+
+    @Test
+    fun testOnScrollChanged_lastItemReachedAndLoading_showLoading() {
+        callOnScrollChanged(10, 1)
+
+        // Then
+        verify(mockView).showLoading()
+    }
+
+    private fun callOnScrollChanged(lastVisibleItemPosition: Int, secondsDelay: Long) {
+        getUsersWithLoadingDelay()
+        testScheduler.advanceTimeBy(secondsDelay, TimeUnit.SECONDS)
+
+        userListPresenter.onScrollChanged(lastVisibleItemPosition, 10)
+    }
+
+    private fun getUsersWithLoadingDelay() {
+        // Given
+        val users = listOf(UserViewModel(1, "Name", 1000, ""))
+        val single: Single<List<UserViewModel>> = Single.create {
+            emitter ->
+            emitter.onSuccess(users)
+        }
+
+        val delayedSingle = single.delay(2, TimeUnit.SECONDS, testScheduler)
+
+        // When
+        `when`(mockGetUsers.execute(Mockito.anyInt(), Mockito.anyBoolean())).thenReturn(delayedSingle)
+
+        userListPresenter.attachView(mockView)
+        userListPresenter.getUsers()
     }
 }
