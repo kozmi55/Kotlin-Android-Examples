@@ -11,16 +11,21 @@ import com.facebook.stetho.Stetho
  */
 class CustomApplication : Application() {
 
-    val component: ApplicationComponent by lazy {
-        DaggerApplicationComponent
-                .builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
-    }
+    lateinit var component: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
+
+        initAppComponent()
+
         Stetho.initializeWithDefaults(this);
         component.inject(this)
+    }
+
+    private fun initAppComponent() {
+        component = DaggerApplicationComponent
+                .builder()
+                .applicationModule(ApplicationModule(this))
+                .build()
     }
 }
