@@ -1,7 +1,9 @@
 package com.example.tamaskozmer.kotlinrxexample.view.fragments
 
+import android.arch.lifecycle.LifecycleFragment
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,9 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.di.modules.UserListFragmentModule
-import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
+import com.example.tamaskozmer.kotlinrxexample.di.components.ApplicationComponent
+import com.example.tamaskozmer.kotlinrxexample.model.entities.User
+import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
 import com.example.tamaskozmer.kotlinrxexample.util.customApplication
 import com.example.tamaskozmer.kotlinrxexample.view.activities.MainActivity
@@ -21,22 +23,18 @@ import kotlinx.android.synthetic.main.fragment_user_list.*
 /**
  * Created by Tamas_Kozmer on 7/6/2017.
  */
-class UserListFragment : Fragment(), UserListView {
+class UserListFragment : LifecycleFragment() {
 
-    private val presenter: UserListPresenter by lazy { component.presenter() }
-    private val component by lazy { customApplication.component.plus(UserListFragmentModule()) }
-    private val adapter by lazy {
-        val userList = mutableListOf<UserViewModel>()
+    private val viewModel: UserListViewModel by lazy { ViewModelProviders.of(this).get(UserListViewModel::class.java) }
+    private val component: ApplicationComponent by lazy { customApplication.component }
+    private val adapter: UserListAdapter by lazy {
+        val userList = mutableListOf<User>()
         UserListAdapter(userList) {
-            user, view -> openDetailFragment(user, view)
+            user, view -> viewModel.increaseRep(user)
         }
     }
 
     private lateinit var layoutManager: LinearLayoutManager
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_user_list, container, false)
@@ -48,46 +46,52 @@ class UserListFragment : Fragment(), UserListView {
         initViews()
         initAdapter()
 
-        presenter.attachView(this)
-
         // Prevent reloading when going back
-        if (adapter.itemCount == 0) {
-            showLoading()
-            presenter.getUsers()
-        }
-    }
+        viewModel.init(component.provideUserRepository())
 
-    override fun onDestroyView() {
-        presenter.detachView()
-        super.onDestroyView()
-    }
+        viewModel.usersLiveData?.observe(this, Observer {
+            it?.let {
+                clearList()
+                addUsersToList(it)
+            }
+            adapter.notifyDataSetChanged()
+        })
 
+        viewModel.loadingLiveData.observe(this, Observer {
+            it?.let {
+                if (it) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
+            }
+        })
+    }
 
     private fun initViews() {
         swipeRefreshLayout.setOnRefreshListener {
-            presenter.getUsers(forced = true)
+            viewModel.refresh()
         }
     }
 
     // region View interface methods
-    override fun showLoading() {
+    fun showLoading() {
         swipeRefreshLayout.isRefreshing = true
     }
 
-    override fun hideLoading() {
+    fun hideLoading() {
         swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun addUsersToList(users: List<UserViewModel>) {
-        val adapter = recyclerView.adapter as UserListAdapter
+    fun addUsersToList(users: List<User>) {
         adapter.addUsers(users)
     }
 
-    override fun showError() {
+    fun showError() {
         Toast.makeText(customApplication, "Couldn't load data", Toast.LENGTH_SHORT).show()
     }
 
-    override fun clearList() {
+    fun clearList() {
         adapter.clearUsers()
     }
     // endregion
@@ -104,7 +108,7 @@ class UserListFragment : Fragment(), UserListView {
                 val lastVisibleItemPosition = layoutManager.findFirstVisibleItemPosition() + layoutManager.childCount
                 val totalItemCount = layoutManager.itemCount
 
-                presenter.onScrollChanged(lastVisibleItemPosition, totalItemCount)
+                viewModel.onScrollChanged(lastVisibleItemPosition, totalItemCount)
             }
         })
     }

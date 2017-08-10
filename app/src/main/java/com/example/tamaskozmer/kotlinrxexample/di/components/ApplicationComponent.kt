@@ -3,7 +3,7 @@ package com.example.tamaskozmer.kotlinrxexample.di.components
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
 import com.example.tamaskozmer.kotlinrxexample.di.modules.ApplicationModule
 import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailFragmentModule
-import com.example.tamaskozmer.kotlinrxexample.di.modules.UserListFragmentModule
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,6 +14,7 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(ApplicationModule::class))
 interface ApplicationComponent {
     fun inject(application: CustomApplication)
-    fun plus(userListFragmentModule: UserListFragmentModule) : UserListFragmentComponent
     fun plus(detailFragmentModule: DetailFragmentModule) : DetailFragmentComponent
+
+    fun provideUserRepository() : UserRepository
 }

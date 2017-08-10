@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.util.inflate
 import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
 import com.example.tamaskozmer.kotlinrxexample.util.loadUrl
@@ -15,8 +15,8 @@ import kotlinx.android.synthetic.main.list_item_user.view.*
  * Created by Tamas_Kozmer on 7/3/2017.
  */
 class UserListAdapter(
-        private val users: MutableList<UserViewModel>,
-        private val listener: (UserViewModel, View) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+        private val users: MutableList<User>,
+        private val listener: (User, View) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     override fun getItemCount() = users.size
 
@@ -24,7 +24,7 @@ class UserListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = UserViewHolder(parent.inflate(R.layout.list_item_user))
 
-    fun addUsers(newUsers: List<UserViewModel>) {
+    fun addUsers(newUsers: List<User>) {
         users.addAll(newUsers)
         notifyDataSetChanged()
     }
@@ -35,7 +35,7 @@ class UserListAdapter(
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("NewApi")
-        fun bind(user: UserViewModel, listener: (UserViewModel, View) -> Unit) = with(itemView) {
+        fun bind(user: User, listener: (User, View) -> Unit) = with(itemView) {
             name.text = user.displayName
             reputation.text = "${user.reputation} points"
             userAvatar.loadUrl(user.profileImage)

@@ -1,9 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
-import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
-import com.example.tamaskozmer.kotlinrxexample.testutil.TestSchedulerProvider
 import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
 import org.junit.Before
@@ -18,7 +16,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Tamas_Kozmer on 7/21/2017.
  */
-class UserListPresenterTest {
+class UserListViewModelTest {
 
     @Mock
     lateinit var mockGetUsers: GetUsers
@@ -26,16 +24,14 @@ class UserListPresenterTest {
     @Mock
     lateinit var mockView: UserListView
 
-    lateinit var userListPresenter: UserListPresenter
+    lateinit var userListViewModel: UserListViewModel
 
     lateinit var testScheduler: TestScheduler
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        testScheduler = TestScheduler()
-        val testSchedulerProvider = TestSchedulerProvider(testScheduler)
-        userListPresenter = UserListPresenter(mockGetUsers, testSchedulerProvider)
+        userListViewModel = UserListViewModel(mockGetUsers)
     }
 
     @Test
@@ -50,8 +46,8 @@ class UserListPresenterTest {
         // When
         `when`(mockGetUsers.execute(Mockito.anyInt(), Mockito.anyBoolean())).thenReturn(single)
 
-        userListPresenter.attachView(mockView)
-        userListPresenter.getUsers()
+        userListViewModel.attachView(mockView)
+        userListViewModel.getUsers()
 
         testScheduler.triggerActions()
 
@@ -72,8 +68,8 @@ class UserListPresenterTest {
         // When
         `when`(mockGetUsers.execute(Mockito.anyInt(), Mockito.anyBoolean())).thenReturn(single)
 
-        userListPresenter.attachView(mockView)
-        userListPresenter.getUsers()
+        userListViewModel.attachView(mockView)
+        userListViewModel.getUsers()
 
         testScheduler.triggerActions()
 
@@ -93,9 +89,9 @@ class UserListPresenterTest {
         // When
         `when`(mockGetUsers.execute(Mockito.anyInt(), Mockito.anyBoolean())).thenReturn(single)
 
-        userListPresenter.attachView(mockView)
-        userListPresenter.getUsers()
-        userListPresenter.getUsers()
+        userListViewModel.attachView(mockView)
+        userListViewModel.getUsers()
+        userListViewModel.getUsers()
 
         testScheduler.triggerActions()
 
@@ -117,9 +113,9 @@ class UserListPresenterTest {
         // When
         `when`(mockGetUsers.execute(Mockito.anyInt(), Mockito.anyBoolean())).thenReturn(single)
 
-        userListPresenter.attachView(mockView)
-        userListPresenter.getUsers(forced = true)
-        userListPresenter.getUsers(forced = true)
+        userListViewModel.attachView(mockView)
+        userListViewModel.getUsers(forced = true)
+        userListViewModel.getUsers(forced = true)
 
         testScheduler.triggerActions()
 

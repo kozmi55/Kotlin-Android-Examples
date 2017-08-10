@@ -1,5 +1,8 @@
 package com.example.tamaskozmer.kotlinrxexample.model.repositories
 
+import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
+import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.UserDao
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
@@ -7,8 +10,9 @@ import com.example.tamaskozmer.kotlinrxexample.util.CalendarWrapper
 import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
 import com.example.tamaskozmer.kotlinrxexample.util.Constants
 import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
-import io.reactivex.Single
-import io.reactivex.SingleEmitter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
@@ -22,13 +26,15 @@ class UserRepository(
 
     private val LAST_UPDATE_KEY = "last_update_page_"
 
-    fun getUsers(page: Int = 1, forced: Boolean = false): Single<UserListModel> {
-        return Single.create<UserListModel> { emitter: SingleEmitter<UserListModel> ->
-            if (shouldUpdate(page, forced)) {
-                loadUsersFromNetwork(page, emitter)
-            } else {
-                loadOfflineUsers(page, emitter)
-            }
+    val usersLiveData = MediatorLiveData<List<User>>()
+
+    fun getUsers(page: Int = 1, forced: Boolean = false, loadingLiveData: MutableLiveData<Boolean>) {
+        val users = userDao.getUsers(page)
+        usersLiveData.addSource(users) {
+            usersLiveData.value = it
+        }
+        if (shouldUpdate(page, forced)) {
+            loadUsersFromNetwork(page, loadingLiveData)
         }
     }
 
@@ -42,28 +48,32 @@ class UserRepository(
         }
     }
 
-    private fun loadUsersFromNetwork(page: Int, emitter: SingleEmitter<UserListModel>) {
-        try {
-            val users = userService.getUsers(page).execute().body()
-            if (users != null) {
-                userDao.insertAll(users.items)
-                val currentTime = calendarWrapper.getCurrentTimeInMillis()
-                preferencesHelper.saveLong(LAST_UPDATE_KEY + page, currentTime)
-                emitter.onSuccess(users)
-            } else {
-                emitter.onError(Exception("No data received"))
+    private fun loadUsersFromNetwork(page: Int, loadingLiveData: MutableLiveData<Boolean>) {
+        loadingLiveData.value = true
+        userService.getUsers(page).enqueue(object : Callback<UserListModel> {
+            override fun onFailure(call: Call<UserListModel>?, t: Throwable?) {
+
             }
-        } catch (exception: Exception) {
-            emitter.onError(exception)
-        }
+
+            override fun onResponse(call: Call<UserListModel>?, response: Response<UserListModel>?) {
+                if (response != null) {
+                    val items = response.body()?.items
+                    items?.let {
+                        Thread(Runnable {
+                            userDao.insertAll(items)
+                            loadingLiveData.postValue(false)
+                        }).start()
+                    }
+                    val currentTime = calendarWrapper.getCurrentTimeInMillis()
+                    preferencesHelper.saveLong(LAST_UPDATE_KEY + page, currentTime)
+                }
+            }
+        })
     }
 
-    private fun loadOfflineUsers(page: Int, emitter: SingleEmitter<UserListModel>) {
-        val users = userDao.getUsers(page)
-        if (!users.isEmpty()) {
-            emitter.onSuccess(UserListModel(users))
-        } else {
-            emitter.onError(Exception("Device is offline"))
-        }
+    fun increaseRep(user: User) {
+        Thread(Runnable {
+            userDao.insert(user)
+        }).start()
     }
 }
