@@ -4,13 +4,13 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.AppDatabase
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.DefaultDetailsRepository
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.DefaultUserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsRepository
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.services.QuestionService
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
-import com.example.tamaskozmer.kotlinrxexample.util.CalendarWrapper
-import com.example.tamaskozmer.kotlinrxexample.util.ConnectionHelper
-import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
+import com.example.tamaskozmer.kotlinrxexample.util.*
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -43,7 +43,7 @@ class ApplicationModule(val application: CustomApplication) {
     @Singleton
     fun provideUserRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper,
                               preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper): UserRepository {
-        return UserRepository(
+        return DefaultUserRepository(
                 retrofit.create(UserService::class.java),
                 database.userDao(),
                 connectionHelper,
@@ -55,7 +55,7 @@ class ApplicationModule(val application: CustomApplication) {
     @Singleton
     fun provideDetailsRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper,
                                  preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper) : DetailsRepository {
-        return DetailsRepository(
+        return DefaultDetailsRepository(
                 retrofit.create(UserService::class.java),
                 retrofit.create(QuestionService::class.java),
                 database.questionDao(),
@@ -82,4 +82,8 @@ class ApplicationModule(val application: CustomApplication) {
     @Provides
     @Singleton
     fun provideCalendarWrapper() = CalendarWrapper()
+
+    @Provides
+    @Singleton
+    fun provideSchedulerProvider() : SchedulerProvider = AppSchedulerProvider()
 }

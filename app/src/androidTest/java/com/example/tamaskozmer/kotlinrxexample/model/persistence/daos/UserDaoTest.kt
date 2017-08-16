@@ -1,11 +1,10 @@
-package com.example.tamaskozmer.kotlinrxexample
+package com.example.tamaskozmer.kotlinrxexample.model.persistence.daos
 
 import android.arch.persistence.room.Room
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.AppDatabase
-import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.UserDao
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before

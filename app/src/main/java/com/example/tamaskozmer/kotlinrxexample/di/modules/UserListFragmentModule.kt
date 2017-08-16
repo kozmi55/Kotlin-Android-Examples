@@ -3,6 +3,7 @@ package com.example.tamaskozmer.kotlinrxexample.di.modules
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
+import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 
@@ -15,5 +16,6 @@ class UserListFragmentModule() {
     fun provideGetUsers(userRepository: UserRepository) = GetUsers(userRepository)
 
     @Provides
-    fun providePresenter(getUsers: GetUsers) = UserListPresenter(getUsers)
+    fun providePresenter(getUsers: GetUsers, schedulerProvider: SchedulerProvider)
+            = UserListPresenter(getUsers, schedulerProvider)
 }
