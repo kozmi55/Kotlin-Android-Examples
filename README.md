@@ -14,6 +14,7 @@ This repository contains a couple of Android Development examples in Kotlin lang
 * Unit testing each layer of the app
 * Testing Room database
 * Shared element transitions with CoordinatorLayout and CollapsingToolbar
+* UI testing with Espresso
 
 To build the the project you need Android Studio 3.0 or change the Gradle plugin to an older version.
 
