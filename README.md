@@ -16,3 +16,7 @@ This repository contains a couple of Android Development examples in Kotlin lang
 * Shared element transitions with CoordinatorLayout and CollapsingToolbar
 
 To build the the project you need Android Studio 3.0 or change the Gradle plugin to an older version.
+
+Related Medium article:
+
+https://blog.mindorks.com/how-to-make-complex-requests-simple-with-rxjava-in-kotlin-ccec004c5d10
