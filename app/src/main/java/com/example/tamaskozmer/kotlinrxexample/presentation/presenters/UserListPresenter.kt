@@ -30,6 +30,7 @@ class UserListPresenter(
                     }
                     if (page == 1) {
                         view?.clearList()
+                        view?.hideEmptyListError()
                     }
                     view?.addUsersToList(users)
                     view?.hideLoading()
@@ -37,8 +38,12 @@ class UserListPresenter(
                 },
                 {
                     loading = false
-                    view?.showError()
                     view?.hideLoading()
+                    if (page == 1) {
+                        view?.showEmptyListError()
+                    } else {
+                        view?.showToastError()
+                    }
                 })
     }
 

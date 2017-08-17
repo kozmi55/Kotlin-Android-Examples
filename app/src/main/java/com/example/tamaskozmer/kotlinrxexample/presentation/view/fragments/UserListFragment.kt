@@ -83,8 +83,16 @@ class UserListFragment : Fragment(), UserListView {
         adapter.addUsers(users)
     }
 
-    override fun showError() {
-        Toast.makeText(customApplication, "Couldn't load data", Toast.LENGTH_SHORT).show()
+    override fun showEmptyListError() {
+        errorView.visibility = View.VISIBLE
+    }
+
+    override fun hideEmptyListError() {
+        errorView.visibility = View.GONE
+    }
+
+    override fun showToastError() {
+        Toast.makeText(context, "Error loading data", Toast.LENGTH_SHORT).show()
     }
 
     override fun clearList() {

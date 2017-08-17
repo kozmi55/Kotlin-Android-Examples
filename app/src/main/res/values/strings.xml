@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KotlinRxExample</string>
+    <string name="user_list_error">Failed to load data. Refresh to try again</string>
 </resources>

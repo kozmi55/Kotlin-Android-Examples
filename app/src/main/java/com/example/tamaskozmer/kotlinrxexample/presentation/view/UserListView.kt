@@ -9,6 +9,8 @@ interface UserListView {
     fun showLoading()
     fun hideLoading()
     fun addUsersToList(users: List<UserViewModel>)
-    fun showError()
+    fun showEmptyListError()
+    fun hideEmptyListError()
+    fun showToastError()
     fun clearList()
 }

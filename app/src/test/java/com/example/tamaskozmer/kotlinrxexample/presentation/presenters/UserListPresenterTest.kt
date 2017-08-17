@@ -57,7 +57,7 @@ class UserListPresenterTest {
 
         // Then
         verify(mockView).hideLoading()
-        verify(mockView).showError()
+        verify(mockView).showEmptyListError()
     }
 
     @Test
