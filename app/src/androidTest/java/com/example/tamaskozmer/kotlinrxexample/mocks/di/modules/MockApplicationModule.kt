@@ -1,7 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.mocks.di.modules
 
 import com.example.tamaskozmer.kotlinrxexample.mocks.model.repositories.MockDetailsRepository
-import com.example.tamaskozmer.kotlinrxexample.mocks.model.repositories.MockUserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsRepository
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.util.AppSchedulerProvider
@@ -14,12 +13,12 @@ import javax.inject.Singleton
  * Created by Tamas_Kozmer on 8/8/2017.
  */
 @Module
-class MockApplicationModule {
+class MockApplicationModule(val userRepository: UserRepository) {
 
     @Provides
     @Singleton
     fun provideUserRepository() : UserRepository {
-        return MockUserRepository()
+        return userRepository
     }
 
     @Provides
