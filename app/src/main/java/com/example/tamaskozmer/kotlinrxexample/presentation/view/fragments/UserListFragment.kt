@@ -9,19 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.di.modules.UserListFragmentModule
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
 import com.example.tamaskozmer.kotlinrxexample.util.customApplication
 import com.example.tamaskozmer.kotlinrxexample.view.activities.MainActivity
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.UserListAdapter
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_user_list.*
+import javax.inject.Inject
 
-class UserListFragment : Fragment(), UserListView {
+class UserListFragment : DaggerFragment(), UserListView {
 
-    private val presenter: UserListPresenter by lazy { component.presenter() }
-    private val component by lazy { customApplication.component.plus(UserListFragmentModule()) }
+    @Inject
+    lateinit var presenter: UserListPresenter
+
     private val adapter by lazy {
         val userList = mutableListOf<UserViewModel>()
         UserListAdapter(userList) { user, view ->

@@ -18,8 +18,8 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.UserL
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private val SHARED_TRANSITION_DURATION = 500L
-        private val FADE_DURATION = 200L
+        private const val SHARED_TRANSITION_DURATION = 500L
+        private const val FADE_DURATION = 200L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

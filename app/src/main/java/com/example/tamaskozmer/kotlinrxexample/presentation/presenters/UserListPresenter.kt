@@ -3,11 +3,9 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
+import javax.inject.Inject
 
-/**
- * Created by Tamas_Kozmer on 7/4/2017.
- */
-class UserListPresenter(
+class UserListPresenter @Inject constructor(
         private val getUsers: GetUsers,
         private val schedulerProvider: SchedulerProvider) : BasePresenter<UserListView>() {
 

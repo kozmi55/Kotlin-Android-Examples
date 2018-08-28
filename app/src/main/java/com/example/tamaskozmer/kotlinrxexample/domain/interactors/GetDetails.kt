@@ -8,11 +8,9 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.Deta
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.QuestionViewModel
 import io.reactivex.Single
 import io.reactivex.functions.Function3
+import javax.inject.Inject
 
-/**
- * Created by Tamas_Kozmer on 7/14/2017.
- */
-class GetDetails(private val detailsRepository: DetailsRepository) {
+class GetDetails @Inject constructor(private val detailsRepository: DetailsRepository) {
 
     fun execute(userId: Long, forced: Boolean) : Single<DetailsViewModel> {
         return Single.zip(

@@ -3,11 +3,12 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetDetails
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
+import javax.inject.Inject
 
 /**
  * Created by Tamas_Kozmer on 7/5/2017.
  */
-class DetailPresenter(
+class DetailPresenter @Inject constructor(
         private val getDetails: GetDetails,
         private val schedulerProvider: SchedulerProvider) : BasePresenter<DetailView>() {
 

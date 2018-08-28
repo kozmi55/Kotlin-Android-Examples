@@ -19,17 +19,15 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-/**
- * Created by Tamas_Kozmer on 7/4/2017.
- */
+private const val BASE_URL = "https://api.stackexchange.com/2.2/"
+private const val DATABASE_NAME = "db-name"
+
 @Module
-class ApplicationModule(val application: CustomApplication) {
-    private val BASE_URL = "https://api.stackexchange.com/2.2/"
-    private val DATABASE_NAME = "db-name"
+class ApplicationModule() {
 
     @Provides
     @Singleton
-    fun provideAppContext() : Context = application
+    fun provideAppContext(application: CustomApplication): Context = application.applicationContext
 
     @Provides
     @Singleton
@@ -54,7 +52,7 @@ class ApplicationModule(val application: CustomApplication) {
     @Provides
     @Singleton
     fun provideDetailsRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper,
-                                 preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper) : DetailsRepository {
+                                 preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper): DetailsRepository {
         return DefaultDetailsRepository(
                 retrofit.create(UserService::class.java),
                 retrofit.create(QuestionService::class.java),
@@ -68,8 +66,7 @@ class ApplicationModule(val application: CustomApplication) {
 
     @Provides
     @Singleton
-    fun provideDatabase(context: Context)
-            = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
+    fun provideDatabase(context: Context) = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
 
     @Provides
     @Singleton
@@ -85,5 +82,5 @@ class ApplicationModule(val application: CustomApplication) {
 
     @Provides
     @Singleton
-    fun provideSchedulerProvider() : SchedulerProvider = AppSchedulerProvider()
+    fun provideSchedulerProvider(): SchedulerProvider = AppSchedulerProvider()
 }

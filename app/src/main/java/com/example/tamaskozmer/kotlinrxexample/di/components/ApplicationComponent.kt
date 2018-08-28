@@ -2,18 +2,17 @@ package com.example.tamaskozmer.kotlinrxexample.di.components
 
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
 import com.example.tamaskozmer.kotlinrxexample.di.modules.ApplicationModule
-import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailFragmentModule
-import com.example.tamaskozmer.kotlinrxexample.di.modules.UserListFragmentModule
+import com.example.tamaskozmer.kotlinrxexample.di.modules.FragmentModule
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
-/**
- * Created by Tamas_Kozmer on 7/4/2017.
- */
 @Singleton
-@Component(modules = arrayOf(ApplicationModule::class))
-interface ApplicationComponent {
-    fun inject(application: CustomApplication)
-    fun plus(userListFragmentModule: UserListFragmentModule) : UserListFragmentComponent
-    fun plus(detailFragmentModule: DetailFragmentModule) : DetailFragmentComponent
+@Component(modules = [ApplicationModule::class, FragmentModule::class, AndroidSupportInjectionModule::class])
+interface ApplicationComponent : AndroidInjector<CustomApplication> {
+
+    @Component.Builder
+    abstract class Builder : AndroidInjector.Builder<CustomApplication>() {
+    }
 }

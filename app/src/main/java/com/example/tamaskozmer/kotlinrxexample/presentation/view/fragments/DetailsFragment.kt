@@ -10,18 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.di.modules.DetailFragmentModule
+import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.DetailPresenter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
 import com.example.tamaskozmer.kotlinrxexample.util.customApplication
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_details.*
+import javax.inject.Inject
 
-class DetailsFragment : Fragment(), DetailView {
+class DetailsFragment : DaggerFragment(), DetailView {
 
-    private val component by lazy { customApplication.component.plus(DetailFragmentModule()) }
-    private val presenter by lazy { component.presenter() }
+    @Inject
+    lateinit var presenter: DetailPresenter
+
     private val detailsAdapter by lazy {
         DetailsAdapter({ link ->
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))

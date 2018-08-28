@@ -6,9 +6,6 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.example.tamaskozmer.kotlinrxexample.model.entities.Question
 
-/**
- * Created by Tamas_Kozmer on 7/17/2017.
- */
 @Dao
 interface QuestionDao {
 

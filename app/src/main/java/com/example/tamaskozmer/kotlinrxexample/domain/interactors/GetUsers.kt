@@ -4,11 +4,9 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
 import io.reactivex.Single
+import javax.inject.Inject
 
-/**
- * Created by Tamas_Kozmer on 7/14/2017.
- */
-class GetUsers(private val userRepository: UserRepository) {
+class GetUsers @Inject constructor(private val userRepository: UserRepository) {
 
     fun execute(page: Int, forced: Boolean) : Single<List<UserViewModel>> {
         val usersList = userRepository.getUsers(page, forced)
