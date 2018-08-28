@@ -12,7 +12,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.FavoritedByUser
 @Dao
 interface FavoritedByUserDao {
 
-    @Query("SELECT * FROM favoritedByUser WHERE userId = :arg0")
+    @Query("SELECT * FROM favoritedByUser WHERE userId = :userId")
     fun getFavoritesForUser(userId: Long) : FavoritedByUser?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

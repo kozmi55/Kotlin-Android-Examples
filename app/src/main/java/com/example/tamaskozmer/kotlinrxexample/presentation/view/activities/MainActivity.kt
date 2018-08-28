@@ -12,8 +12,8 @@ import android.view.View
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.util.TransitionListener
 import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
-import com.example.tamaskozmer.kotlinrxexample.view.fragments.DetailsFragment
-import com.example.tamaskozmer.kotlinrxexample.view.fragments.UserListFragment
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.DetailsFragment
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.UserListFragment
 
 class MainActivity : AppCompatActivity() {
 

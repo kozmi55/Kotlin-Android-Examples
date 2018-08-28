@@ -31,4 +31,4 @@ val Activity.customApplication: CustomApplication
     get() = application as CustomApplication
 
 val Fragment.customApplication: CustomApplication
-    get() = activity.application as CustomApplication
+    get() = activity?.application as CustomApplication

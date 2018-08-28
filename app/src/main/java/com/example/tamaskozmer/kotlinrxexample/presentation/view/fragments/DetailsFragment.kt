@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.view.fragments
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments
 
 import android.content.Intent
 import android.net.Uri
@@ -18,18 +18,16 @@ import com.example.tamaskozmer.kotlinrxexample.util.customApplication
 import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
 import kotlinx.android.synthetic.main.fragment_details.*
 
-
-/**
- * Created by Tamas_Kozmer on 7/6/2017.
- */
 class DetailsFragment : Fragment(), DetailView {
 
     private val component by lazy { customApplication.component.plus(DetailFragmentModule()) }
     private val presenter by lazy { component.presenter() }
-    private val detailsAdapter by lazy { DetailsAdapter({ link ->
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-        startActivity(browserIntent)
-    }) }
+    private val detailsAdapter by lazy {
+        DetailsAdapter({ link ->
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            startActivity(browserIntent)
+        })
+    }
 
     var transitionEnded = false
 
@@ -43,15 +41,11 @@ class DetailsFragment : Fragment(), DetailView {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_details, container, false)
-    }
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         presenter.attachView(this)
@@ -71,13 +65,16 @@ class DetailsFragment : Fragment(), DetailView {
     }
 
     private fun processArguments() {
-        val user = arguments.getParcelable<UserViewModel>("user")
-        detailsAdapter.addItem(user)
-        detailsAdapter.notifyDataSetChanged()
-        presenter.getDetails(user.userId)
+        val user = arguments?.getParcelable<UserViewModel>("user")
 
-        swipeRefreshLayout.setOnRefreshListener {
-            presenter.getDetails(user.userId, true)
+        if (user != null) {
+            detailsAdapter.addItem(user)
+            detailsAdapter.notifyDataSetChanged()
+            presenter.getDetails(user.userId)
+
+            swipeRefreshLayout.setOnRefreshListener {
+                presenter.getDetails(user.userId, true)
+            }
         }
     }
 

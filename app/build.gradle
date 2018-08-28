@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.example.tamaskozmer.kotlinrxexample"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,30 +30,30 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-    implementation 'com.google.dagger:dagger:2.11'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'com.github.bumptech.glide:glide:4.0.0-RC1'
-    implementation "android.arch.persistence.room:runtime:1.0.0-alpha8"
-    implementation "android.arch.persistence.room:rxjava2:1.0.0-alpha8"
-    implementation 'com.facebook.stetho:stetho:1.5.0'
-    implementation 'com.android.support:appcompat-v7:26.0.1'
-    implementation 'com.android.support:recyclerview-v7:26.0.1'
+    implementation "com.google.dagger:dagger:$DAGGER_VERSION"
+    implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+    implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
+    implementation "io.reactivex.rxjava2:rxjava:$RXJAVA_VERSION"
+    implementation "io.reactivex.rxjava2:rxandroid:$RXANDROID_VERSION"
+    implementation "com.github.bumptech.glide:glide:$GLIDE_VERSION"
+    implementation "android.arch.persistence.room:runtime:$ROOM_VERSION"
+    implementation "android.arch.persistence.room:rxjava2:$ROOM_VERSION"
+    implementation "com.facebook.stetho:stetho:$STETHO_VERSION"
+    implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
 
-    kapt "android.arch.persistence.room:compiler:1.0.0-alpha8"
-    kapt 'com.google.dagger:dagger-compiler:2.11'
+    kapt "android.arch.persistence.room:compiler:$ROOM_VERSION"
+    kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
 
-    testImplementation 'org.mockito:mockito-core:2.8.47'
-    testImplementation 'junit:junit:4.12'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
+    testImplementation "junit:junit:$JUNIT_VERSION"
 
-    androidTestImplementation ('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation ("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:2.2') {
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:$ESPRESSO_VERSION") {
         // Necessary to avoid version conflicts
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
@@ -60,6 +61,6 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
 
-    androidTestImplementation "com.nhaarman:mockito-kotlin-kt1.1:1.5.0"
-    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$DEXMAKER_VERSION"
 }

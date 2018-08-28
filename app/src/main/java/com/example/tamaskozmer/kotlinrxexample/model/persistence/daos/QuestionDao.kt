@@ -11,12 +11,11 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.Question
  */
 @Dao
 interface QuestionDao {
-    // TODO Change these when the bug is fixed
-    // This is a bug in Kotlin, we need to use arg0 here, instead of the actual name of the parameter
-    @Query("SELECT * FROM question WHERE userId = :arg0 ORDER BY score DESC LIMIT 3")
+
+    @Query("SELECT * FROM question WHERE userId = :userId ORDER BY score DESC LIMIT 3")
     fun getQuestionsByUser(userId: Long) : List<Question>
 
-    @Query("SELECT * FROM question WHERE questionId IN (:arg0) ORDER BY score DESC")
+    @Query("SELECT * FROM question WHERE questionId IN (:questionIds) ORDER BY score DESC")
     fun getQuestionsById(questionIds: List<Long>) : List<Question>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
