@@ -61,6 +61,6 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
 
-    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
-    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$DEXMAKER_VERSION"
+    androidTestImplementation "org.mockito:mockito-android:$MOCKITO_VERSION"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
 }

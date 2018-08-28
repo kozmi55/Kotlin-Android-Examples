@@ -28,6 +28,7 @@ ext {
     ESPRESSO_VERSION = '2.2.2'
     JUNIT_VERSION = '4.12'
     DEXMAKER_VERSION = '2.2.0'
+    MOCKITO_VERSION = '2.8.47'
 }
 
 allprojects {

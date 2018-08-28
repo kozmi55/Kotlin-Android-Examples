@@ -22,8 +22,6 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.testutil.RecyclerViewMatcher
 import com.example.tamaskozmer.kotlinrxexample.view.activities.MainActivity
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import org.hamcrest.Matchers
@@ -31,6 +29,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.mockito.Mockito.`when` as whenever
 
 
 /**
@@ -39,10 +40,12 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class UserListFragmentTest {
 
-    @Rule @JvmField
+    @Rule
+    @JvmField
     var activityRule = ActivityTestRule(MainActivity::class.java, true, false)
 
-    lateinit var mockUserRepository: UserRepository
+    @Mock
+    private lateinit var mockUserRepository: UserRepository
 
     private fun withRecyclerView(recyclerViewId: Int): RecyclerViewMatcher {
         return RecyclerViewMatcher(recyclerViewId)
@@ -50,7 +53,7 @@ class UserListFragmentTest {
 
     @Before
     fun setUp() {
-        mockUserRepository = mock()
+        MockitoAnnotations.initMocks(this)
 
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val app = instrumentation.targetContext.applicationContext as CustomApplication
