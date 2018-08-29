@@ -1,13 +1,23 @@
 package com.example.tamaskozmer.kotlinrxexample.testutil
 
-import com.example.tamaskozmer.kotlinrxexample.mocks.di.components.DaggerMockApplicationComponent
-import dagger.android.AndroidInjector
-import dagger.android.support.DaggerApplication
+import android.app.Application
+import android.support.v4.app.Fragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
 
-class TestApplication : DaggerApplication() {
+class TestApplication : Application(), HasSupportFragmentInjector {
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerMockApplicationComponent.builder().create(this)
-    }
+    @Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector() = fragmentInjector
+
+//    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+//        return DaggerMockApplicationComponent
+//                .builder()
+//                .appModule(MockApplicationModule(userRepository))
+//                .create(this)
+//    }
 }

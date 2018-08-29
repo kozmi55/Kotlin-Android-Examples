@@ -6,10 +6,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsReposit
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
-/**
- * Created by Tamas_Kozmer on 8/8/2017.
- */
-class MockDetailsRepository : DetailsRepository {
+class FakeDetailsRepository : DetailsRepository {
     override fun getQuestionsByUser(userId: Long, forced: Boolean): Single<List<Question>> {
         return createSingle(emptyList())
     }
