@@ -11,13 +11,12 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import java.util.concurrent.TimeUnit
 
-/**
- * Created by Tamas_Kozmer on 7/21/2017.
- */
 class UserListPresenterTest {
 
     @Mock
@@ -42,8 +41,7 @@ class UserListPresenterTest {
     fun testGetUsers_errorCase_showError() {
         // Given
         val error = "Test error"
-        val single: Single<List<UserViewModel>> = Single.create {
-            emitter ->
+        val single: Single<List<UserViewModel>> = Single.create { emitter ->
             emitter.onError(Exception(error))
         }
 
@@ -64,8 +62,7 @@ class UserListPresenterTest {
     fun testGetUsers_successCaseFirstPage_clearList() {
         // Given
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
-        val single: Single<List<UserViewModel>> = Single.create {
-            emitter ->
+        val single: Single<List<UserViewModel>> = Single.create { emitter ->
             emitter.onSuccess(users)
         }
 
@@ -85,8 +82,7 @@ class UserListPresenterTest {
     fun testGetUsers_successCaseMultipleTimes_clearListOnlyOnce() {
         // Given
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
-        val single: Single<List<UserViewModel>> = Single.create {
-            emitter ->
+        val single: Single<List<UserViewModel>> = Single.create { emitter ->
             emitter.onSuccess(users)
         }
 
@@ -109,8 +105,7 @@ class UserListPresenterTest {
     fun testGetUsers_forcedSuccessCaseMultipleTimes_clearListEveryTime() {
         // Given
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
-        val single: Single<List<UserViewModel>> = Single.create {
-            emitter ->
+        val single: Single<List<UserViewModel>> = Single.create { emitter ->
             emitter.onSuccess(users)
         }
 
@@ -135,7 +130,7 @@ class UserListPresenterTest {
 
         // Then
         verify(mockGetUsers, times(1))
-                .execute(ArgumentMatchers.anyInt(), ArgumentMatchers.anyBoolean())
+            .execute(ArgumentMatchers.anyInt(), ArgumentMatchers.anyBoolean())
     }
 
     @Test
@@ -144,7 +139,7 @@ class UserListPresenterTest {
 
         // Then
         verify(mockGetUsers, times(2))
-                .execute(ArgumentMatchers.anyInt(), ArgumentMatchers.anyBoolean())
+            .execute(ArgumentMatchers.anyInt(), ArgumentMatchers.anyBoolean())
     }
 
     @Test
@@ -165,15 +160,16 @@ class UserListPresenterTest {
     private fun getUsersWithLoadingDelay() {
         // Given
         val users = listOf(UserViewModel(1, "Name", 1000, ""))
-        val single: Single<List<UserViewModel>> = Single.create {
-            emitter ->
+        val single: Single<List<UserViewModel>> = Single.create { emitter ->
             emitter.onSuccess(users)
         }
 
         val delayedSingle = single.delay(2, TimeUnit.SECONDS, testScheduler)
 
         // When
-        `when`(mockGetUsers.execute(Mockito.anyInt(), Mockito.anyBoolean())).thenReturn(delayedSingle)
+        `when`(mockGetUsers.execute(Mockito.anyInt(), Mockito.anyBoolean())).thenReturn(
+            delayedSingle
+        )
 
         userListPresenter.attachView(mockView)
         userListPresenter.getUsers()

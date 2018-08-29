@@ -12,8 +12,9 @@ import javax.inject.Singleton
 
 @Module
 class TestApplicationModule(
-        private val userRepository: UserRepository = FakeUserRepository(),
-        private val detailsRepository: DetailsRepository = FakeDetailsRepository()) {
+    private val userRepository: UserRepository = FakeUserRepository(),
+    private val detailsRepository: DetailsRepository = FakeDetailsRepository()
+) {
 
     @Provides
     @Singleton

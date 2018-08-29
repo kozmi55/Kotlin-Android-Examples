@@ -1,8 +1,5 @@
-package com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters
 
-/**
- * Created by Tamas_Kozmer on 7/6/2017.
- */
 interface ViewType {
     fun getViewType(): Int
 }

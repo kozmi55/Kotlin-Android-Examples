@@ -3,7 +3,6 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,7 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.DetailPre
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
-import com.example.tamaskozmer.kotlinrxexample.util.customApplication
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.DetailsAdapter
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.DetailsAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_details.*
 import javax.inject.Inject

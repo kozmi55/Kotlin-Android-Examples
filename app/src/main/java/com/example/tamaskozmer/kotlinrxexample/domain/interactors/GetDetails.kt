@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class GetDetails @Inject constructor(private val detailsRepository: DetailsRepository) {
 
-    fun execute(userId: Long, forced: Boolean) : Single<DetailsViewModel> {
+    fun execute(userId: Long, forced: Boolean): Single<DetailsViewModel> {
         return Single.zip(
                 detailsRepository.getQuestionsByUser(userId, forced),
                 getTitlesForAnswers(userId, forced),
@@ -22,7 +22,7 @@ class GetDetails @Inject constructor(private val detailsRepository: DetailsRepos
                     createDetailsModel(questions, answers, favorites) })
     }
 
-    private fun getTitlesForAnswers(userId: Long, forced: Boolean) : Single<List<AnswerViewModel>> {
+    private fun getTitlesForAnswers(userId: Long, forced: Boolean): Single<List<AnswerViewModel>> {
         return detailsRepository.getAnswersByUser(userId, forced)
                 .flatMap { answers: List<Answer> ->
                     mapAnswersToAnswerViewModels(answers, userId, forced) }
@@ -39,15 +39,18 @@ class GetDetails @Inject constructor(private val detailsRepository: DetailsRepos
                     createAnswerViewModels(answers, questions) }
     }
 
-    private fun createAnswerViewModels(answers: List<Answer>, questions: List<Question>) : List<AnswerViewModel> {
+    private fun createAnswerViewModels(answers: List<Answer>, questions: List<Question>): List<AnswerViewModel> {
         return answers.map { (answerId, questionId, score, accepted) ->
             val question = questions.find { it.questionId == questionId }
             AnswerViewModel(answerId, score, accepted, question?.title ?: "Unknown")
         }
     }
 
-    private fun createDetailsModel(questions: List<Question>, answers: List<AnswerViewModel>,
-                                   favorites: List<Question>): DetailsViewModel {
+    private fun createDetailsModel(
+        questions: List<Question>,
+        answers: List<AnswerViewModel>,
+        favorites: List<Question>
+    ): DetailsViewModel {
         val questionViewModels =
                 questions.map { QuestionViewModel(it.viewCount, it.score, it.title, it.link, it.questionId) }
         val favoriteViewModels =

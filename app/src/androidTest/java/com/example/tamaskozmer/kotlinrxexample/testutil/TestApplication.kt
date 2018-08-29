@@ -6,7 +6,6 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-
 class TestApplication : Application(), HasSupportFragmentInjector {
 
     @Inject

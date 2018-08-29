@@ -10,17 +10,15 @@ import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
-/**
- * Created by Tamas_Kozmer on 7/4/2017.
- */
-class DefaultUserRepository(
-        private val userService: UserService,
-        private val userDao: UserDao,
-        private val connectionHelper: ConnectionHelper,
-        private val preferencesHelper: PreferencesHelper,
-        private val calendarWrapper: CalendarWrapper) : UserRepository {
+private const val LAST_UPDATE_KEY = "last_update_page_"
 
-    private val LAST_UPDATE_KEY = "last_update_page_"
+class DefaultUserRepository(
+    private val userService: UserService,
+    private val userDao: UserDao,
+    private val connectionHelper: ConnectionHelper,
+    private val preferencesHelper: PreferencesHelper,
+    private val calendarWrapper: CalendarWrapper
+) : UserRepository {
 
     override fun getUsers(page: Int, forced: Boolean): Single<UserListModel> {
         return Single.create<UserListModel> { emitter: SingleEmitter<UserListModel> ->

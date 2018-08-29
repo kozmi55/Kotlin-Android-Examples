@@ -15,18 +15,16 @@ import com.example.tamaskozmer.kotlinrxexample.util.PreferencesHelper
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
-/**
- * Created by Tamas_Kozmer on 7/18/2017.
- */
 class DefaultDetailsRepository(
-        private val userService: UserService,
-        private val questionService: QuestionService,
-        private val questionDao: QuestionDao,
-        private val answerDao: AnswerDao,
-        private val favoritedByUserDao: FavoritedByUserDao,
-        private val connectionHelper: ConnectionHelper,
-        private val preferencesHelper: PreferencesHelper,
-        private val calendarWrapper: CalendarWrapper) : DetailsRepository{
+    private val userService: UserService,
+    private val questionService: QuestionService,
+    private val questionDao: QuestionDao,
+    private val answerDao: AnswerDao,
+    private val favoritedByUserDao: FavoritedByUserDao,
+    private val connectionHelper: ConnectionHelper,
+    private val preferencesHelper: PreferencesHelper,
+    private val calendarWrapper: CalendarWrapper
+) : DetailsRepository {
 
     override fun getQuestionsByUser(userId: Long, forced: Boolean): Single<List<Question>> {
         val onlineStrategy = {
@@ -100,10 +98,10 @@ class DefaultDetailsRepository(
             questionDao.getQuestionsById(ids)
         }
 
-        return createSingle<List<Question>>("last_update_questions_by_ids_for_user_$userId", onlineStrategy, offlineStrategy, forced)
+        return createSingle("last_update_questions_by_ids_for_user_$userId", onlineStrategy, offlineStrategy, forced)
     }
 
-    private fun <T> createSingle(lastUpdateKey: String, onlineStrategy: () -> T, offlineStrategy: () -> T, forced: Boolean) : Single<T> {
+    private fun <T> createSingle(lastUpdateKey: String, onlineStrategy: () -> T, offlineStrategy: () -> T, forced: Boolean): Single<T> {
         return Single.create<T> { emitter: SingleEmitter<T> ->
             if (shouldUpdate(lastUpdateKey, forced)) {
                 try {

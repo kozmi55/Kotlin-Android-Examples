@@ -1,10 +1,9 @@
 package com.example.tamaskozmer.kotlinrxexample.util
 
+import android.annotation.SuppressLint
 import android.transition.Transition
 
-/**
- * Created by Tamas_Kozmer on 7/7/2017.
- */
+@SuppressLint("NewApi")
 open class TransitionListener : Transition.TransitionListener {
     override fun onTransitionEnd(p0: Transition?) {
     }

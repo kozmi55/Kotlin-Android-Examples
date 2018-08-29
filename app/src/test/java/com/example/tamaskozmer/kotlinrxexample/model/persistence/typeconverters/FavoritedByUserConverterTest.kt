@@ -39,7 +39,7 @@ class FavoritedByUserConverterTest {
 
     @Test
     fun testToString_notEmptyList_stringIsCorrect() {
-        val result = favoritedByUserConverter.toString(listOf(123L,1234L))
+        val result = favoritedByUserConverter.toString(listOf(123L, 1234L))
         Assert.assertEquals("123;1234", result)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.view.activities
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle

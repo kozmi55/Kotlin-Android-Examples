@@ -1,24 +1,24 @@
-package com.example.tamaskozmer.kotlinrxexample.view.adapters
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters
 
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters.AnswerDelegateAdapter
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters.HeadingDelegateAdapter
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters.LoadingDelegateAdapter
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters.QuestionDelegateAdapter
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters.UserDetailsDelegateAdapter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.Heading
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
 
-/**
- * Created by Tamas_Kozmer on 7/6/2017.
- */
-class DetailsAdapter(private val listener: (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DetailsAdapter(listener: (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: MutableList<ViewType>
+    private var items: MutableList<ViewType> = ArrayList()
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
     private val loadingItem = object : ViewType {
         override fun getViewType() = AdapterConstants.LOADING
     }
 
     init {
-        items = ArrayList()
         delegateAdapters.put(AdapterConstants.USER_DETAILS, UserDetailsDelegateAdapter())
         delegateAdapters.put(AdapterConstants.HEADING, HeadingDelegateAdapter())
         delegateAdapters.put(AdapterConstants.QUESTION, QuestionDelegateAdapter(listener))
@@ -26,11 +26,11 @@ class DetailsAdapter(private val listener: (String) -> Unit) : RecyclerView.Adap
         delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            = delegateAdapters[viewType].onCreateViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            delegateAdapters[viewType].onCreateViewHolder(parent)
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int)
-            = delegateAdapters[getItemViewType(position)].onBindViewHolder(holder, items[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
+            delegateAdapters[getItemViewType(position)].onBindViewHolder(holder, items[position])
 
     override fun getItemCount(): Int = items.size
 

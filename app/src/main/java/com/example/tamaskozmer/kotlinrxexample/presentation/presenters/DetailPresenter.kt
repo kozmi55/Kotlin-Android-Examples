@@ -5,19 +5,17 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
 import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
 import javax.inject.Inject
 
-/**
- * Created by Tamas_Kozmer on 7/5/2017.
- */
 class DetailPresenter @Inject constructor(
-        private val getDetails: GetDetails,
-        private val schedulerProvider: SchedulerProvider) : BasePresenter<DetailView>() {
+    private val getDetails: GetDetails,
+    private val schedulerProvider: SchedulerProvider
+) : BasePresenter<DetailView>() {
 
     fun getDetails(id: Long, forced: Boolean = false) {
         view?.showLoading()
         getDetails.execute(id, forced)
                 .subscribeOn(schedulerProvider.ioScheduler())
                 .observeOn(schedulerProvider.uiScheduler())
-                .subscribe ({
+                .subscribe({
                     detailsModel ->
                     view?.hideLoading()
                     view?.showDetails(detailsModel)

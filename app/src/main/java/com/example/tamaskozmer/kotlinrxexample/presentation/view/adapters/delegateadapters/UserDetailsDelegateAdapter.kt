@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.view.adapters
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters
 
 import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
@@ -9,16 +9,14 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.User
 import com.example.tamaskozmer.kotlinrxexample.util.inflate
 import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
 import com.example.tamaskozmer.kotlinrxexample.util.loadUrl
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.ViewType
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.ViewTypeDelegateAdapter
 import kotlinx.android.synthetic.main.list_item_user_details.view.*
 
-/**
- * Created by Tamas_Kozmer on 7/6/2017.
- */
 class UserDetailsDelegateAdapter : ViewTypeDelegateAdapter {
 
-    override fun onCreateViewHolder(parent: ViewGroup)
-            = UserDetailsViewHolder(parent.inflate(R.layout.list_item_user_details))
+    override fun onCreateViewHolder(parent: ViewGroup) =
+            UserDetailsViewHolder(parent.inflate(R.layout.list_item_user_details))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         holder as UserDetailsViewHolder

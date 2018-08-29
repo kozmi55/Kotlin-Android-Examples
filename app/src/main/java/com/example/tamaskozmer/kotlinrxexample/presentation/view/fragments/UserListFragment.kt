@@ -1,7 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,9 +11,8 @@ import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
-import com.example.tamaskozmer.kotlinrxexample.util.customApplication
-import com.example.tamaskozmer.kotlinrxexample.view.activities.MainActivity
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.UserListAdapter
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.activities.MainActivity
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.UserListAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_user_list.*
 import javax.inject.Inject
@@ -56,7 +54,6 @@ class UserListFragment : DaggerFragment(), UserListView {
         presenter.detachView()
         super.onDestroyView()
     }
-
 
     private fun initViews() {
         swipeRefreshLayout.setOnRefreshListener {

@@ -2,17 +2,15 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.AdapterConstants
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.AdapterConstants
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.ViewType
 
-/**
- * Created by Tamas_Kozmer on 7/14/2017.
- */
 data class UserViewModel(
-        val userId: Long,
-        val displayName: String,
-        val reputation: Long,
-        val profileImage: String) : Parcelable, ViewType {
+    val userId: Long,
+    val displayName: String,
+    val reputation: Long,
+    val profileImage: String
+) : Parcelable, ViewType {
 
     override fun getViewType(): Int = AdapterConstants.USER_DETAILS
 

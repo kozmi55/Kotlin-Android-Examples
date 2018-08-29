@@ -10,10 +10,10 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.Question
 interface QuestionDao {
 
     @Query("SELECT * FROM question WHERE userId = :userId ORDER BY score DESC LIMIT 3")
-    fun getQuestionsByUser(userId: Long) : List<Question>
+    fun getQuestionsByUser(userId: Long): List<Question>
 
     @Query("SELECT * FROM question WHERE questionId IN (:questionIds) ORDER BY score DESC")
-    fun getQuestionsById(questionIds: List<Long>) : List<Question>
+    fun getQuestionsById(questionIds: List<Long>): List<Question>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(questions: List<Question>)

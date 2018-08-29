@@ -6,8 +6,9 @@ import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
 import javax.inject.Inject
 
 class UserListPresenter @Inject constructor(
-        private val getUsers: GetUsers,
-        private val schedulerProvider: SchedulerProvider) : BasePresenter<UserListView>() {
+    private val getUsers: GetUsers,
+    private val schedulerProvider: SchedulerProvider
+) : BasePresenter<UserListView>() {
 
     private val offset = 5
 

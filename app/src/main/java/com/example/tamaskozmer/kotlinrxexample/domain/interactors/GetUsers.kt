@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetUsers @Inject constructor(private val userRepository: UserRepository) {
 
-    fun execute(page: Int, forced: Boolean) : Single<List<UserViewModel>> {
+    fun execute(page: Int, forced: Boolean): Single<List<UserViewModel>> {
         val usersList = userRepository.getUsers(page, forced)
         return usersList.map { userListModel: UserListModel? ->
             val items = userListModel?.items ?: emptyList()

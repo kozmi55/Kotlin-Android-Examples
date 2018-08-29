@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.view.adapters
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters
 
 import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
@@ -11,12 +11,10 @@ import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
 import com.example.tamaskozmer.kotlinrxexample.util.loadUrl
 import kotlinx.android.synthetic.main.list_item_user.view.*
 
-/**
- * Created by Tamas_Kozmer on 7/3/2017.
- */
 class UserListAdapter(
-        private val users: MutableList<UserViewModel>,
-        private val listener: (UserViewModel, View) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+    private val users: MutableList<UserViewModel>,
+    private val listener: (UserViewModel, View) -> Unit
+) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     override fun getItemCount() = users.size
 
@@ -44,5 +42,4 @@ class UserListAdapter(
             isLollipopOrAbove { userAvatar.transitionName = "transition${user.userId}" }
         }
     }
-
 }

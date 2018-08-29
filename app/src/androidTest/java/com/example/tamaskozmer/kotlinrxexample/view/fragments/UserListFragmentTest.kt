@@ -19,7 +19,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.testutil.RecyclerViewMatcher
 import com.example.tamaskozmer.kotlinrxexample.testutil.TestInjector
-import com.example.tamaskozmer.kotlinrxexample.view.activities.MainActivity
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.activities.MainActivity
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import org.hamcrest.Matchers
@@ -30,7 +30,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.Mockito.`when` as whenever
-
 
 @RunWith(AndroidJUnit4::class)
 class UserListFragmentTest {

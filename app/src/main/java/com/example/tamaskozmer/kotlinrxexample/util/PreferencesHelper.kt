@@ -15,7 +15,7 @@ class PreferencesHelper(private val context: Context) {
         editor.commit()
     }
 
-    fun loadLong(key: String) : Long {
+    fun loadLong(key: String): Long {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         return preferences.getLong(key, 0L)
     }

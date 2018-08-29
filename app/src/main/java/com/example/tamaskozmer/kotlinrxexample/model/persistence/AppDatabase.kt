@@ -19,8 +19,8 @@ import com.example.tamaskozmer.kotlinrxexample.model.persistence.typeconverters.
 @Database(entities = arrayOf(User::class, Question::class, Answer::class, FavoritedByUser::class), version = 1)
 @TypeConverters(FavoritedByUserConverter::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao() : UserDao
-    abstract fun questionDao() : QuestionDao
-    abstract fun answerDao() : AnswerDao
-    abstract fun favoritedByUserDao() : FavoritedByUserDao
+    abstract fun userDao(): UserDao
+    abstract fun questionDao(): QuestionDao
+    abstract fun answerDao(): AnswerDao
+    abstract fun favoritedByUserDao(): FavoritedByUserDao
 }

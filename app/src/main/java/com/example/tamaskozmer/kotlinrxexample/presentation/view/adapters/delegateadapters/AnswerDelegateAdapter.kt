@@ -1,4 +1,4 @@
-package com.example.tamaskozmer.kotlinrxexample.view.adapters
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -6,15 +6,13 @@ import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.AnswerViewModel
 import com.example.tamaskozmer.kotlinrxexample.util.inflate
-import com.example.tamaskozmer.kotlinrxexample.view.adapters.viewtypes.ViewType
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.ViewType
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.ViewTypeDelegateAdapter
 import kotlinx.android.synthetic.main.list_item_answer.view.*
 
-/**
- * Created by Tamas_Kozmer on 7/6/2017.
- */
 class AnswerDelegateAdapter(private val listener: (String) -> Unit) : ViewTypeDelegateAdapter {
-    override fun onCreateViewHolder(parent: ViewGroup)
-            = AnswerViewHolder(parent.inflate(R.layout.list_item_answer))
+    override fun onCreateViewHolder(parent: ViewGroup) =
+            AnswerViewHolder(parent.inflate(R.layout.list_item_answer))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         holder as AnswerViewHolder

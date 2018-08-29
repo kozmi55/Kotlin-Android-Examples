@@ -10,7 +10,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 interface UserDao {
     // TODO Find a more optimal solution
     @Query("SELECT * FROM user ORDER BY reputation DESC LIMIT (:page - 1) * 30, 30")
-    fun getUsers(page: Int) : List<User>
+    fun getUsers(page: Int): List<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(users: List<User>)
