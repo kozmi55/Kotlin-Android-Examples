@@ -13,11 +13,4 @@ class TestApplication : Application(), HasSupportFragmentInjector {
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
     override fun supportFragmentInjector() = fragmentInjector
-
-//    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-//        return DaggerMockApplicationComponent
-//                .builder()
-//                .appModule(MockApplicationModule(userRepository))
-//                .create(this)
-//    }
 }

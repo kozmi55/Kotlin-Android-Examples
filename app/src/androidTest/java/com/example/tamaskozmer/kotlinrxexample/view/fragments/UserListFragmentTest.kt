@@ -1,7 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.view.fragments
 
 import android.content.Intent
-import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions
@@ -14,13 +13,12 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.v7.widget.RecyclerView
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.mocks.di.components.DaggerMockApplicationComponent
 import com.example.tamaskozmer.kotlinrxexample.mocks.di.modules.TestApplicationModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.testutil.RecyclerViewMatcher
-import com.example.tamaskozmer.kotlinrxexample.testutil.TestApplication
+import com.example.tamaskozmer.kotlinrxexample.testutil.TestInjector
 import com.example.tamaskozmer.kotlinrxexample.view.activities.MainActivity
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
@@ -52,14 +50,7 @@ class UserListFragmentTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val app = instrumentation.targetContext.applicationContext as TestApplication
-
-        DaggerMockApplicationComponent
-                .builder()
-                .appModule(TestApplicationModule(mockUserRepository))
-                .create(app)
-                .inject(app)
+        TestInjector(TestApplicationModule(mockUserRepository)).inject()
     }
 
     @Test

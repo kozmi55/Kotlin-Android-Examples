@@ -1,6 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.mocks.di.modules
 
 import com.example.tamaskozmer.kotlinrxexample.mocks.model.repositories.FakeDetailsRepository
+import com.example.tamaskozmer.kotlinrxexample.mocks.model.repositories.FakeUserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.DetailsRepository
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.util.AppSchedulerProvider
@@ -10,7 +11,9 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class TestApplicationModule(private val userRepository: UserRepository) {
+class TestApplicationModule(
+        private val userRepository: UserRepository = FakeUserRepository(),
+        private val detailsRepository: DetailsRepository = FakeDetailsRepository()) {
 
     @Provides
     @Singleton
@@ -21,7 +24,7 @@ class TestApplicationModule(private val userRepository: UserRepository) {
     @Provides
     @Singleton
     fun provideDetailsRepository(): DetailsRepository {
-        return FakeDetailsRepository()
+        return detailsRepository
     }
 
     @Provides
