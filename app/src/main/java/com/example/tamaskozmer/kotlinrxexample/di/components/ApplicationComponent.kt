@@ -13,6 +13,5 @@ import javax.inject.Singleton
 interface ApplicationComponent : AndroidInjector<CustomApplication> {
 
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<CustomApplication>() {
-    }
+    abstract class Builder : AndroidInjector.Builder<CustomApplication>()
 }

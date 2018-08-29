@@ -10,9 +10,6 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
 
-/**
- * Created by Tamas_Kozmer on 7/3/2017.
- */
 fun ViewGroup.inflate(layoutRes: Int): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, false)
 }

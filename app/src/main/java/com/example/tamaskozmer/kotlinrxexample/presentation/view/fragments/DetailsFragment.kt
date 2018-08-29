@@ -63,7 +63,7 @@ class DetailsFragment : DaggerFragment(), DetailView {
     }
 
     private fun initAdapter() {
-        detailsRecyclerView.layoutManager = LinearLayoutManager(customApplication)
+        detailsRecyclerView.layoutManager = LinearLayoutManager(context)
         detailsRecyclerView.adapter = detailsAdapter
     }
 
@@ -94,7 +94,7 @@ class DetailsFragment : DaggerFragment(), DetailView {
     }
 
     override fun showError(error: String) {
-        Toast.makeText(customApplication, error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
     override fun showLoading() {

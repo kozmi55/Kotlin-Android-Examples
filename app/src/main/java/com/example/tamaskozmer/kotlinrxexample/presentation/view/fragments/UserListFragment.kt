@@ -96,7 +96,7 @@ class UserListFragment : DaggerFragment(), UserListView {
     // endregion
 
     private fun initAdapter() {
-        layoutManager = LinearLayoutManager(customApplication)
+        layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter = adapter

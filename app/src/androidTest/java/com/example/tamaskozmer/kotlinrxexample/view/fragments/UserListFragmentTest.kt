@@ -1,7 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.view.fragments
 
 import android.content.Intent
-import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions
@@ -13,10 +12,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.v7.widget.RecyclerView
-import com.example.tamaskozmer.kotlinrxexample.CustomApplication
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.mocks.di.components.DaggerMockApplicationComponent
-import com.example.tamaskozmer.kotlinrxexample.mocks.di.modules.MockApplicationModule
 import com.example.tamaskozmer.kotlinrxexample.model.entities.User
 import com.example.tamaskozmer.kotlinrxexample.model.entities.UserListModel
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
@@ -34,9 +30,6 @@ import org.mockito.MockitoAnnotations
 import org.mockito.Mockito.`when` as whenever
 
 
-/**
- * Created by Tamas_Kozmer on 8/8/2017.
- */
 @RunWith(AndroidJUnit4::class)
 class UserListFragmentTest {
 
@@ -54,14 +47,6 @@ class UserListFragmentTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-
-        val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val app = instrumentation.targetContext.applicationContext as CustomApplication
-
-        val testComponent = DaggerMockApplicationComponent.builder()
-                .mockApplicationModule(MockApplicationModule(mockUserRepository))
-                .build()
-        app.component = testComponent
     }
 
     @Test
