@@ -3,17 +3,8 @@ apply plugin: "io.gitlab.arturbosch.detekt"
 detekt {
     version = DETEKT_VERSION
     profile("main") {
-        input = "$projectDir/src/main/java"
+        input = "$projectDir/src/main/java, $projectDir/src/test/java, $projectDir/src/androidTest/java"
         config = "${project.rootDir}/detekt-config.yml"
-        filters = ".*/resources/.*,.*/tmp/.*"
-    }
-    /**
-     * To run a specific profile add -Ddetekt.profile=<profile name>  for example:
-     * ./gradlew check -Ddetekt.profile=test
-     */
-    profile("test") {
-        input = "$projectDir/src/test/java"
-        config = "${project.rootDir}/detekt-test.yml"
         filters = ".*/resources/.*,.*/tmp/.*"
     }
 }
