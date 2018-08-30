@@ -13,10 +13,7 @@ import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.QuestionDa
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.daos.UserDao
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.typeconverters.FavoritedByUserConverter
 
-/**
- * Created by Tamas_Kozmer on 7/14/2017.
- */
-@Database(entities = arrayOf(User::class, Question::class, Answer::class, FavoritedByUser::class), version = 1)
+@Database(entities = [(User::class), (Question::class), (Answer::class), (FavoritedByUser::class)], version = 1)
 @TypeConverters(FavoritedByUserConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao

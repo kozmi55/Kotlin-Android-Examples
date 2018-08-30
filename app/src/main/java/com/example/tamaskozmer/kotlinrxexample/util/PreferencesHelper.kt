@@ -3,9 +3,6 @@ package com.example.tamaskozmer.kotlinrxexample.util
 import android.content.Context
 import android.preference.PreferenceManager
 
-/**
- * Created by Tamas_Kozmer on 7/26/2017.
- */
 class PreferencesHelper(private val context: Context) {
 
     fun saveLong(key: String, value: Long) {

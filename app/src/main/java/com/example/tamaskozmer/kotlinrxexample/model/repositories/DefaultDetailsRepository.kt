@@ -41,7 +41,7 @@ class DefaultDetailsRepository(
             questionDao.getQuestionsByUser(userId)
         }
 
-        return createSingle<List<Question>>("last_update_questions_by_user_$userId", onlineStrategy, offlineStrategy, forced)
+        return createSingle("last_update_questions_by_user_$userId", onlineStrategy, offlineStrategy, forced)
     }
 
     override fun getAnswersByUser(userId: Long, forced: Boolean): Single<List<Answer>> {
@@ -59,7 +59,7 @@ class DefaultDetailsRepository(
             answerDao.getAnswersByUser(userId)
         }
 
-        return createSingle<List<Answer>>("last_update_answers_by_user_$userId", onlineStrategy, offlineStrategy, forced)
+        return createSingle("last_update_answers_by_user_$userId", onlineStrategy, offlineStrategy, forced)
     }
 
     override fun getFavoritesByUser(userId: Long, forced: Boolean): Single<List<Question>> {
@@ -82,7 +82,7 @@ class DefaultDetailsRepository(
                     .take(Constants.NUMBER_OF_ITEMS_IN_SECTION)
         }
 
-        return createSingle<List<Question>>("last_update_favorites_by_user_$userId", onlineStrategy, offlineStrategy, forced)
+        return createSingle("last_update_favorites_by_user_$userId", onlineStrategy, offlineStrategy, forced)
     }
 
     override fun getQuestionsById(ids: List<Long>, userId: Long, forced: Boolean): Single<List<Question>> {

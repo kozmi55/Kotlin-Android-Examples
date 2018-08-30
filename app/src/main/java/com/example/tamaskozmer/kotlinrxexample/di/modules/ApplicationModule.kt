@@ -27,7 +27,7 @@ private const val BASE_URL = "https://api.stackexchange.com/2.2/"
 private const val DATABASE_NAME = "db-name"
 
 @Module
-class ApplicationModule() {
+class ApplicationModule {
 
     @Provides
     @Singleton

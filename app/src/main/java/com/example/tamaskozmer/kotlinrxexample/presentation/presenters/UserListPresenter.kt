@@ -5,12 +5,12 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
 import javax.inject.Inject
 
+private const val INFINITE_LOADING_OFFSET = 5
+
 class UserListPresenter @Inject constructor(
     private val getUsers: GetUsers,
     private val schedulerProvider: SchedulerProvider
 ) : BasePresenter<UserListView>() {
-
-    private val offset = 5
 
     private var page = 1
     private var loading = false
@@ -52,7 +52,7 @@ class UserListPresenter @Inject constructor(
 
     fun onScrollChanged(lastVisibleItemPosition: Int, totalItemCount: Int) {
         if (!loading) {
-            if (lastVisibleItemPosition >= totalItemCount - offset) {
+            if (lastVisibleItemPosition >= totalItemCount - INFINITE_LOADING_OFFSET) {
                 getUsers()
             }
         }
