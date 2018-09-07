@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.databinding.FragmentUserListBinding
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.activities.MainActivity
@@ -43,8 +44,20 @@ class UserListFragmentWithViewModel : DaggerFragment() {
         userListViewModel =
                 ViewModelProviders.of(this, viewModelFactory).get(UserListViewModel::class.java)
 
+        addObservers()
+
+        userListViewModel.getUsers()
+    }
+
+    private fun addObservers() {
         userListViewModel.showLoading.observe(this, Observer {
             swipeRefreshLayout.isRefreshing = it != null && it
+        })
+
+        userListViewModel.showError.observe(this, Observer {
+            if (it == true && userListViewModel.userList.value?.isNotEmpty() == true) {
+                Toast.makeText(context, "Error loading data", Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
@@ -66,8 +79,6 @@ class UserListFragmentWithViewModel : DaggerFragment() {
 
         initSwipeRefreshLayout()
         initRecyclerView()
-
-        userListViewModel.getUsers()
     }
 
     private fun initSwipeRefreshLayout() {

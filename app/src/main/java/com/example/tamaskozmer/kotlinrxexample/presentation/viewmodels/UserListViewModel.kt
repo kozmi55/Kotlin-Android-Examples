@@ -16,6 +16,7 @@ class UserListViewModel @Inject constructor(
 
     val userList: MutableLiveData<List<UserViewModel>> = MutableLiveData()
     val showLoading: MutableLiveData<Boolean> = MutableLiveData()
+    val showError: MutableLiveData<Boolean> = MutableLiveData()
 
     private var loading = false
         set(value) {
@@ -34,6 +35,7 @@ class UserListViewModel @Inject constructor(
 
     init {
         userList.value = users
+        showError.value = false
     }
 
     fun getUsers(forced: Boolean = false) {
@@ -43,6 +45,7 @@ class UserListViewModel @Inject constructor(
             .subscribeOn(schedulerProvider.ioScheduler())
             .observeOn(schedulerProvider.uiScheduler())
             .subscribe({ users ->
+                showError.value = false
                 if (forced) {
                     resetPaging()
                 }
@@ -55,6 +58,7 @@ class UserListViewModel @Inject constructor(
                 page++
             },
                 {
+                    showError.value = true
                     loading = false
                 })
     }

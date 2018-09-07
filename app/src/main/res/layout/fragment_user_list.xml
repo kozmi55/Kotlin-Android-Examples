@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.example.tamaskozmer.kotlinrxexample.presentation.viewmodels.UserListViewModel" />
@@ -24,7 +26,7 @@
             android:drawableTop="@drawable/ic_error"
             android:padding="16dp"
             android:text="@string/user_list_error"
-            android:visibility="gone" />
+            android:visibility="@{viewModel.userList.isEmpty() &amp;&amp; viewModel.showError ? View.VISIBLE : View.GONE}" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
