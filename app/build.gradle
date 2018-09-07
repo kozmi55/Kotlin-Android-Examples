@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 kapt {
@@ -69,6 +73,7 @@ dependencies {
     implementation "com.facebook.stetho:stetho:$STETHO_VERSION"
     implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
+    implementation "android.arch.lifecycle:extensions:$LIFECYCLE_VERSION"
 
     kapt "android.arch.persistence.room:compiler:$ROOM_VERSION"
     kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"

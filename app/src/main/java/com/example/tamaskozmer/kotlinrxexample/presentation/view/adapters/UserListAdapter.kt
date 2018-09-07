@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.util.BindableAdapter
 import com.example.tamaskozmer.kotlinrxexample.util.inflate
 import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
 import com.example.tamaskozmer.kotlinrxexample.util.loadUrl
@@ -14,13 +15,21 @@ import kotlinx.android.synthetic.main.list_item_user.view.*
 class UserListAdapter(
     private val users: MutableList<UserViewModel>,
     private val listener: (UserViewModel, View) -> Unit
-) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>(), BindableAdapter<List<UserViewModel>> {
+
+    override fun setData(items: List<UserViewModel>) {
+        users.clear()
+        users.addAll(items)
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount() = users.size
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) = holder.bind(users[position], listener)
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) =
+        holder.bind(users[position], listener)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = UserViewHolder(parent.inflate(R.layout.list_item_user))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        UserViewHolder(parent.inflate(R.layout.list_item_user))
 
     fun addUsers(newUsers: List<UserViewModel>) {
         users.addAll(newUsers)

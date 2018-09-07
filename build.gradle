@@ -31,6 +31,7 @@ ext {
     JUNIT_VERSION = '4.12'
     DEXMAKER_VERSION = '2.2.0'
     MOCKITO_VERSION = '2.8.47'
+    LIFECYCLE_VERSION = '1.1.1'
 }
 
 allprojects {

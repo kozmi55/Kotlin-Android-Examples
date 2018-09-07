@@ -10,10 +10,10 @@ import android.transition.Transition
 import android.transition.TransitionInflater
 import android.view.View
 import com.example.tamaskozmer.kotlinrxexample.R
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.DetailsFragment
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.UserListFragmentWithViewModel
 import com.example.tamaskozmer.kotlinrxexample.util.TransitionListener
 import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.DetailsFragment
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.UserListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,16 +31,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun addUserListFragment() {
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, UserListFragment())
-                .commit()
+            .beginTransaction()
+            .replace(R.id.fragmentContainer, UserListFragmentWithViewModel())
+            .commit()
     }
 
     fun addDetailsFragmentWithTransition(fragment: Fragment, transitioningView: View) {
         val transaction = supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .addToBackStack("")
+            .beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack("")
 
         isLollipopOrAbove {
             setUpTransition(fragment, transitioningView, transaction)
@@ -50,9 +50,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NewApi")
-    private fun setUpTransition(fragment: Fragment, transitioningView: View, transaction: FragmentTransaction?) {
+    private fun setUpTransition(
+        fragment: Fragment,
+        transitioningView: View,
+        transaction: FragmentTransaction?
+    ) {
         // Define the different transitions, what we will be using
-        val sharedTransition = TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transition)
+        val sharedTransition =
+            TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transition)
         sharedTransition.duration = SHARED_TRANSITION_DURATION
         sharedTransition.addListener(object : TransitionListener() {
             override fun onTransitionEnd(p0: Transition?) {

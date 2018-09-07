@@ -2,6 +2,7 @@ package com.example.tamaskozmer.kotlinrxexample.di.modules
 
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.DetailsFragment
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.UserListFragment
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.UserListFragmentWithViewModel
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -13,4 +14,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeUserDetailsFragment(): DetailsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeUserListFragmentWithViewModel(): UserListFragmentWithViewModel
 }
