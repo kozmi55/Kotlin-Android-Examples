@@ -1,7 +1,6 @@
 package com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -25,7 +24,10 @@ class UserListFragmentWithViewModel : DaggerFragment() {
     @Inject
     lateinit var getUsers: GetUsers
 
-    private lateinit var userListViewModel: UserListViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var userListViewModel: UserListViewModel
 
     private val adapter by lazy {
         val userList = mutableListOf<UserViewModel>()
@@ -38,7 +40,8 @@ class UserListFragmentWithViewModel : DaggerFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userListViewModel = ViewModelProviders.of(this, CustomViewModelFactory()).get(UserListViewModel::class.java)
+        userListViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(UserListViewModel::class.java)
 
         userListViewModel.showLoading.observe(this, Observer {
             swipeRefreshLayout.isRefreshing = it != null && it
@@ -97,11 +100,5 @@ class UserListFragmentWithViewModel : DaggerFragment() {
             detailsFragment,
             transitioningView
         )
-    }
-
-    inner class CustomViewModelFactory : ViewModelProvider.NewInstanceFactory() {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return UserListViewModel(getUsers) as T
-        }
     }
 }

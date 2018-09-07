@@ -4,12 +4,15 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
+import javax.inject.Inject
 
 private const val LOADING_OFFSET = 5
 
-class UserListViewModel(val getUsers: GetUsers) : ViewModel() {
+class UserListViewModel @Inject constructor(
+    private val getUsers: GetUsers,
+    private val schedulerProvider: SchedulerProvider
+) : ViewModel() {
 
     val userList: MutableLiveData<List<UserViewModel>> = MutableLiveData()
     val showLoading: MutableLiveData<Boolean> = MutableLiveData()
@@ -37,8 +40,8 @@ class UserListViewModel(val getUsers: GetUsers) : ViewModel() {
         loading = true
         val pageToRequest = if (forced) 1 else page
         getUsers.execute(pageToRequest, forced)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulerProvider.ioScheduler())
+            .observeOn(schedulerProvider.uiScheduler())
             .subscribe({ users ->
                 if (forced) {
                     resetPaging()
