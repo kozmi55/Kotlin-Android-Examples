@@ -20,6 +20,7 @@ This repository contains a couple of Android Development examples in Kotlin lang
 
 To build the the project you need Android Studio 3.0 or change the Gradle plugin to an older version.
 
-Related Medium article:
+Related Medium articles:
 
 https://blog.mindorks.com/how-to-make-complex-requests-simple-with-rxjava-in-kotlin-ccec004c5d10
+https://android.jlelse.eu/how-to-inject-mock-dependencies-into-android-components-using-dagger-androidinjector-e274c8f6a9a6
