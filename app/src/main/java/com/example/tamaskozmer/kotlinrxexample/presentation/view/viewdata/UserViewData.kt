@@ -1,11 +1,11 @@
-package com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels
+package com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.AdapterConstants
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.ViewType
 
-data class UserViewModel(
+data class UserViewData(
     val userId: Long,
     val displayName: String,
     val reputation: Long,
@@ -15,9 +15,9 @@ data class UserViewModel(
     override fun getViewType(): Int = AdapterConstants.USER_DETAILS
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<UserViewModel> = object : Parcelable.Creator<UserViewModel> {
-            override fun createFromParcel(source: Parcel): UserViewModel = UserViewModel(source)
-            override fun newArray(size: Int): Array<UserViewModel?> = arrayOfNulls(size)
+        @JvmField val CREATOR: Parcelable.Creator<UserViewData> = object : Parcelable.Creator<UserViewData> {
+            override fun createFromParcel(source: Parcel): UserViewData = UserViewData(source)
+            override fun newArray(size: Int): Array<UserViewData?> = arrayOfNulls(size)
         }
     }
 
