@@ -3,6 +3,7 @@
 This repository contains a couple of Android Development examples in Kotlin language. The following topics are covered:
 
 * MVP Architecture
+* MVVM Architecture with Android Architecture Components and Data Binding
 * Dependency injection with Dagger2 using the new AndroidInjector (Examples without it can also be found in older revisions)
 * Creating network requests with Retrofit
 * Persisting data with Room Persistence Library
@@ -18,9 +19,10 @@ This repository contains a couple of Android Development examples in Kotlin lang
 * Code quality checks using KtLint and Detekt
 * Injecting mock dependencies into Android components in tests
 
-To build the the project you need Android Studio 3.0 or change the Gradle plugin to an older version.
+The current implementation on master uses MVP Architecture with. If you want to check the implementation with the new Android Architecture components check out the following branch: [arch_components](https://github.com/kozmi55/Kotlin-Android-Examples/tree/arch_components)
 
 Related Medium articles:
 
-https://blog.mindorks.com/how-to-make-complex-requests-simple-with-rxjava-in-kotlin-ccec004c5d10
-https://android.jlelse.eu/how-to-inject-mock-dependencies-into-android-components-using-dagger-androidinjector-e274c8f6a9a6
+[How to make complex requests simple with RxJava in Kotlin](https://blog.mindorks.com/how-to-make-complex-requests-simple-with-rxjava-in-kotlin-ccec004c5d10)
+
+[How to inject mock dependencies into Android components using Dagger AndroidInjector](https://android.jlelse.eu/how-to-inject-mock-dependencies-into-android-components-using-dagger-androidinjector-e274c8f6a9a6)
