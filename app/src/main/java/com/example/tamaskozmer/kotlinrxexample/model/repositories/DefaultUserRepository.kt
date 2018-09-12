@@ -22,7 +22,10 @@ class DefaultUserRepository(
 
     override fun getUsers(page: Int, forced: Boolean): Single<UserListModel> {
         return Single.create<UserListModel> { emitter: SingleEmitter<UserListModel> ->
-            if (shouldUpdate(page, forced)) {
+            if (true) {
+                // Intentionally added delay in the request to be able to test app behavior with configuration changes
+                // TODO Remove when before merging to master
+                Thread.sleep(5000)
                 loadUsersFromNetwork(page, emitter)
             } else {
                 loadOfflineUsers(page, emitter)

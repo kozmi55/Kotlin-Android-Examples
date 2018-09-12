@@ -30,9 +30,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addUserListFragment() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) ?: UserListFragmentWithViewModel()
+
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainer, UserListFragmentWithViewModel())
+            .replace(R.id.fragmentContainer, fragment)
             .commit()
     }
 

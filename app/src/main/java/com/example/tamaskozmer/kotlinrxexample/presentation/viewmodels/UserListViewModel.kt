@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
 import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 private const val LOADING_OFFSET = 5
@@ -30,37 +31,52 @@ class UserListViewModel @Inject constructor(
             }
         }
 
-    private var page = 1
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val users = mutableListOf<UserViewModel>()
+
+    private var page = 1
+    private var initialized = false
 
     init {
         userList.value = users
         showError.value = false
     }
 
+    fun init() {
+        if (!initialized) {
+            getUsers(true)
+            initialized = true
+        }
+    }
+
     fun getUsers(forced: Boolean = false) {
         loading = true
         val pageToRequest = if (forced) 1 else page
-        getUsers.execute(pageToRequest, forced)
-            .subscribeOn(schedulerProvider.ioScheduler())
-            .observeOn(schedulerProvider.uiScheduler())
-            .subscribe({ users ->
-                showError.value = false
-                if (forced) {
-                    resetPaging()
-                }
-                if (page == 1) {
-                    this.users.clear()
-                }
-                this.users.addAll(users)
-                userList.value = this.users
-                loading = false
-                page++
-            },
-                {
-                    showError.value = true
+        compositeDisposable.add(
+            getUsers.execute(pageToRequest, forced)
+                .subscribeOn(schedulerProvider.ioScheduler())
+                .observeOn(schedulerProvider.uiScheduler())
+                .subscribe({ users ->
+                    showError.value = false
+                    if (forced) {
+                        resetPaging()
+                    }
+                    if (page == 1) {
+                        this.users.clear()
+                    }
+                    this.users.addAll(users)
+                    userList.value = this.users
                     loading = false
-                })
+                    page++
+                },
+                    {
+                        showError.value = true
+                        loading = false
+                        if (page == 1) {
+                            initialized = false
+                        }
+                    })
+        )
     }
 
     private fun resetPaging() {
@@ -79,4 +95,8 @@ class UserListViewModel @Inject constructor(
         }
     }
 
+    override fun onCleared() {
+        compositeDisposable.dispose()
+        super.onCleared()
+    }
 }

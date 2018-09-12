@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.tamaskozmer.kotlinrxexample.databinding.FragmentUserListBinding
+import com.example.tamaskozmer.kotlinrxexample.databinding.FragmentUserListWithVmBinding
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.activities.MainActivity
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.UserListAdapter
@@ -45,8 +45,6 @@ class UserListFragmentWithViewModel : DaggerFragment() {
                 ViewModelProviders.of(this, viewModelFactory).get(UserListViewModel::class.java)
 
         addObservers()
-
-        userListViewModel.getUsers()
     }
 
     private fun addObservers() {
@@ -66,7 +64,7 @@ class UserListFragmentWithViewModel : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentUserListBinding.inflate(inflater, container, false)
+        val binding = FragmentUserListWithVmBinding.inflate(inflater, container, false)
 
         binding.viewModel = userListViewModel
         binding.setLifecycleOwner(this)
@@ -79,6 +77,8 @@ class UserListFragmentWithViewModel : DaggerFragment() {
 
         initSwipeRefreshLayout()
         initRecyclerView()
+
+        userListViewModel.init()
     }
 
     private fun initSwipeRefreshLayout() {
