@@ -21,7 +21,7 @@ This repository contains a couple of Android Development examples in Kotlin lang
 
 The current implementation on master uses MVP Architecture with. If you want to check the implementation with the new Android Architecture components check out the following branch: [arch_components](https://github.com/kozmi55/Kotlin-Android-Examples/tree/arch_components)
 
-Related Medium articles:
+## Related Medium articles:
 
 [How to make complex requests simple with RxJava in Kotlin](https://blog.mindorks.com/how-to-make-complex-requests-simple-with-rxjava-in-kotlin-ccec004c5d10)
 
