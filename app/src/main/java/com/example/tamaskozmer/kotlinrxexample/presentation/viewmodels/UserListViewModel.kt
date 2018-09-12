@@ -3,7 +3,7 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.viewmodels
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.UserViewData
 import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -15,7 +15,7 @@ class UserListViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) : ViewModel() {
 
-    val userList: MutableLiveData<List<UserViewModel>> = MutableLiveData()
+    val userList: MutableLiveData<List<UserViewData>> = MutableLiveData()
     val showLoading: MutableLiveData<Boolean> = MutableLiveData()
     val showError: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -32,7 +32,7 @@ class UserListViewModel @Inject constructor(
         }
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val users = mutableListOf<UserViewModel>()
+    private val users = mutableListOf<UserViewData>()
 
     private var page = 1
     private var initialized = false

@@ -2,7 +2,7 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetDetails
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.DetailsViewData
 import com.example.tamaskozmer.kotlinrxexample.testutil.TestSchedulerProvider
 import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
@@ -41,7 +41,7 @@ class DetailPresenterTest {
         // Given
         val error = "Test error"
         val userId = 1L
-        val single: Single<DetailsViewModel> = Single.create {
+        val single: Single<DetailsViewData> = Single.create {
             emitter -> emitter.onError(Exception(error))
         }
 
@@ -62,9 +62,9 @@ class DetailPresenterTest {
     @Test
     fun testGetDetails_success() {
         // Given
-        val details = DetailsViewModel(emptyList(), emptyList(), emptyList())
+        val details = DetailsViewData(emptyList(), emptyList(), emptyList())
         val userId = 1L
-        val single: Single<DetailsViewModel> = Single.create {
+        val single: Single<DetailsViewData> = Single.create {
             emitter -> emitter.onSuccess(details)
         }
 

@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.UserViewData
 import com.example.tamaskozmer.kotlinrxexample.util.BindableAdapter
 import com.example.tamaskozmer.kotlinrxexample.util.inflate
 import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
@@ -13,11 +13,11 @@ import com.example.tamaskozmer.kotlinrxexample.util.loadUrl
 import kotlinx.android.synthetic.main.list_item_user.view.*
 
 class UserListAdapter(
-    private val users: MutableList<UserViewModel>,
-    private val listener: (UserViewModel, View) -> Unit
-) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>(), BindableAdapter<List<UserViewModel>> {
+    private val users: MutableList<UserViewData>,
+    private val listener: (UserViewData, View) -> Unit
+) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>(), BindableAdapter<List<UserViewData>> {
 
-    override fun setData(items: List<UserViewModel>) {
+    override fun setData(items: List<UserViewData>) {
         users.clear()
         users.addAll(items)
         notifyDataSetChanged()
@@ -31,7 +31,7 @@ class UserListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         UserViewHolder(parent.inflate(R.layout.list_item_user))
 
-    fun addUsers(newUsers: List<UserViewModel>) {
+    fun addUsers(newUsers: List<UserViewData>) {
         users.addAll(newUsers)
         notifyDataSetChanged()
     }
@@ -42,7 +42,7 @@ class UserListAdapter(
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("NewApi")
-        fun bind(user: UserViewModel, listener: (UserViewModel, View) -> Unit) = with(itemView) {
+        fun bind(user: UserViewData, listener: (UserViewData, View) -> Unit) = with(itemView) {
             name.text = user.displayName
             reputation.text = "${user.reputation} points"
             userAvatar.loadUrl(user.profileImage)

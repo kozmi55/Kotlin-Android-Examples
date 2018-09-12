@@ -14,7 +14,7 @@ import com.example.tamaskozmer.kotlinrxexample.databinding.FragmentUserListWithV
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.activities.MainActivity
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.UserListAdapter
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.UserViewData
 import com.example.tamaskozmer.kotlinrxexample.presentation.viewmodels.UserListViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_user_list.*
@@ -31,7 +31,7 @@ class UserListFragmentWithViewModel : DaggerFragment() {
     lateinit var userListViewModel: UserListViewModel
 
     private val adapter by lazy {
-        val userList = mutableListOf<UserViewModel>()
+        val userList = mutableListOf<UserViewData>()
         UserListAdapter(userList) { user, view ->
             openDetailFragment(user, view)
         }
@@ -105,7 +105,7 @@ class UserListFragmentWithViewModel : DaggerFragment() {
         })
     }
 
-    private fun openDetailFragment(user: UserViewModel, transitioningView: View) {
+    private fun openDetailFragment(user: UserViewData, transitioningView: View) {
         val detailsFragment = DetailsFragment.newInstance(user)
         (activity as MainActivity).addDetailsFragmentWithTransition(
             detailsFragment,

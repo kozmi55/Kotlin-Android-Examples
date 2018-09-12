@@ -2,7 +2,7 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.UserViewData
 import com.example.tamaskozmer.kotlinrxexample.testutil.TestSchedulerProvider
 import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
@@ -41,7 +41,7 @@ class UserListPresenterTest {
     fun testGetUsers_errorCase_showError() {
         // Given
         val error = "Test error"
-        val single: Single<List<UserViewModel>> = Single.create { emitter ->
+        val single: Single<List<UserViewData>> = Single.create { emitter ->
             emitter.onError(Exception(error))
         }
 
@@ -61,8 +61,8 @@ class UserListPresenterTest {
     @Test
     fun testGetUsers_successCaseFirstPage_clearList() {
         // Given
-        val users = listOf(UserViewModel(1, "Name", 1000, ""))
-        val single: Single<List<UserViewModel>> = Single.create { emitter ->
+        val users = listOf(UserViewData(1, "Name", 1000, ""))
+        val single: Single<List<UserViewData>> = Single.create { emitter ->
             emitter.onSuccess(users)
         }
 
@@ -81,8 +81,8 @@ class UserListPresenterTest {
     @Test
     fun testGetUsers_successCaseMultipleTimes_clearListOnlyOnce() {
         // Given
-        val users = listOf(UserViewModel(1, "Name", 1000, ""))
-        val single: Single<List<UserViewModel>> = Single.create { emitter ->
+        val users = listOf(UserViewData(1, "Name", 1000, ""))
+        val single: Single<List<UserViewData>> = Single.create { emitter ->
             emitter.onSuccess(users)
         }
 
@@ -104,8 +104,8 @@ class UserListPresenterTest {
     @Test
     fun testGetUsers_forcedSuccessCaseMultipleTimes_clearListEveryTime() {
         // Given
-        val users = listOf(UserViewModel(1, "Name", 1000, ""))
-        val single: Single<List<UserViewModel>> = Single.create { emitter ->
+        val users = listOf(UserViewData(1, "Name", 1000, ""))
+        val single: Single<List<UserViewData>> = Single.create { emitter ->
             emitter.onSuccess(users)
         }
 
@@ -159,8 +159,8 @@ class UserListPresenterTest {
 
     private fun getUsersWithLoadingDelay() {
         // Given
-        val users = listOf(UserViewModel(1, "Name", 1000, ""))
-        val single: Single<List<UserViewModel>> = Single.create { emitter ->
+        val users = listOf(UserViewData(1, "Name", 1000, ""))
+        val single: Single<List<UserViewData>> = Single.create { emitter ->
             emitter.onSuccess(users)
         }
 

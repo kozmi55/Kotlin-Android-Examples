@@ -11,8 +11,8 @@ import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.DetailPresenter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.DetailsViewModel
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.DetailsViewData
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.UserViewData
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.DetailsAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -33,7 +33,7 @@ class DetailsFragment : DaggerFragment(), DetailView {
     var transitionEnded = false
 
     companion object {
-        fun newInstance(user: UserViewModel): DetailsFragment {
+        fun newInstance(user: UserViewData): DetailsFragment {
             val fragment = DetailsFragment()
             val args = Bundle()
             args.putParcelable("user", user)
@@ -66,7 +66,7 @@ class DetailsFragment : DaggerFragment(), DetailView {
     }
 
     private fun processArguments() {
-        val user = arguments?.getParcelable<UserViewModel>("user")
+        val user = arguments?.getParcelable<UserViewData>("user")
 
         if (user != null) {
             detailsAdapter.addItem(user)
@@ -79,7 +79,7 @@ class DetailsFragment : DaggerFragment(), DetailView {
         }
     }
 
-    override fun showDetails(details: DetailsViewModel) {
+    override fun showDetails(details: DetailsViewData) {
         with(detailsAdapter) {
             removeNonUserItems()
             addItemsWithHeading(details.questions, "Top questions by user")

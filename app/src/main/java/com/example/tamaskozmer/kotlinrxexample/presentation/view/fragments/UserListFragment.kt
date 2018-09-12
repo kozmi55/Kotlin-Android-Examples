@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.UserViewData
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.activities.MainActivity
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.UserListAdapter
 import dagger.android.support.DaggerFragment
@@ -23,7 +23,7 @@ class UserListFragment : DaggerFragment(), UserListView {
     lateinit var presenter: UserListPresenter
 
     private val adapter by lazy {
-        val userList = mutableListOf<UserViewModel>()
+        val userList = mutableListOf<UserViewData>()
         UserListAdapter(userList) { user, view ->
             openDetailFragment(user, view)
         }
@@ -70,7 +70,7 @@ class UserListFragment : DaggerFragment(), UserListView {
         swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun addUsersToList(users: List<UserViewModel>) {
+    override fun addUsersToList(users: List<UserViewData>) {
         val adapter = recyclerView.adapter as UserListAdapter
         adapter.addUsers(users)
     }
@@ -109,7 +109,7 @@ class UserListFragment : DaggerFragment(), UserListView {
         })
     }
 
-    private fun openDetailFragment(user: UserViewModel, transitioningView: View) {
+    private fun openDetailFragment(user: UserViewData, transitioningView: View) {
         val detailsFragment = DetailsFragment.newInstance(user)
         (activity as MainActivity).addDetailsFragmentWithTransition(detailsFragment, transitioningView)
     }

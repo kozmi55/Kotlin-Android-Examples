@@ -8,7 +8,7 @@ import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delega
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters.LoadingDelegateAdapter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters.QuestionDelegateAdapter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.delegateadapters.UserDetailsDelegateAdapter
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.Heading
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.Heading
 
 class DetailsAdapter(listener: (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
