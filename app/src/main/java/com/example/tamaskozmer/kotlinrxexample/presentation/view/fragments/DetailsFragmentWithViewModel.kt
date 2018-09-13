@@ -55,12 +55,14 @@ class DetailsFragmentWithViewModel : DaggerFragment() {
     }
 
     private fun addObservers() {
-        detailViewModel.showInitialLoading.observe(this, Observer {
-            if (it == true) showLoading() else hideLoading()
-        })
-
-        detailViewModel.showError.observe(this, Observer {
-            if (it == true) showError("Error")
+        detailViewModel.state.observe(this, Observer {
+            when (it) {
+                DetailViewModel.State.INITIAL_LOADING -> showLoading()
+                DetailViewModel.State.REFRESHING -> swipeRefreshLayout.isRefreshing = true
+                DetailViewModel.State.LOADED -> hideLoading()
+                DetailViewModel.State.ERROR -> showError("Error loading")
+                else -> {}
+            }
         })
 
         detailViewModel.details.observe(this, Observer {

@@ -14,8 +14,7 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     val details: MutableLiveData<DetailsViewData> = MutableLiveData()
-    val showInitialLoading: MutableLiveData<Boolean> = MutableLiveData()
-    val showError: MutableLiveData<Boolean> = MutableLiveData()
+    val state: MutableLiveData<State> = MutableLiveData()
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -29,19 +28,22 @@ class DetailViewModel @Inject constructor(
     }
 
     fun getDetails(id: Long, forced: Boolean) {
-        showInitialLoading.value = true
+        state.value = if (details.value == null) State.INITIAL_LOADING else State.REFRESHING
         compositeDisposable.addAll(
             getDetails.execute(id, forced)
                 .subscribeOn(schedulerProvider.ioScheduler())
                 .observeOn(schedulerProvider.uiScheduler())
                 .subscribe({ detailsModel ->
-                    showInitialLoading.value = false
+                    state.value = State.LOADED
                     details.value = detailsModel
                 },
-                    { error ->
-                        showInitialLoading.value = false
-                        showError.value = true
+                    {
+                        state.value = State.ERROR
                     })
         )
+    }
+
+    enum class State {
+        INITIAL_LOADING, REFRESHING, LOADED, ERROR
     }
 }

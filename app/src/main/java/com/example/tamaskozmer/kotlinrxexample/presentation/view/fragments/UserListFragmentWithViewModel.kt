@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.databinding.FragmentUserListWithVmBinding
-import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.activities.MainActivity
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.UserListAdapter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.UserViewData
