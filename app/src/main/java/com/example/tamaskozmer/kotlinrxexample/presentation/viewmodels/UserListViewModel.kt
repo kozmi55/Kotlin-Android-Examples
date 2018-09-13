@@ -44,7 +44,7 @@ class UserListViewModel @Inject constructor(
 
     fun init() {
         if (!initialized) {
-            getUsers(true)
+            getUsers()
             initialized = true
         }
     }

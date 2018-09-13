@@ -1,6 +1,7 @@
 package com.example.tamaskozmer.kotlinrxexample.mocks.di.components
 
 import com.example.tamaskozmer.kotlinrxexample.di.modules.FragmentModule
+import com.example.tamaskozmer.kotlinrxexample.di.modules.ViewModelModule
 import com.example.tamaskozmer.kotlinrxexample.mocks.di.modules.TestApplicationModule
 import com.example.tamaskozmer.kotlinrxexample.testutil.TestApplication
 import dagger.Component
@@ -9,7 +10,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [TestApplicationModule::class, FragmentModule::class, AndroidSupportInjectionModule::class])
+@Component(modules = [TestApplicationModule::class, FragmentModule::class, AndroidSupportInjectionModule::class, ViewModelModule::class])
 interface TestApplicationComponent : AndroidInjector<TestApplication> {
 
     @Component.Builder
