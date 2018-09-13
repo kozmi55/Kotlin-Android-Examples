@@ -83,6 +83,7 @@ dependencies {
 
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
     testImplementation "junit:junit:$JUNIT_VERSION"
+    testImplementation "android.arch.core:core-testing:$LIFECYCLE_VERSION"
 
     androidTestImplementation ("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION", {
         exclude group: 'com.android.support', module: 'support-annotations'
