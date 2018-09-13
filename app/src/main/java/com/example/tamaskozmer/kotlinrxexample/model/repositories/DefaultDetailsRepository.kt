@@ -103,8 +103,11 @@ class DefaultDetailsRepository(
 
     private fun <T> createSingle(lastUpdateKey: String, onlineStrategy: () -> T, offlineStrategy: () -> T, forced: Boolean): Single<T> {
         return Single.create<T> { emitter: SingleEmitter<T> ->
-            if (shouldUpdate(lastUpdateKey, forced)) {
+            if (true) {
                 try {
+                    // Intentionally added delay in the request to be able to test app behavior with configuration changes
+                    // TODO Remove when before merging to master
+                    Thread.sleep(1000)
                     val onlineResults = onlineStrategy()
                     val currentTime = calendarWrapper.getCurrentTimeInMillis()
                     preferencesHelper.saveLong(lastUpdateKey, currentTime)

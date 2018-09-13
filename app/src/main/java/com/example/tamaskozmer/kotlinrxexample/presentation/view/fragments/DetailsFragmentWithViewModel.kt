@@ -1,5 +1,8 @@
 package com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,19 +12,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.DetailPresenter
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.DetailView
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.DetailsAdapter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.DetailsViewData
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewdata.UserViewData
-import com.example.tamaskozmer.kotlinrxexample.presentation.view.adapters.DetailsAdapter
+import com.example.tamaskozmer.kotlinrxexample.presentation.viewmodels.DetailViewModel
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.fragment_details_with_vm.*
 import javax.inject.Inject
 
-class DetailsFragment : DaggerFragment(), DetailView {
+class DetailsFragmentWithViewModel : DaggerFragment() {
 
     @Inject
-    lateinit var presenter: DetailPresenter
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var detailViewModel: DetailViewModel
 
     private val detailsAdapter by lazy {
         DetailsAdapter({ link ->
@@ -33,8 +37,8 @@ class DetailsFragment : DaggerFragment(), DetailView {
     private var transitionEnded = false
 
     companion object {
-        fun newInstance(user: UserViewData): DetailsFragment {
-            val fragment = DetailsFragment()
+        fun newInstance(user: UserViewData): DetailsFragmentWithViewModel {
+            val fragment = DetailsFragmentWithViewModel()
             val args = Bundle()
             args.putParcelable("user", user)
             fragment.arguments = args
@@ -42,22 +46,43 @@ class DetailsFragment : DaggerFragment(), DetailView {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        detailViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(DetailViewModel::class.java)
+
+        addObservers()
+    }
+
+    private fun addObservers() {
+        detailViewModel.showInitialLoading.observe(this, Observer {
+            if (it == true) showLoading() else hideLoading()
+        })
+
+        detailViewModel.showError.observe(this, Observer {
+            if (it == true) showError("Error")
+        })
+
+        detailViewModel.details.observe(this, Observer {
+            it?.let {
+                showDetails(it)
+            }
+        })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter.attachView(this)
-
         initAdapter()
         processArguments()
-    }
-
-    override fun onDestroyView() {
-        presenter.detachView()
-        super.onDestroyView()
     }
 
     private fun initAdapter() {
@@ -71,15 +96,15 @@ class DetailsFragment : DaggerFragment(), DetailView {
         if (user != null) {
             detailsAdapter.addItem(user)
             detailsAdapter.notifyDataSetChanged()
-            presenter.getDetails(user.userId)
+            detailViewModel.init(user.userId)
 
             swipeRefreshLayout.setOnRefreshListener {
-                presenter.getDetails(user.userId, true)
+                detailViewModel.getDetails(user.userId, true)
             }
         }
     }
 
-    override fun showDetails(details: DetailsViewData) {
+    private fun showDetails(details: DetailsViewData) {
         with(detailsAdapter) {
             removeNonUserItems()
             addItemsWithHeading(details.questions, "Top questions by user")
@@ -91,15 +116,15 @@ class DetailsFragment : DaggerFragment(), DetailView {
         }
     }
 
-    override fun showError(error: String) {
+    private fun showError(error: String) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showLoading() {
+    private fun showLoading() {
         detailsAdapter.addLoadingItem()
     }
 
-    override fun hideLoading() {
+    private fun hideLoading() {
         detailsAdapter.removeLoadingItem()
         swipeRefreshLayout.isRefreshing = false
     }

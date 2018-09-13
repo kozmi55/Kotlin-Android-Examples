@@ -2,6 +2,7 @@ package com.example.tamaskozmer.kotlinrxexample.di.modules
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.example.tamaskozmer.kotlinrxexample.presentation.viewmodels.DetailViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.viewmodels.UserListViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -39,4 +40,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(UserListViewModel::class)
     internal abstract fun userListViewModel(viewModel: UserListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailViewModel::class)
+    internal abstract fun detailViewModel(viewModel: DetailViewModel): ViewModel
 }

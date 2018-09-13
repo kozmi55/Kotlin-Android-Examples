@@ -11,6 +11,7 @@ import android.transition.TransitionInflater
 import android.view.View
 import com.example.tamaskozmer.kotlinrxexample.R
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.DetailsFragment
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.DetailsFragmentWithViewModel
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.fragments.UserListFragmentWithViewModel
 import com.example.tamaskozmer.kotlinrxexample.util.TransitionListener
 import com.example.tamaskozmer.kotlinrxexample.util.isLollipopOrAbove
@@ -63,7 +64,11 @@ class MainActivity : AppCompatActivity() {
         sharedTransition.duration = SHARED_TRANSITION_DURATION
         sharedTransition.addListener(object : TransitionListener() {
             override fun onTransitionEnd(p0: Transition?) {
-                (fragment as DetailsFragment).transitionEnded()
+                // Need to cast to the correct Fragment if we want to keep both solutions in the codebase
+                when (fragment) {
+                    is DetailsFragment -> fragment.transitionEnded()
+                    is DetailsFragmentWithViewModel -> fragment.transitionEnded()
+                }
             }
         })
 

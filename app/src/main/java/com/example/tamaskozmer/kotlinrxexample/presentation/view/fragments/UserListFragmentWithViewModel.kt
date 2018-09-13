@@ -23,9 +23,6 @@ import javax.inject.Inject
 class UserListFragmentWithViewModel : DaggerFragment() {
 
     @Inject
-    lateinit var getUsers: GetUsers
-
-    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var userListViewModel: UserListViewModel
@@ -106,7 +103,7 @@ class UserListFragmentWithViewModel : DaggerFragment() {
     }
 
     private fun openDetailFragment(user: UserViewData, transitioningView: View) {
-        val detailsFragment = DetailsFragment.newInstance(user)
+        val detailsFragment = DetailsFragmentWithViewModel.newInstance(user)
         (activity as MainActivity).addDetailsFragmentWithTransition(
             detailsFragment,
             transitioningView
